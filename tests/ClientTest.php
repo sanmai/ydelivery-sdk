@@ -29,26 +29,40 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK;
 
+use Gamez\Psr\Log\TestLogger;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ServerException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Log\LogLevel;
+use Tests\YDeliverySDK\Fixtures\FixtureLoader;
 use YDeliverySDK\Client;
 use YDeliverySDK\ClientBuilder;
 use YDeliverySDK\Contracts\ParamRequest;
 use YDeliverySDK\Contracts\Request;
+use YDeliverySDK\Contracts\Response;
+use YDeliverySDK\Requests\DeliveryOptionsRequest;
+use YDeliverySDK\Requests\PostalCodeRequest;
+use YDeliverySDK\Responses\DeliveryOptionsResponse;
 use YDeliverySDK\Responses\FileResponse;
+use YDeliverySDK\Responses\PostalCodeResponse;
 
 /**
  * @covers \YDeliverySDK\Client
  */
 class ClientTest extends TestCase
 {
+    private const DEFAULT_JSON = '[]';
+
     private $lastRequestOptions = [];
 
-    private function getHttpClient($contentType = 'application/json', $responseBody = '[]', $extraHeaders = []): ClientInterface
+    /**
+     * @return MockObject|ResponseInterface
+     */
+    private function getResponse(string $contentType = 'application/json', string $responseBody = self::DEFAULT_JSON, array $extraHeaders = [])
     {
         $extraHeaders['Content-Type'] = $contentType;
 
@@ -63,6 +77,16 @@ class ClientTest extends TestCase
         $stream = $this->createMock(StreamInterface::class);
         $stream->method('__toString')->willReturn($responseBody);
         $response->method('getBody')->willReturn($stream);
+
+        return $response;
+    }
+
+    /**
+     * @return MockObject|ClientInterface
+     */
+    private function getHttpClient(string $contentType = 'application/json', string $responseBody = self::DEFAULT_JSON, array $extraHeaders = [])
+    {
+        $response = $this->getResponse($contentType, $responseBody, $extraHeaders);
 
         $http = $this->createMock(ClientInterface::class);
         $http->method('request')->will($this->returnCallback(function ($method, $address, array $options) use ($response) {
@@ -85,7 +109,7 @@ class ClientTest extends TestCase
     public function test_client_can_handle_any_request()
     {
         $client = $this->newClient($this->getHttpClient('text/plain', 'example'));
-        $response = $client->sendRequest($this->createMock(Request::class));
+        $response = $client->sendAnyRequest($this->createMock(Request::class));
         $this->assertInstanceOf(ResponseInterface::class, $response);
 
         $this->assertEmpty($this->lastRequestOptions);
@@ -103,6 +127,50 @@ class ClientTest extends TestCase
 
         $this->assertSame('%PDF', (string) $response->getBody());
         $this->assertEmpty($this->lastRequestOptions);
+    }
+
+    public function test_client_can_log_param_request()
+    {
+        $client = $this->newClient($this->getHttpClient());
+        $client->setLogger($logger = new TestLogger());
+
+        $request = new PostalCodeRequest();
+        $response = $client->sendPostalCodeRequest($request);
+
+        /** @var $response PostalCodeResponse */
+        $this->assertInstanceOf(PostalCodeResponse::class, $response);
+
+        $this->assertSame(3, $logger->log->countRecordsWithLevel(LogLevel::DEBUG));
+        $this->assertSame(1, $logger->log->countRecordsWithContextKey('content-type'));
+
+        $this->assertTrue($logger->log->hasRecordsWithMessage(self::DEFAULT_JSON));
+        $this->assertTrue($logger->log->hasRecordsWithPartialMessage('location/postal-code'));
+
+        $this->assertSame(1, $logger->log->countRecordsWithContextKey('method'));
+        $this->assertSame(1, $logger->log->countRecordsWithContextKey('location'));
+    }
+
+    public function test_client_can_log_json_response()
+    {
+        $client = $this->newClient($this->getHttpClient());
+        $client->setLogger($logger = new TestLogger());
+
+        $request = new DeliveryOptionsRequest();
+
+        $response = $client->sendDeliveryOptionsRequest($request);
+
+        /** @var $response DeliveryOptionsResponse */
+        $this->assertInstanceOf(DeliveryOptionsResponse::class, $response);
+
+        $this->assertSame(5, $logger->log->countRecordsWithLevel(LogLevel::DEBUG));
+        $this->assertSame(1, $logger->log->countRecordsWithContextKey('content-type'));
+
+        $this->assertTrue($logger->log->hasRecordsWithMessage('{}'));
+        $this->assertTrue($logger->log->hasRecordsWithMessage(self::DEFAULT_JSON));
+        $this->assertTrue($logger->log->hasRecordsWithMessage('PUT /delivery-options'));
+
+        $this->assertSame(1, $logger->log->countRecordsWithContextKey('method'));
+        $this->assertSame(1, $logger->log->countRecordsWithContextKey('location'));
     }
 
     public function test_client_can_pass_through_common_exceptions()
@@ -127,6 +195,70 @@ class ClientTest extends TestCase
 
         $this->expectException(ServerException::class);
         $client->sendRequest($this->createMock(Request::class));
+    }
+
+    public function test_client_can_handle_unknown_error_response()
+    {
+        $client = $this->newClient($http = $this->getHttpClient());
+        $client->setLogger($logger = new TestLogger());
+
+        $responseMock = $this->createMock(ResponseInterface::class);
+        $responseMock->method('getStatusCode')->willReturn(500);
+        $responseMock->method('getReasonPhrase')->willReturn('Server error');
+
+        $http->method('request')->will($this->returnCallback(function () use ($responseMock) {
+            throw new ServerException('', $this->createMock(RequestInterface::class), $responseMock);
+        }));
+
+        $response = $client->sendRequest($this->createMock(Request::class));
+        $this->assertSame(3, $logger->log->countRecordsWithLevel(LogLevel::DEBUG));
+        $this->assertTrue($logger->log->hasRecordsWithPartialMessage('API responded with an HTTP error code'));
+
+        $this->assertSame(1, $logger->log->countRecordsWithContextKey('exception'));
+        $this->assertSame(1, $logger->log->countRecordsWithContextKey('error_code'));
+
+        $this->assertInstanceOf(Response::class, $response);
+
+        $this->assertCount(1, $response->getMessages());
+        foreach ($response->getMessages() as $message) {
+            $this->assertSame('500', $message->getErrorCode());
+            $this->assertSame('Server error', $message->getMessage());
+        }
+
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+
+        \assert($response instanceof ResponseInterface);
+        $this->assertSame(500, $response->getStatusCode());
+        $this->assertSame('Server error', $response->getReasonPhrase());
+    }
+
+    public function test_client_can_handle_error_response()
+    {
+        $client = $this->newClient($http = $this->getHttpClient());
+        $client->setLogger($logger = new TestLogger());
+
+        $responseMock = $this->getResponse('application/json', FixtureLoader::load('400_Bad_Request.json'));
+        $responseMock->method('getStatusCode')->willReturn(400);
+        $responseMock->method('getReasonPhrase')->willReturn('Bad Request');
+
+        $http->method('request')->will($this->returnCallback(function () use ($responseMock) {
+            throw new ServerException('', $this->createMock(RequestInterface::class), $responseMock);
+        }));
+
+        $response = $client->sendRequest($this->createMock(Request::class));
+        $this->assertSame(3, $logger->log->countRecordsWithLevel(LogLevel::DEBUG));
+        $this->assertTrue($logger->log->hasRecordsWithPartialMessage('API responded with an HTTP error code'));
+
+        $this->assertSame(1, $logger->log->countRecordsWithContextKey('exception'));
+        $this->assertSame(1, $logger->log->countRecordsWithContextKey('error_code'));
+
+        $this->assertInstanceOf(Response::class, $response);
+
+        $this->assertCount(1, $response->getMessages());
+        foreach ($response->getMessages() as $message) {
+            $this->assertSame('UNKNOWN', $message->getErrorCode());
+            $this->assertSame("Required Long parameter 'partnerId' is not present", $message->getMessage());
+        }
     }
 
     public function test_fails_on_unknown_method()

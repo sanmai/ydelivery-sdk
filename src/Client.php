@@ -79,11 +79,11 @@ final class Client implements Contracts\Client
     public function sendRequest(Request $request)
     {
         try {
-            return $this->deserialize($request, $this->http->request(
+            $response = $this->http->request(
                 $request->getMethod(),
                 $request->getAddress(),
                 $this->extractOptions($request)
-            ));
+            );
         } catch (BadResponseException $exception) {
             if ($this->logger) {
                 $this->logger->debug('API responded with an HTTP error code {error_code}', [
@@ -96,12 +96,14 @@ final class Client implements Contracts\Client
                 throw $exception;
             }
 
-            if (!$response = $this->deserializeBadResponse($exception->getResponse())) {
-                throw $exception;
-            }
+            $response = $exception->getResponse();
 
-            return $response;
+            if ($badResponse = $this->deserializeBadResponse($response)) {
+                return $badResponse;
+            }
         }
+
+        return $this->deserialize($request, $response);
     }
 
     /** @phan-suppress PhanDeprecatedFunction */
