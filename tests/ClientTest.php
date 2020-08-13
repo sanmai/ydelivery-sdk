@@ -39,7 +39,6 @@ use YDeliverySDK\Client;
 use YDeliverySDK\ClientBuilder;
 use YDeliverySDK\Contracts\ParamRequest;
 use YDeliverySDK\Contracts\Request;
-use YDeliverySDK\Requests\PostalCodeRequest;
 use YDeliverySDK\Responses\FileResponse;
 
 /**
@@ -115,7 +114,7 @@ class ClientTest extends TestCase
         }));
 
         $this->expectException(\RuntimeException::class);
-        $response = $client->sendPostalCodeRequest(new PostalCodeRequest());
+        $client->sendRequest($this->createMock(Request::class));
     }
 
     public function test_client_can_pass_through_exceptions_without_response()
@@ -127,7 +126,7 @@ class ClientTest extends TestCase
         }));
 
         $this->expectException(ServerException::class);
-        $client->sendPostalCodeRequest(new PostalCodeRequest());
+        $client->sendRequest($this->createMock(Request::class));
     }
 
     public function test_fails_on_unknown_method()
