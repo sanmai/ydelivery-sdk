@@ -2,8 +2,8 @@
 /**
  * This code is licensed under the MIT License.
  *
+ * Copyright (c) 2018-2020 Alexey Kopytko <alexey@kopytko.com> and contributors
  * Copyright (c) 2018 Appwilio (http://appwilio.com), greabock (https://github.com/greabock), JhaoDa (https://github.com/jhaoda)
- * Copyright (c) 2018 Alexey Kopytko <alexey@kopytko.com> and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,10 +26,10 @@
 
 declare(strict_types=1);
 
-namespace CdekSDK\Responses\Types;
+namespace YDeliverySDK\Responses\Types;
 
-use CdekSDK\Contracts\HasErrorCode;
-use function Pipeline\fromArray;
+use function Pipeline\take;
+use YDeliverySDK\Contracts\HasErrorCode;
 
 final class Message implements HasErrorCode
 {
@@ -39,45 +39,15 @@ final class Message implements HasErrorCode
     /** @var string|null */
     private $errorCode;
 
-    /**
-     * @param string|null $errorCode
-     */
-    public function __construct(string $text, $errorCode = null)
+    public function __construct(string $text, string $errorCode = null)
     {
         $this->text = $text;
         $this->errorCode = $errorCode;
     }
 
-    /**
-     * @deprecated use getMessage()
-     * @codeCoverageIgnore
-     */
-    public function getText(): string
+    public function getErrorCode(): ?string
     {
-        return $this->getMessage();
-    }
-
-    /**
-     * @deprecated use getErrorCode()
-     * @codeCoverageIgnore
-     */
-    public function getCode(): string
-    {
-        return $this->getErrorCode();
-    }
-
-    /**
-     * @deprecated use getErrorCode() !== ''
-     * @codeCoverageIgnore
-     */
-    public function isError(): bool
-    {
-        return (bool) $this->errorCode;
-    }
-
-    public function getErrorCode(): string
-    {
-        return (string) $this->errorCode;
+        return $this->errorCode;
     }
 
     public function getMessage(): string
@@ -85,10 +55,14 @@ final class Message implements HasErrorCode
         return $this->text;
     }
 
-    public static function from(...$inputs): \Traversable
+    /**
+     * @param iterable<HasErrorCode> ...$inputs
+     *
+     * @return iterable|Message[]
+     */
+    public static function from(...$inputs): iterable
     {
-        return fromArray($inputs)->unpack()->map(function (HasErrorCode $item) {
-            // В разных версиях API может быть то или другое
+        return take($inputs)->unpack()->map(function (HasErrorCode $item) {
             if ($item->getMessage() || $item->getErrorCode()) {
                 yield new Message($item->getMessage(), $item->getErrorCode());
             }

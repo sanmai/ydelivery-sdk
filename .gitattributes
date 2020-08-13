@@ -17,4 +17,4 @@
 /psalm.xml                 export-ignore
 /appveyor.yml              export-ignore
 /tests                     export-ignore
-/src/CdekClient.php        export-subst
+/src/ClientBuilder.php     export-subst

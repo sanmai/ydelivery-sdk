@@ -2,8 +2,8 @@
 /**
  * This code is licensed under the MIT License.
  *
+ * Copyright (c) 2018-2020 Alexey Kopytko <alexey@kopytko.com> and contributors
  * Copyright (c) 2018 Appwilio (http://appwilio.com), greabock (https://github.com/greabock), JhaoDa (https://github.com/jhaoda)
- * Copyright (c) 2018 Alexey Kopytko <alexey@kopytko.com> and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,31 +26,17 @@
 
 declare(strict_types=1);
 
-namespace Tests\CdekSDK\Serialization;
+namespace Tests\YDeliverySDK\Serialization;
 
-use CdekSDK\Contracts\Request;
-use Tests\CdekSDK\Deserialization\TestCase as DeserializationTestCase;
+use Tests\YDeliverySDK\Deserialization\TestCase as DeserializationTestCase;
+use YDeliverySDK\Contracts\Request;
 
 abstract class TestCase extends DeserializationTestCase
 {
-    protected function assertSameAsXML(string $xml, $request)
+    protected function assertSameAsJSON(string $json, $request)
     {
-        $serializedXml = $this->getSerializer()->serialize($request, Request::SERIALIZATION_XML);
+        $serializedString = $this->getSerializer()->serialize($request, Request::SERIALIZATION_JSON);
 
-        $serializedXml = $this->fixXmlFloats($serializedXml);
-
-        $this->assertSame($xml, $serializedXml);
-    }
-
-    /**
-     * @deprecated remove this method after updating fixtures
-     */
-    private function fixXmlFloats(string $xml): string
-    {
-        if (!\interface_exists('\JMS\Serializer\Naming\AdvancedNamingStrategyInterface')) {
-            return \preg_replace('/([A-Z][a-z]+)="(\d+)\.0"/', '\1="\2"', $xml);
-        }
-
-        return $xml;
+        $this->assertSame($json, $serializedString);
     }
 }

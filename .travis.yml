@@ -30,14 +30,10 @@ jobs:
       php: 7.0
       env:
         - GROUP=integration
-        - CDEK_ACCOUNT=7JM7K5twfzEV1ssCRklthcIPbbVZrZrZ
-        - CDEK_PASSWORD=t8XBoL1rUofIK9dKoXVB3Tji2F2hPHSk
     - stage: integration
       php: 7.0
       env:
         - GROUP=integration
-        - CDEK_ACCOUNT=z9GRRu7FxmO53CQ9cFfI6qiy32wpfTkd
-        - CDEK_PASSWORD=w24JTCv4MnAcuRTx0oHjHLDtyt3I6IBq
     - stage: analyze
       php: 7.3
       install:

@@ -1,9 +1,9 @@
-site_name: CdekSDK
+site_name: YDeliverySDK
 theme: readthedocs
 lang: ru
 
 nav:
-    - PHP SDK для API СДЭК: index.md
+    - Оглавление: index.md
 
 markdown_extensions:
     - toc:

@@ -2,8 +2,8 @@
 /**
  * This code is licensed under the MIT License.
  *
+ * Copyright (c) 2018-2020 Alexey Kopytko <alexey@kopytko.com> and contributors
  * Copyright (c) 2018 Appwilio (http://appwilio.com), greabock (https://github.com/greabock), JhaoDa (https://github.com/jhaoda)
- * Copyright (c) 2018 Alexey Kopytko <alexey@kopytko.com> and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,136 +26,54 @@
 
 declare(strict_types=1);
 
-namespace Tests\CdekSDK\Integration;
+namespace Tests\YDeliverySDK\Integration;
 
-use CdekSDK\CdekClient;
-use CdekSDK\Contracts\Response;
-use GuzzleHttp\Client as GuzzleClient;
+use YDeliverySDK\Client;
+use YDeliverySDK\ClientBuilder;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    const TEST_HOST = 'integration.edu.cdek.ru';
-
-    /** @var bool */
-    private $isTesting = false;
-
-    /**
-     * @return \GuzzleHttp\Client|null
-     * @psalm-suppress PossiblyFalseArgument
-     */
-    private function getGuzzleClient()
-    {
-        if (false === \getenv('CDEK_BASE_URL')) {
-            return null;
-        }
-
-        if (\strpos(\getenv('CDEK_BASE_URL'), self::TEST_HOST)) {
-            $this->isTesting = true;
-        }
-
-        return new GuzzleClient([
-            'base_uri' => \getenv('CDEK_BASE_URL'),
-            'verify'   => !\getenv('CI'), // Igonore SSL errors on the likes of Travis CI
-        ]);
-    }
+    const YANDEX_SHOP_ID = 'YANDEX_SHOP_ID';
+    const YANDEX_CABINET_ID = 'YANDEX_CABINET_ID';
+    const YANDEX_DELIVERY_TOKEN = 'YANDEX_DELIVERY_TOKEN';
+    const YANDEX_WAREHOUSE_ID = 'YANDEX_WAREHOUSE_ID';
 
     /**
      * @psalm-suppress MixedArgument
      * @psalm-suppress PossiblyFalseArgument
      */
-    final protected function getClient(): CdekClient
+    final protected function getClient(): Client
     {
-        if (false === \getenv('CDEK_ACCOUNT')) {
-            $this->markTestSkipped('Integration testing disabled (CDEK_ACCOUNT missing).');
-        }
+        $builder = new ClientBuilder();
+        $builder->setToken(self::getEnvOrSkipTest(self::YANDEX_DELIVERY_TOKEN));
 
-        if (false === \getenv('CDEK_PASSWORD')) {
-            $this->markTestSkipped('Integration testing disabled (CDEK_PASSWORD missing).');
+        if (\is_dir('build/cache/')) {
+            $builder->setCacheDir('build/cache/', true);
         }
-
-        $client = new CdekClient(\getenv('CDEK_ACCOUNT'), \getenv('CDEK_PASSWORD'), $this->getGuzzleClient());
 
         if (\in_array('--debug', $_SERVER['argv'])) {
-            $client->setLogger(new DebuggingLogger());
+            $builder->setLogger(new DebuggingLogger());
         }
 
-        return $client;
+        return $builder->build();
     }
 
-    /**
-     * @psalm-suppress MixedArgument
-     */
-    final protected function getAnonymousClient(): CdekClient
+    final protected function getCabinetId(): int
     {
-        $client = new CdekClient('', '', $this->getGuzzleClient());
-
-        if (\in_array('--debug', $_SERVER['argv'])) {
-            $client->setLogger(new DebuggingLogger());
-        }
-
-        return $client;
+        return (int) self::getEnvOrSkipTest(self::YANDEX_CABINET_ID);
     }
 
-    final protected function skipIfKnownAPIErrorCode(Response $response, array $transientErrorCodes = [])
+    final protected function getShopId(): int
     {
-        if (!$response->hasErrors()) {
-            return;
-        }
-
-        $transientErrorCodes[] = 'ERROR_INTERNAL';
-
-        foreach ($response->getMessages() as $message) {
-            if ($message->getErrorCode() === '502') {
-                $this->markTestSkipped("CDEK responded with an HTTP error code: {$message->getMessage()}");
-            }
-            if (\in_array($message->getErrorCode(), $transientErrorCodes)) {
-                $this->markTestSkipped("CDEK failed with a known transient error code {$message->getErrorCode()}: {$message->getMessage()}");
-            }
-        }
+        return (int) self::getEnvOrSkipTest(self::YANDEX_SHOP_ID);
     }
 
-    final protected function isTestEndpointUsed(): bool
+    private static function getEnvOrSkipTest(string $varname): string
     {
-        return $this->isTesting;
-    }
-
-    final protected function skipIfTestEndpointIsUsed(string $message = '')
-    {
-        if ($this->isTestEndpointUsed()) {
-            $this->markTestSkipped($message);
-        }
-    }
-
-    /**
-     * @var string|null
-     */
-    private static $testNumber;
-
-    private static function getTestNumber(): string
-    {
-        if (self::$testNumber !== null) {
-            return self::$testNumber;
+        if (false === \getenv($varname)) {
+            self::markTestSkipped(\sprintf('Integration testing disabled (%s missing).', $varname));
         }
 
-        foreach ([
-            'LOCAL_BUILD_ID',
-            'TRAVIS_BUILD_ID',
-        ] as $envVarName) {
-            /** @var string|bool $value */
-            $value = \getenv($envVarName);
-
-            if ($value === false || \strlen($value) === 0) {
-                continue;
-            }
-
-            return self::$testNumber = (string) $value;
-        }
-
-        return self::$testNumber = (string) \time();
-    }
-
-    final protected function formatTestNumber(string $format): string
-    {
-        return \sprintf($format, self::getTestNumber());
+        return \getenv($varname);
     }
 }

@@ -2,8 +2,8 @@
 /**
  * This code is licensed under the MIT License.
  *
+ * Copyright (c) 2018-2020 Alexey Kopytko <alexey@kopytko.com> and contributors
  * Copyright (c) 2018 Appwilio (http://appwilio.com), greabock (https://github.com/greabock), JhaoDa (https://github.com/jhaoda)
- * Copyright (c) 2018 Alexey Kopytko <alexey@kopytko.com> and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +26,7 @@
 
 declare(strict_types=1);
 
-namespace CdekSDK\Requests\Concerns;
-
-use CdekSDK\Contracts\JsonRequest;
-use CdekSDK\Contracts\ParamRequest;
-use CdekSDK\Contracts\XmlRequest;
+namespace YDeliverySDK\Requests\Concerns;
 
 trait RequestCore
 {
@@ -38,7 +34,7 @@ trait RequestCore
      * @phan-suppress PhanUndeclaredConstantOfClass
      * @psalm-suppress MixedInferredReturnType
      */
-    final public function getAddress(): string
+    public function getAddress(): string
     {
         return static::ADDRESS;
     }
@@ -47,7 +43,7 @@ trait RequestCore
      * @phan-suppress PhanUndeclaredConstantOfClass
      * @psalm-suppress MixedInferredReturnType
      */
-    final public function getMethod(): string
+    public function getMethod(): string
     {
         return static::METHOD;
     }
@@ -56,7 +52,7 @@ trait RequestCore
      * @phan-suppress PhanUndeclaredConstantOfClass
      * @psalm-suppress MixedInferredReturnType
      */
-    final public function getResponseClassName(): string
+    public function getResponseClassName(): string
     {
         return static::RESPONSE;
     }
@@ -64,20 +60,8 @@ trait RequestCore
     /**
      * @psalm-suppress MixedInferredReturnType
      */
-    final public function getSerializationFormat(): string
+    public function getSerializationFormat(): string
     {
-        if ($this instanceof XmlRequest) {
-            return $this::SERIALIZATION_XML;
-        }
-
-        if ($this instanceof JsonRequest) {
-            return $this::SERIALIZATION_JSON;
-        }
-
-        if ($this instanceof ParamRequest) {
-            return $this::SERIALIZATION_XML;
-        }
-
-        throw new \BadMethodCallException(\sprintf('Class [%s] has an unrecognized serialization format.', __CLASS__));
+        return static::SERIALIZATION_JSON;
     }
 }

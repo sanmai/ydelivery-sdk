@@ -2,8 +2,8 @@
 /**
  * This code is licensed under the MIT License.
  *
+ * Copyright (c) 2018-2020 Alexey Kopytko <alexey@kopytko.com> and contributors
  * Copyright (c) 2018 Appwilio (http://appwilio.com), greabock (https://github.com/greabock), JhaoDa (https://github.com/jhaoda)
- * Copyright (c) 2018 Alexey Kopytko <alexey@kopytko.com> and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,28 +26,18 @@
 
 declare(strict_types=1);
 
-namespace Tests\CdekSDK\Common;
+namespace Tests\YDeliverySDK\Common;
 
-use CdekSDK\Responses\Types\Message;
+use YDeliverySDK\Responses\Types\Message;
 
 /**
- * @covers \CdekSDK\Responses\Types\Message
+ * @covers \YDeliverySDK\Responses\Types\Message
  */
 class MessageTest extends TestCase
 {
-    public function test_it_is_not_an_error()
-    {
-        $message = new Message('example');
-        $this->assertFalse($message->isError());
-        $this->assertSame('example', $message->getText());
-    }
-
     public function test_it_is_an_error()
     {
         $message = new Message('example', 'FOO');
-        $this->assertTrue($message->isError());
-        $this->assertSame('example', $message->getText());
-        $this->assertSame('FOO', $message->getCode());
 
         $this->assertSame('example', $message->getMessage());
         $this->assertSame('FOO', $message->getErrorCode());
@@ -67,8 +57,8 @@ class MessageTest extends TestCase
         foreach (Message::from([
            new Message('example1', 'FOO1'),
        ]) as $message) {
-            $this->assertSame('example1', $message->getText());
-            $this->assertSame('FOO1', $message->getCode());
+            $this->assertSame('example1', $message->getMessage());
+            $this->assertSame('FOO1', $message->getErrorCode());
         }
     }
 }

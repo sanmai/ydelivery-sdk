@@ -2,8 +2,8 @@
 /**
  * This code is licensed under the MIT License.
  *
+ * Copyright (c) 2018-2020 Alexey Kopytko <alexey@kopytko.com> and contributors
  * Copyright (c) 2018 Appwilio (http://appwilio.com), greabock (https://github.com/greabock), JhaoDa (https://github.com/jhaoda)
- * Copyright (c) 2018 Alexey Kopytko <alexey@kopytko.com> and contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\CdekSDK\Integration;
+namespace Tests\YDeliverySDK\Integration;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
@@ -37,7 +37,7 @@ final class DebuggingLogger implements LoggerInterface
 
     /**
      * Если нужна запись в файл, то нужно скопировать этот файл себе в проект, заменив namespace, и поменять константу ниже на true.
-     * Лог будет записан в cdek-requests.log в корне проекта.
+     * Лог будет записан в delivery-requests.log в корне проекта.
      *
      * @var bool
      */
@@ -64,8 +64,10 @@ final class DebuggingLogger implements LoggerInterface
         \fwrite(self::WRITE_LOG_TO_FILE ? $this->getLogFileHandle() : \STDERR, "\n{$message}\n\n");
     }
 
+    private const LOG_FILE = 'delivery-requests.log';
+
     /**
-     * Возвращает указатель на открытый файл cdek-requests.log в корне проекта.
+     * Возвращает указатель на открытый файл delivery-requests.log в корне проекта.
      *
      * @return resource
      */
@@ -75,7 +77,7 @@ final class DebuggingLogger implements LoggerInterface
 
         if (!$fh) {
             $reflection = new \ReflectionClass(\Composer\Autoload\ClassLoader::class);
-            $fh = \fopen(\dirname((string) $reflection->getFileName(), 3).DIRECTORY_SEPARATOR.'cdek-requests.log', 'a');
+            $fh = \fopen(\dirname((string) $reflection->getFileName(), 3).DIRECTORY_SEPARATOR.self::LOG_FILE, 'a');
         }
 
         \assert(\is_resource($fh));
