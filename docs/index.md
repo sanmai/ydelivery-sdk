@@ -42,6 +42,7 @@ $client = $builder->build();
 | ----- | -------------- | ----- |
 | [Получить индекс по адресу](#PostalCodeRequest) | `sendPostalCodeRequest` | `PostalCodeRequest` |
 
+Работа с большинством методов API возможна [только при наличии договора с Яндекс.Доставкой](https://yandex.ru/dev/delivery-3/doc/dg/concepts/access-docpage/).
 
 ### Обработка ошибок {: #hasErrors }
 
@@ -110,7 +111,7 @@ foreach ($response as $value) {
 
 ### Отладка получаемых ответов {: #DebuggingLogger }
 
-Посмотреть, что конкретно отвечает СДЭК на наши запросы и какие запросы мы посылаем сами можно используя [стандартный PSR-3 логгер](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md), такой, как, например, [Monolog](https://github.com/Seldaek/monolog).
+Посмотреть, что конкретно отвечает Яндекс.Доставка на наши запросы и какие запросы мы посылаем сами можно используя [стандартный PSR-3 логгер](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md), такой, как, например, [Monolog](https://github.com/Seldaek/monolog).
 
 ```php
 $builder->setLogger($monolog);
