@@ -2,9 +2,6 @@ sudo: false
 
 language: php
 php:
-  - 7.0
-  - 7.1
-  - 7.2
   - 7.3
   - 7.4
   - nightly
@@ -23,15 +20,9 @@ stages:
   - integration
 
 jobs:
-  exclude:
-    - php: 7.3
   include:
     - stage: integration
-      php: 7.0
-      env:
-        - GROUP=integration
-    - stage: integration
-      php: 7.0
+      php: 7.3
       env:
         - GROUP=integration
     - stage: analyze
