@@ -232,14 +232,25 @@ class ClientTest extends TestCase
         $this->assertSame('Server error', $response->getReasonPhrase());
     }
 
-    public function test_client_can_handle_error_response()
+    public function errorResponsesProvider()
+    {
+        yield '400_Bad_Request.json' => ['400_Bad_Request.json', 400, 'UNKNOWN', "Required Long parameter 'partnerId' is not present"];
+
+        yield '401_Unauthorized.json' => ['401_Unauthorized.json', 401, '401', 'Unauthorized'];
+
+        yield '404_Not_Found.json' => ['404_Not_Found.json', 404, 'RESOURCE_NOT_FOUND', 'Failed to find [SHOP] with ids [1]'];
+    }
+
+    /**
+     * @dataProvider errorResponsesProvider
+     */
+    public function test_client_can_handle_error_response(string $fixtureFileName, int $statusCode, string $errorCode, string $messageText)
     {
         $client = $this->newClient($http = $this->getHttpClient());
         $client->setLogger($logger = new TestLogger());
 
-        $responseMock = $this->getResponse('application/json', FixtureLoader::load('400_Bad_Request.json'));
-        $responseMock->method('getStatusCode')->willReturn(400);
-        $responseMock->method('getReasonPhrase')->willReturn('Bad Request');
+        $responseMock = $this->getResponse('application/json', FixtureLoader::load($fixtureFileName));
+        $responseMock->method('getStatusCode')->willReturn($statusCode);
 
         $http->method('request')->will($this->returnCallback(function () use ($responseMock) {
             throw new ServerException('', $this->createMock(RequestInterface::class), $responseMock);
@@ -256,8 +267,8 @@ class ClientTest extends TestCase
 
         $this->assertCount(1, $response->getMessages());
         foreach ($response->getMessages() as $message) {
-            $this->assertSame('UNKNOWN', $message->getErrorCode());
-            $this->assertSame("Required Long parameter 'partnerId' is not present", $message->getMessage());
+            $this->assertSame($errorCode, $message->getErrorCode());
+            $this->assertSame($messageText, $message->getMessage());
         }
     }
 
