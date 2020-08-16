@@ -5,6 +5,7 @@
          executionOrder="random"
          resolveDependencies="true"
          colors="true"
+         cacheResultFile="build/cache/"
 >
   <coverage>
     <include>
