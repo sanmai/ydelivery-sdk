@@ -49,10 +49,6 @@ class LaravelServiceProviderTest extends TestCase
      */
     private $provider;
 
-    // PHPStan workarounds (can't grok introspection yet)
-    private $account;
-    private $password;
-
     /** @var ClientInterface */
     private $http;
 
