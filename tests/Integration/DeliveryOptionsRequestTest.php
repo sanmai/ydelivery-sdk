@@ -33,6 +33,7 @@ use YDeliverySDK\Requests\Types\Address;
 use YDeliverySDK\Requests\Types\Cost;
 use YDeliverySDK\Requests\Types\Dimensions;
 use YDeliverySDK\Requests\Types\Shipment;
+use YDeliverySDK\Responses\DeliveryOptionsResponse;
 
 if (false) {
     include 'examples/080_DeliveryOptionsRequest.php';
@@ -40,6 +41,7 @@ if (false) {
 
 /**
  * @covers \YDeliverySDK\Requests\DeliveryOptionsRequest
+ * @covers \YDeliverySDK\Responses\DeliveryOptionsResponse
  *
  * @group integration
  */
@@ -93,6 +95,8 @@ final class DeliveryOptionsRequestTest extends TestCase
         //$request->setTariffId(444444);
 
         $resp = $this->getClient()->sendDeliveryOptionsRequest($request);
+
+        $this->assertInstanceOf(DeliveryOptionsResponse::class, $resp);
 
         $this->assertGreaterThan(0, \count($resp));
 

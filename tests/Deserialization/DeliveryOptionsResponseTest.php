@@ -28,27 +28,47 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Deserialization;
 
-use Tests\YDeliverySDK\Fixtures\FixtureLoader;
-use YDeliverySDK\Serialization;
+use YDeliverySDK\Responses\DeliveryOptionsResponse;
+use YDeliverySDK\Responses\Types\DeliveryOption;
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase
+/**
+ * @covers \YDeliverySDK\Responses\DeliveryOptionsResponse
+ * @covers \YDeliverySDK\Responses\Types\DeliveryOption
+ */
+class DeliveryOptionsResponseTest extends TestCase
 {
-    private $serializer;
-
-    protected function setUp(): void
+    public function commonResponsesProvider(): iterable
     {
-        $this->serializer = new Serialization\Serializer();
+        yield ['delivery-options.json', 5];
 
-        \Doctrine\Common\Annotations\AnnotationReader::addGlobalIgnoredName('phan');
+        yield ['delivery-options_COURIER_IMPORT_SortSC.json', 1];
+
+        yield ['delivery-options_PICKUP_IMPORT_NoSC.json', 1];
+
+        yield ['delivery-options_PICKUP_IMPORT_SortSC.json', 1];
     }
 
-    protected function getSerializer(): Serialization\Serializer
+    /**
+     * @dataProvider commonResponsesProvider
+     */
+    public function test_successful_request(string $fixtureName, int $count)
     {
-        return $this->serializer;
+        $response = $this->loadFixture($fixtureName);
+
+        $this->assertFalse($response->hasErrors());
+
+        $this->assertCount($count, $response);
+
+        foreach ($response as $item) {
+            /** @var $item DeliveryOption */
+            $this->assertInstanceOf(DeliveryOption::class, $item);
+
+            $this->assertGreaterThan(0, $item->getCost()->getDelivery());
+        }
     }
 
-    protected function loadFixtureWithType(string $filename, string $type)
+    private function loadFixture(string $filename): DeliveryOptionsResponse
     {
-        return $this->getSerializer()->deserialize(FixtureLoader::load($filename), $type);
+        return $this->loadFixtureWithType($filename, DeliveryOptionsResponse::class);
     }
 }

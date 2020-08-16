@@ -1,0 +1,99 @@
+[
+    {
+        "tariffId": 3560,
+        "cost": {
+            "delivery": 235.00,
+            "deliveryForSender": 304.241,
+            "deliveryForCustomer": 270.802
+        },
+        "delivery": {
+            "partner": {
+                "id": 106,
+                "code": "Boxberry",
+                "name": "Боксберри",
+                "partnerType": "DELIVERY",
+                "logoUrl": "http://avatars.mds.yandex.net/get-lms/2003566/Boxberry_1581004726.svg/orig"
+            },
+            "type": "COURIER",
+            "calculatedDeliveryDateMin": "2020-02-14",
+            "calculatedDeliveryDateMax": "2020-02-15",
+            "courierSchedule": {
+                "locationId": 213,
+                "schedule": [
+                    {
+                        "id": null,
+                        "timeFrom": "10:00:00",
+                        "timeTo": "22:00:00"
+                    }
+                ]
+            }
+        },
+        "pickupPointIds": null,
+        "shipments": [
+            {
+                "date": "2020-02-12",
+                "type": "IMPORT",
+                "partner": {
+                    "id": 133,
+                    "code": "Strizh",
+                    "name": "МОС Огородный (СЦ)",
+                    "partnerType": "SORTING_CENTER",
+                    "logoUrl": "http://avatars.mds.yandex.net/get-lms/2006792/SortingCenter2.svg/orig"
+                },
+                "warehouse": {
+                    "id": 10000830981,
+                    "name": "Москва, Огородный проезд, 20"
+                },
+                "settingsDefault": true,
+                "alreadyExists": null
+            }
+        ],
+        "services": [
+            {
+                "name": "Доставка",
+                "code": "DELIVERY",
+                "cost": 235.00,
+                "customerPay": true,
+                "enabledByDefault": true
+            },
+            {
+                "name": "Сортировка на едином складе",
+                "code": "SORT",
+                "cost": 27,
+                "customerPay": true,
+                "enabledByDefault": true
+            },
+            {
+                "name": "Услуга Объявленная ценность",
+                "code": "INSURANCE",
+                "cost": 8.802,
+                "customerPay": true,
+                "enabledByDefault": true
+            },
+            {
+                "name": "Возврат",
+                "code": "RETURN",
+                "cost": 176.2500,
+                "customerPay": false,
+                "enabledByDefault": false
+            },
+            {
+                "name": "Сортировка возврата",
+                "code": "RETURN_SORT",
+                "cost": 20,
+                "customerPay": false,
+                "enabledByDefault": false
+            },
+            {
+                "name": "Вознаграждение за перечисление денежных средств",
+                "code": "CASH_SERVICE",
+                "cost": 33.439,
+                "customerPay": false,
+                "enabledByDefault": true
+            }
+        ],
+        "tags": [
+            "OPTIMAL"
+        ]
+    }
+]
