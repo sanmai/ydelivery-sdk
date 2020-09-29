@@ -45,7 +45,7 @@ trait ListContainer
 
     public static function getListType(): string
     {
-        return \sprintf('array<%s>', static::LIST_TYPE);
+        return static::LIST_TYPE;
     }
 
     public static function withList(array $list): self

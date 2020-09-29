@@ -28,12 +28,11 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Contracts;
 
+use JSONSerializer\Contracts\ItemList as JsonItemList;
+
 /**
  * Указываем программе десериализации на использование списка объектов определённого типа.
  */
-interface ItemList extends \Countable
+interface ItemList extends \Countable, JsonItemList
 {
-    public static function getListType(): string;
-
-    public static function withList(array $list);
 }

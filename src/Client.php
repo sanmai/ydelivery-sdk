@@ -32,6 +32,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\RequestOptions;
 use JMS\Serializer\SerializerInterface;
+use JSONSerializer\Serializer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
@@ -62,7 +63,7 @@ final class Client implements Contracts\Client
     /** @var ClientInterface */
     private $http;
 
-    /** @var SerializerInterface|Serialization\Serializer */
+    /** @var SerializerInterface|Serializer */
     private $serializer;
 
     public function __construct(ClientInterface $http, SerializerInterface $serializer)

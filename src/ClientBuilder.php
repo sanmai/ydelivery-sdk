@@ -31,7 +31,11 @@ namespace YDeliverySDK;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
 use function GuzzleHttp\default_user_agent;
+use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
+use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
+use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
+use JSONSerializer\Serializer;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -107,9 +111,30 @@ final class ClientBuilder implements LoggerAwareInterface
         return $this;
     }
 
+    private function buildSerializer(): Serializer
+    {
+        $builder = SerializerBuilder::create();
+        $builder->setPropertyNamingStrategy(
+            new SerializedNameAnnotationStrategy(
+                new IdenticalPropertyNamingStrategy()
+            )
+        );
+
+        /**
+         * @see https://jmsyst.com/libs/serializer/master/configuration#configuring-a-cache-directory
+         */
+        if ($this->cacheDirectory !== null) {
+            $builder->setCacheDir($this->cacheDirectory);
+        }
+
+        return new Serializer($builder);
+    }
+
     public function build(): Client
     {
-        $this->serializer = $this->serializer ?? new Serialization\Serializer($this->cacheDirectory);
+        if ($this->serializer === null) {
+            $this->serializer = $this->buildSerializer();
+        }
 
         $this->http = $this->http ?? new GuzzleClient(\array_merge([
             'base_uri' => $this->baseUrl,

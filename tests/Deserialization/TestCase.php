@@ -28,8 +28,8 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Deserialization;
 
+use JSONSerializer\Serializer;
 use Tests\YDeliverySDK\Fixtures\FixtureLoader;
-use YDeliverySDK\Serialization;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
@@ -37,12 +37,12 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->serializer = new Serialization\Serializer();
+        $this->serializer = new Serializer();
 
         \Doctrine\Common\Annotations\AnnotationReader::addGlobalIgnoredName('phan');
     }
 
-    protected function getSerializer(): Serialization\Serializer
+    protected function getSerializer(): Serializer
     {
         return $this->serializer;
     }

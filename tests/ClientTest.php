@@ -38,6 +38,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Log\LogLevel;
+use RuntimeException;
 use Tests\YDeliverySDK\Fixtures\FixtureLoader;
 use YDeliverySDK\Client;
 use YDeliverySDK\ClientBuilder;
@@ -178,22 +179,10 @@ class ClientTest extends TestCase
         $client = $this->newClient($http = $this->getHttpClient());
 
         $http->method('request')->will($this->returnCallback(function () {
-            throw new \RuntimeException();
+            throw new RuntimeException();
         }));
 
-        $this->expectException(\RuntimeException::class);
-        $client->sendRequest($this->createMock(Request::class));
-    }
-
-    public function test_client_can_pass_through_exceptions_without_response()
-    {
-        $client = $this->newClient($http = $this->getHttpClient());
-
-        $http->method('request')->will($this->returnCallback(function () {
-            throw new ServerException('', $this->createMock(RequestInterface::class));
-        }));
-
-        $this->expectException(ServerException::class);
+        $this->expectException(RuntimeException::class);
         $client->sendRequest($this->createMock(Request::class));
     }
 

@@ -55,4 +55,9 @@ final class AddressComponent
     {
         return $this->kind;
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }
