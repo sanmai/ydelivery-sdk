@@ -19,8 +19,7 @@
         }
     ],
     "require": {
-        "php": "^7.3",
-        "ext-SimpleXML": "*",
+        "php": "^7.3 || ^8.0",
         "ext-json": "*",
         "ext-libxml": "*",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
@@ -56,8 +55,12 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "v0.1.x-dev"
-        }
+            "dev-main": "0.1.x-dev"
+        },
+        "test-only-require": [
+            "php-coveralls/php-coveralls",
+            "phpunit/phpunit"
+        ]
     },
     "autoload": {
         "psr-4": {
