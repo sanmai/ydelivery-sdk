@@ -21,12 +21,12 @@
     "require": {
         "php": "^7.3 || ^8.0",
         "ext-json": "*",
-        "ext-libxml": "*",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "jms/serializer": "^3.9",
         "psr/log": "^1.0",
         "sanmai/json-serializer": "^0.1.0",
         "sanmai/pipeline": "^3 || ^5",
+        "sanmai/sdk-common": "^0.1.0",
         "symfony/http-foundation": "^4 || ^5.0.7"
     },
     "conflict": {
@@ -34,6 +34,7 @@
     },
     "require-dev": {
         "doctrine/cache": "^1.10",
+        "ergebnis/composer-normalize": "^2.8",
         "friendsofphp/php-cs-fixer": "^2.14",
         "gamez/psr-testlogger": "^3.0",
         "illuminate/support": "^5.2",
