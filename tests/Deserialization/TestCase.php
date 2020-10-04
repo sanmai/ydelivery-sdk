@@ -38,8 +38,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         $this->serializer = new Serializer();
-
-        \Doctrine\Common\Annotations\AnnotationReader::addGlobalIgnoredName('phan');
     }
 
     protected function getSerializer(): Serializer
