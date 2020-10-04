@@ -38,6 +38,9 @@ use JMS\Serializer\SerializerInterface;
 use JSONSerializer\Serializer;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use VersionInfo\ComposerBranchAliasVersionReader;
+use VersionInfo\GitVersionReader;
+use VersionInfo\PlaceholderVersionReader;
 
 final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterface
 {
@@ -68,7 +71,7 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
     /** @var bool */
     private $cacheDebug = false;
 
-    /** @var SerializerInterface|Serialization\Serializer */
+    /** @var SerializerInterface|Serializer */
     private $serializer;
 
     /** @var string|null */
@@ -192,11 +195,14 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
 
     /**
      * @codeCoverageIgnore
+     *
+     * @phan-suppress PhanDeprecatedFunction
+     * @psalm-suppress DeprecatedFunction
      */
     private function getDefaultUserAgent(): string
     {
         if ($this->userAgentPostfix === null) {
-            $this->setUserAgent(self::PACKAGE_NAME, self::getVersion());
+            $this->setUserAgent(self::PACKAGE_NAME, self::getVersion() ?? 'dev-unknown');
         }
 
         \assert(\is_string($this->userAgentPostfix));
@@ -210,16 +216,18 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
      */
     private static function getVersion(): string
     {
-        if (self::VERSION_INFO[0] === '$' && \is_dir(__DIR__.'/../.git')) {
-            return (string) \exec(\sprintf('git --git-dir=%s describe --tags --dirty=-dev --always', \escapeshellarg(__DIR__.'/../.git')));
+        foreach ([
+            new PlaceholderVersionReader(self::VERSION_INFO),
+            new GitVersionReader(__DIR__.'/../.git'),
+            new ComposerBranchAliasVersionReader(__DIR__.'/../composer.json', 'main'),
+        ] as $versionReader) {
+            $version = $versionReader->getVersionString();
+
+            if ($version !== null) {
+                break;
+            }
         }
 
-        /** @var $parts string[] */
-        if (\preg_match('/^([0-9a-f]+).*?tag: (v?[\d\.]+)\)(.*)/', self::VERSION_INFO, $parts)) {
-            return "{$parts[2]}-{$parts[1]}{$parts[3]}";
-        }
-
-        /** @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
-        return (string) @\json_decode((string) \file_get_contents(__DIR__.'/../composer.json'), true)['extra']['branch-alias']['dev-main'];
+        return $version;
     }
 }
