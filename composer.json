@@ -27,6 +27,7 @@
         "sanmai/json-serializer": "^0.1.0",
         "sanmai/pipeline": "^3 || ^5",
         "sanmai/sdk-common": "^0.1.0",
+        "sanmai/version-info": "^0.2.0",
         "symfony/http-foundation": "^4 || ^5.0.7"
     },
     "conflict": {

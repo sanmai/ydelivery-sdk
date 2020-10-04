@@ -28,8 +28,8 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Serialization;
 
+use CommonSDK\Contracts\Request;
 use Tests\YDeliverySDK\Deserialization\TestCase as DeserializationTestCase;
-use YDeliverySDK\Contracts\Request;
 
 abstract class TestCase extends DeserializationTestCase
 {

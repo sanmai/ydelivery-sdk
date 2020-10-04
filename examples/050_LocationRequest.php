@@ -34,6 +34,7 @@ include_once 'vendor/autoload.php';
 $builder = new \YDeliverySDK\ClientBuilder();
 $builder->setToken($_SERVER['YANDEX_DELIVERY_TOKEN'] ?? '');
 $builder->setLogger(new DebuggingLogger());
+/** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
 $request = new LocationRequest();

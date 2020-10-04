@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This code is licensed under the MIT License.
  *
@@ -28,8 +27,8 @@
 declare(strict_types=1);
 include_once 'vendor/autoload.php';
 
-/** @var \YDeliverySDK\Contracts\Request $request */
-/** @var \YDeliverySDK\Contracts\Response $response */
+/** @var \CommonSDK\Contracts\Request $request */
+/** @var \CommonSDK\Contracts\Response $response */
 $request = new \YDeliverySDK\Requests\DeliveryServicesRequest();
 $request->setCabinetId(1);
 
@@ -38,6 +37,7 @@ $request->setCabinetId(1);
  */
 $builder = new \YDeliverySDK\ClientBuilder();
 $builder->setToken('invalid');
+/** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
 $response = $client->sendDeliveryServicesRequest($request);

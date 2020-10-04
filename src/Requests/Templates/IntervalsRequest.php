@@ -28,7 +28,7 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests\Templates;
 
-use YDeliverySDK\Contracts\ParamRequest;
+use CommonSDK\Contracts\ParamRequest;
 use YDeliverySDK\Requests\Concerns\MagicSetters;
 use YDeliverySDK\Requests\Concerns\ParamRequest as ParamRequestTrait;
 use YDeliverySDK\Requests\Concerns\RequestCore;

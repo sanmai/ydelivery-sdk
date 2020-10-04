@@ -28,9 +28,9 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses;
 
-use YDeliverySDK\Contracts\ItemList;
-use YDeliverySDK\Contracts\Response;
-use YDeliverySDK\Responses\Concerns\ListContainer;
+use CommonSDK\Concerns\ListContainer;
+use CommonSDK\Contracts\ItemList;
+use CommonSDK\Contracts\Response;
 use YDeliverySDK\Responses\Types\DeliveryService;
 
 /**

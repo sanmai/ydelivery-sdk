@@ -28,7 +28,7 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Deserialization;
 
-use YDeliverySDK\Contracts\Response;
+use CommonSDK\Contracts\Response;
 use YDeliverySDK\Responses\Bad\BadRequestResponse;
 use YDeliverySDK\Responses\Bad\NotFoundResponse;
 use YDeliverySDK\Responses\Bad\UnauthorizedResponse;

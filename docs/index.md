@@ -49,7 +49,7 @@ $client = $builder->build();
 Все возвращаемые ответы содержат методы для проверки на ошибку, также для получения списка сообщений включая сообщения об ошибках.
 
 ```php
-/** @var \YDeliverySDK\Contracts\Response $response */
+/** @var \CommonSDK\Contracts\Response $response */
 $response = $client->sendSomeRequest($request);
 
 if ($response->hasErrors()) {
@@ -111,7 +111,7 @@ foreach ($response as $value) {
 
 ### Отладка получаемых ответов {: #DebuggingLogger }
 
-Посмотреть, что конкретно отвечает Яндекс.Доставка на наши запросы и какие запросы мы посылаем сами можно используя [стандартный PSR-3 логгер](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md), такой, как, например, [Monolog](https://github.com/Seldaek/monolog).
+Посмотреть, что конкретно отвечает Яндекс.Доставка на наши запросы и какие запросы мы посылаем сами можно используя [стандартный PSR-3 логгер](https://github.com/php-fig/fig-standards/blob/main/accepted/PSR-3-logger-interface.md), такой, как, например, [Monolog](https://github.com/Seldaek/monolog).
 
 ```php
 $builder->setLogger($monolog);
@@ -121,7 +121,7 @@ $builder->setLogger($monolog);
 
 ## Замечания {: #contribute}
 
-- [Инструкции по доработке и тестированию.](https://github.com/sanmai/ydelivery-sdk/blob/master/CONTRIBUTING.md)
+- [Инструкции по доработке и тестированию.](https://github.com/sanmai/ydelivery-sdk/blob/main/CONTRIBUTING.md)
 
 - [Общие инструкции по работе с GitHub.](https://www.alexeykopytko.com/2018/github-contributor-guide/) Если это ваш первый PR, очень рекомендуем ознакомиться.
 

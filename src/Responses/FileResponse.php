@@ -28,8 +28,8 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses;
 
+use CommonSDK\Contracts\Response;
 use Psr\Http\Message\StreamInterface;
-use YDeliverySDK\Contracts\Response;
 
 /**
  * FileResponse содержит данные файла.

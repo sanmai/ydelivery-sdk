@@ -29,6 +29,9 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK;
 
+use CommonSDK\Contracts\ParamRequest;
+use CommonSDK\Contracts\Request;
+use CommonSDK\Contracts\Response;
 use Gamez\Psr\Log\TestLogger;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ServerException;
@@ -42,9 +45,6 @@ use RuntimeException;
 use Tests\YDeliverySDK\Fixtures\FixtureLoader;
 use YDeliverySDK\Client;
 use YDeliverySDK\ClientBuilder;
-use YDeliverySDK\Contracts\ParamRequest;
-use YDeliverySDK\Contracts\Request;
-use YDeliverySDK\Contracts\Response;
 use YDeliverySDK\Requests\DeliveryOptionsRequest;
 use YDeliverySDK\Requests\PostalCodeRequest;
 use YDeliverySDK\Responses\DeliveryOptionsResponse;

@@ -1,8 +1,8 @@
 # PHP SDK для API Яндекс.Доставки
 
 [![Latest Stable Version](https://poser.pugx.org/sanmai/ydelivery-sdk/v/stable)](https://packagist.org/packages/sanmai/ydelivery-sdk)
-[![Build Status](https://travis-ci.com/sanmai/ydelivery-sdk.svg?branch=master)](https://travis-ci.com/sanmai/ydelivery-sdk)
-[![Coverage Status](https://coveralls.io/repos/github/sanmai/ydelivery-sdk/badge.svg?branch=master)](https://coveralls.io/github/sanmai/ydelivery-sdk?branch=master)
+[![Build Status](https://travis-ci.com/sanmai/ydelivery-sdk.svg?branch=main)](https://travis-ci.com/sanmai/ydelivery-sdk)
+[![Coverage Status](https://coveralls.io/repos/github/sanmai/ydelivery-sdk/badge.svg?branch=main)](https://coveralls.io/github/sanmai/ydelivery-sdk?branch=main)
 [![Documentation Status](https://readthedocs.org/projects/ydelivery-sdk/badge/?version=latest)](https://ydelivery-sdk.readthedocs.io/?badge=latest)
 [![Telegram Chat](https://img.shields.io/badge/telegram-chat-blue.svg?logo=telegram)](https://t.me/phpydeliverysdk)
 

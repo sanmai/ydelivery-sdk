@@ -28,10 +28,10 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses;
 
+use CommonSDK\Contracts\Response;
+use CommonSDK\Types\Message;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use YDeliverySDK\Contracts\Response;
-use YDeliverySDK\Responses\Types\Message;
 
 final class ErrorResponse implements Response, ResponseInterface
 {

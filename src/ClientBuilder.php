@@ -28,8 +28,8 @@ declare(strict_types=1);
 
 namespace YDeliverySDK;
 
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\ClientInterface;
+use CommonSDK\Contracts\Client as ClientInterface;
+use CommonSDK\Contracts\ClientBuilder as ClientBuilderInterface;
 use function GuzzleHttp\default_user_agent;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
@@ -39,7 +39,7 @@ use JSONSerializer\Serializer;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
-final class ClientBuilder implements LoggerAwareInterface
+final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterface
 {
     use LoggerAwareTrait;
 
@@ -50,7 +50,7 @@ final class ClientBuilder implements LoggerAwareInterface
     private const PACKAGE_NAME = 'YDelivery-SDK';
     private const VERSION_INFO = '$Format:%h%d by %an +%ae$';
 
-    /** @var ClientInterface */
+    /** @var \GuzzleHttp\ClientInterface */
     private $http;
 
     /** @var string */
@@ -130,13 +130,14 @@ final class ClientBuilder implements LoggerAwareInterface
         return new Serializer($builder);
     }
 
-    public function build(): Client
+    /** @return Client */
+    public function build(): ClientInterface
     {
         if ($this->serializer === null) {
             $this->serializer = $this->buildSerializer();
         }
 
-        $this->http = $this->http ?? new GuzzleClient(\array_merge([
+        $this->http = $this->http ?? new \GuzzleHttp\Client(\array_merge([
             'base_uri' => $this->baseUrl,
             'timeout'  => $this->timeout,
             'headers'  => [
@@ -175,7 +176,7 @@ final class ClientBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setGuzzleClient(ClientInterface $http)
+    public function setGuzzleClient(\GuzzleHttp\ClientInterface $http)
     {
         $this->http = $http;
 
@@ -219,6 +220,6 @@ final class ClientBuilder implements LoggerAwareInterface
         }
 
         /** @phan-suppress-next-line PhanTypeArraySuspiciousNullable */
-        return (string) @\json_decode((string) \file_get_contents(__DIR__.'/../composer.json'), true)['extra']['branch-alias']['dev-master'];
+        return (string) @\json_decode((string) \file_get_contents(__DIR__.'/../composer.json'), true)['extra']['branch-alias']['dev-main'];
     }
 }

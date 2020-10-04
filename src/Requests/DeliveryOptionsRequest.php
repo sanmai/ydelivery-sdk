@@ -28,10 +28,10 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests;
 
+use CommonSDK\Concerns\MagicSetters;
+use CommonSDK\Concerns\RequestCore;
+use CommonSDK\Contracts\JsonRequest;
 use JMS\Serializer\Annotation as JMS;
-use YDeliverySDK\Contracts\JsonRequest;
-use YDeliverySDK\Requests\Concerns\MagicSetters;
-use YDeliverySDK\Requests\Concerns\RequestCore;
 use YDeliverySDK\Requests\Types\Address;
 use YDeliverySDK\Requests\Types\Cost;
 use YDeliverySDK\Requests\Types\Dimensions;

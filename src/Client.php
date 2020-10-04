@@ -28,6 +28,10 @@ declare(strict_types=1);
 
 namespace YDeliverySDK;
 
+use CommonSDK\Contracts\JsonRequest;
+use CommonSDK\Contracts\ParamRequest;
+use CommonSDK\Contracts\Request;
+use CommonSDK\Contracts\Response;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\RequestOptions;
@@ -36,10 +40,6 @@ use JSONSerializer\Serializer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
-use YDeliverySDK\Contracts\JsonRequest;
-use YDeliverySDK\Contracts\ParamRequest;
-use YDeliverySDK\Contracts\Request;
-use YDeliverySDK\Contracts\Response;
 use YDeliverySDK\Responses\Bad\BadRequestResponse;
 use YDeliverySDK\Responses\Bad\NotFoundResponse;
 use YDeliverySDK\Responses\Bad\UnauthorizedResponse;
@@ -56,7 +56,7 @@ use YDeliverySDK\Responses\FileResponse;
  * @method Responses\IntervalsResponse|Responses\Types\Interval[]               sendImportIntervalsRequest(Requests\ImportIntervalsRequest $request)
  * @method Responses\DeliveryOptionsResponse|Responses\Types\DeliveryOption[]   sendDeliveryOptionsRequest(Requests\DeliveryOptionsRequest $request)
  */
-final class Client implements Contracts\Client
+final class Client implements \CommonSDK\Contracts\Client
 {
     use LoggerAwareTrait;
 
@@ -73,7 +73,7 @@ final class Client implements Contracts\Client
     }
 
     /**
-     * @see \YDeliverySDK\Contracts\Client::sendRequest()
+     * @see \CommonSDK\Contracts\Client::sendRequest()
      *
      * @return Response
      */

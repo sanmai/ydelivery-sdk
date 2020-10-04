@@ -28,10 +28,10 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Bad;
 
+use CommonSDK\Contracts\HasErrorCode;
+use CommonSDK\Contracts\Response;
+use CommonSDK\Types\Message;
 use JMS\Serializer\Annotation as JMS;
-use YDeliverySDK\Contracts\HasErrorCode;
-use YDeliverySDK\Contracts\Response;
-use YDeliverySDK\Responses\Types\Message;
 
 /**
  * Class UnauthorizedResponse.
