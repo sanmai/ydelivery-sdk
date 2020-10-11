@@ -33,6 +33,8 @@ use Psr\Http\Message\StreamInterface;
 
 /**
  * FileResponse содержит данные файла.
+ *
+ * @deprecated use CommonSDK
  */
 final class FileResponse implements Response
 {

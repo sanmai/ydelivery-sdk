@@ -28,10 +28,10 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests\Templates;
 
+use CommonSDK\Concerns\MagicSetters;
+use CommonSDK\Concerns\RequestCore;
 use CommonSDK\Contracts\ParamRequest;
-use YDeliverySDK\Requests\Concerns\MagicSetters;
 use YDeliverySDK\Requests\Concerns\ParamRequest as ParamRequestTrait;
-use YDeliverySDK\Requests\Concerns\RequestCore;
 use YDeliverySDK\Responses\IntervalsResponse;
 
 /**

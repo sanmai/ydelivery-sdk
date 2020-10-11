@@ -28,8 +28,8 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests\Types;
 
+use CommonSDK\Concerns\MagicSetters;
 use JMS\Serializer\Annotation as JMS;
-use YDeliverySDK\Requests\Concerns\MagicSetters;
 
 /**
  * @method Cost setAssessedValue(float $value)
