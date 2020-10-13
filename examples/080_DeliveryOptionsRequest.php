@@ -86,11 +86,11 @@ $request->setCost($cost);
 
 // $request->setTariffId(333333333);
 
-$resp = $client->sendDeliveryOptionsRequest($request);
+$response = $client->sendDeliveryOptionsRequest($request);
 
-\var_dump(\count($resp));
+\var_dump(\count($response));
 
-foreach ($resp as $value) {
+foreach ($response as $value) {
     echo \join("\t", [
         $value->getTariffId(),
         $value->getTariffName() ?? 'Без названия',

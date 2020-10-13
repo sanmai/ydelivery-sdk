@@ -55,10 +55,10 @@ foreach ($partner->getWarehouses() as $warehouse) {
     $request->setWarehouseId($warehouse->getId());
 }
 
-$resp = $client->sendImportIntervalsRequest($request);
+$response = $client->sendImportIntervalsRequest($request);
 
-\var_dump(\count($resp));
+\var_dump(\count($response));
 
-foreach ($resp as $value) {
+foreach ($response as $value) {
     echo "{$value->getId()}\t{$value->getFrom()}\t{$value->getTo()}\n";
 }

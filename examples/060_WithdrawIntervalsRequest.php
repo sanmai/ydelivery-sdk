@@ -51,10 +51,10 @@ $request = new WithdrawIntervalsRequest();
 $request->setDateObject(new DateTime('next Monday'));
 $request->setPartnerId($partner->getId());
 
-$resp = $client->sendWithdrawIntervalsRequest($request);
+$response = $client->sendWithdrawIntervalsRequest($request);
 
-\var_dump(\count($resp));
+\var_dump(\count($response));
 
-foreach ($resp as $value) {
+foreach ($response as $value) {
     echo "{$value->getId()}\t{$value->getFrom()}\t{$value->getTo()}\n";
 }

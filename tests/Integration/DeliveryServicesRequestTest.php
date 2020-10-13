@@ -43,7 +43,11 @@ final class DeliveryServicesRequestTest extends TestCase
 {
     public function test_successful_request()
     {
-        $resp = $this->getClient()->sendDeliveryServicesRequest(DeliveryServicesRequest::withCabinetId((int) $_SERVER['YANDEX_CABINET_ID']));
+        $resp = $this->getClient()->sendDeliveryServicesRequest(
+            DeliveryServicesRequest::withCabinetId(
+                $this->getCabinetId()
+            )
+        );
 
         $this->assertGreaterThan(0, \count($resp));
 

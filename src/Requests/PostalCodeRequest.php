@@ -29,9 +29,9 @@ declare(strict_types=1);
 namespace YDeliverySDK\Requests;
 
 use CommonSDK\Concerns\MagicSetters;
+use CommonSDK\Concerns\ParamRequest as ParamRequestTrait;
 use CommonSDK\Concerns\RequestCore;
 use CommonSDK\Contracts\ParamRequest;
-use YDeliverySDK\Requests\Concerns\ParamRequest as ParamRequestTrait;
 use YDeliverySDK\Responses\PostalCodeResponse;
 
 /**

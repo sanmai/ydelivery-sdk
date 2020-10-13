@@ -40,11 +40,11 @@ $client = $builder->build();
 $request = new LocationRequest();
 $request->setTerm('Владимир');
 
-$resp = $client->sendLocationRequest($request);
+$response = $client->sendLocationRequest($request);
 
-\var_dump(\count($resp));
+\var_dump(\count($response));
 
-foreach ($resp as $value) {
+foreach ($response as $value) {
     echo "{$value->getGeoId()}\t{$value->getAddress()}\n";
 
     foreach ($value->getAddressComponents() as $component) {

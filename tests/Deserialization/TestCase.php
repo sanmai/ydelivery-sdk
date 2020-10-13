@@ -47,6 +47,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     protected function loadFixtureWithType(string $filename, string $type)
     {
-        return $this->getSerializer()->deserialize(FixtureLoader::load($filename), $type);
+        return $this->getSerializer()->deserialize(FixtureLoader::loadResponse($filename), $type);
     }
 }

@@ -56,9 +56,9 @@ final class DebuggingLogger implements LoggerInterface
             $message = \strtr($message, \iterator_to_array(self::context2replacements($context), true));
         }
 
-        // В целях отладки приведём XML в читаемый вид, разбив по тегам.
-        if (\strpos($message, '><') !== false) {
-            $message = \str_replace('><', ">\n<", $message);
+        // В целях отладки приведём JSON в читаемый вид
+        if (\strpos($message, '{') === 0 || \strpos($message, '[') === 0) {
+            $message = \json_encode(\json_decode($message), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
 
         \fwrite(self::WRITE_LOG_TO_FILE ? $this->getLogFileHandle() : \STDERR, "\n{$message}\n\n");

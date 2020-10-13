@@ -28,6 +28,7 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK;
 
+use CommonSDK\Types\Client as CommonClient;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Contracts\Foundation\Application as ApplicationInterface;
 use PHPUnit\Framework\TestCase;
@@ -93,7 +94,7 @@ class LaravelServiceProviderTest extends TestCase
 
     private function runOnClient(Client $client, callable $callback)
     {
-        return \Closure::bind($callback, $client, Client::class)();
+        return \Closure::bind($callback, $client, CommonClient::class)();
     }
 
     public function testRegister()

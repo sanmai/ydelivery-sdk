@@ -128,6 +128,7 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
          */
         if ($this->cacheDirectory !== null) {
             $builder->setCacheDir($this->cacheDirectory);
+            $builder->setDebug($this->cacheDebug);
         }
 
         return new Serializer($builder);
