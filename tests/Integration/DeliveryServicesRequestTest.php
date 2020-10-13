@@ -56,8 +56,6 @@ final class DeliveryServicesRequestTest extends TestCase
             $this->assertNotEmpty($value->getCode());
             $this->assertNotEmpty($value->getName());
 
-            $this->assertGreaterThan(0, \count($value->getWarehouses()));
-
             foreach ($value->getWarehouses() as $warehouse) {
                 $this->assertNotEmpty($warehouse->getId());
                 $this->assertNotEmpty($warehouse->getName());
