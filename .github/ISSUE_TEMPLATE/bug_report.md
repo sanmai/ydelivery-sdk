@@ -1,17 +1,22 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-
 ---
 
-**Опишите проблему**
-Ясное и понятное описание проблемы, пожалуйста.
+| Question            | Answer
+| ------------------- | ---------------
+| Package Version     | x.y.z
+| PHP Version         | x.y.z (`php -v`)
+| Platform            | e.g. Ubuntu/Windows/MacOS
+| GitHub Repo         | -
 
-**Шаги для повторения проблемы**
-Что нужно сделать чтобы воспроизвести проблему?
 
-**Ожидаемое поведение**
-Что должно было произойти если бы не было ошибки.
+<!-- Remove the below section if not needed -->
+<details>
+ <summary>Output with issue</summary>
 
-**Контекст**
-Если это проблема с запросов или ответом API, приведите текст ответа. Его можно получить из отладочного лога.
+```
+Debugging output. Response and request sources.
+```
+
+</details>

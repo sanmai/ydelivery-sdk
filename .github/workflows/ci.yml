@@ -1,0 +1,72 @@
+# yamllint disable rule:line-length
+# yamllint disable rule:braces
+
+name: Continuous Integration
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: ['7.3', '7.4']
+        dependencies: ['']
+        make-args: ['']
+        include:
+          - { php-version: '7.3', dependencies: '--prefer-lowest' }
+          - { php-version: '8.0', dependencies: '--ignore-platform-req=php' }
+          - { php-version: '7.3', make-args: 'PHPUNIT_GROUP=integration' }
+
+    continue-on-error: ${{ matrix.php-version == '8.0' }}
+    name: PHP ${{ matrix.php-version }} ${{ matrix.dependencies }} ${{ matrix.make-args }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v1
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: pcov
+          tools: composer:v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/composer
+          key: composer-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}
+          restore-keys: |
+            composer-${{ matrix.php-version }}-
+            composer-
+
+      - name: Install dependencies
+        run: |
+          composer update --prefer-dist --no-interaction --no-progress ${{ matrix.dependencies }}
+
+      - name: Validate composer.json
+        run: |
+          composer validate --strict
+          composer normalize --diff --dry-run
+
+      - name: Execute tests
+        env:
+          YANDEX_SHOP_ID: ${{ secrets.YANDEX_SHOP_ID }}
+          YANDEX_CABINET_ID: ${{ secrets.YANDEX_CABINET_ID }}
+          YANDEX_DELIVERY_TOKEN: ${{ secrets.YANDEX_DELIVERY_TOKEN }}
+          YANDEX_WAREHOUSE_ID: ${{ secrets.YANDEX_WAREHOUSE_ID }}
+        run: |
+          make ci-test ${{ matrix.make-args }}
+
+      - name: Upload coverage report
+        continue-on-error: true
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          php vendor/bin/php-coveralls -v
