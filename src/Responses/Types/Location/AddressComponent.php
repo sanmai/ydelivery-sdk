@@ -28,10 +28,17 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types\Location;
 
+use CommonSDK\Concerns\PropertyRead;
 use JMS\Serializer\Annotation as JMS;
 
+/**
+ * @property-read string $name
+ * @property-read string $kind
+ */
 final class AddressComponent
 {
+    use PropertyRead;
+
     /**
      * @JMS\Type("string")
      *
@@ -46,18 +53,8 @@ final class AddressComponent
      */
     private $kind;
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getKind(): string
-    {
-        return $this->kind;
-    }
-
     public function __toString()
     {
-        return $this->getName();
+        return $this->name;
     }
 }

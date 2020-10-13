@@ -28,19 +28,19 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests;
 
-use CommonSDK\Concerns\MagicSetters;
 use CommonSDK\Concerns\ParamRequest as ParamRequestTrait;
+use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Concerns\RequestCore;
 use CommonSDK\Contracts\ParamRequest;
 use YDeliverySDK\Responses\LocationResponse;
 
 /**
- * @method LocationRequest setTerm(string $value)
+ * @property-write string $term
  */
 final class LocationRequest implements ParamRequest
 {
     use RequestCore;
-    use MagicSetters;
+    use PropertyWrite;
     use ParamRequestTrait;
 
     private const METHOD = 'GET';

@@ -44,19 +44,19 @@ final class LocationRequestTest extends TestCase
     public function test_successful_request()
     {
         $request = new LocationRequest();
-        $request->setTerm('Владимир');
+        $request->term = 'Владимир';
 
-        $resp = $this->getClient()->sendLocationRequest($request);
+        $response = $this->getClient()->sendLocationRequest($request);
 
-        $this->assertGreaterThan(0, \count($resp));
+        $this->assertGreaterThan(0, \count($response));
 
-        foreach ($resp as $value) {
-            $this->assertGreaterThan(0, $value->getGeoId());
-            $this->assertNotEmpty($value->getAddress());
+        foreach ($response as $value) {
+            $this->assertGreaterThan(0, $value->geoId);
+            $this->assertNotEmpty($value->address);
 
-            foreach ($value->getAddressComponents() as $component) {
-                $this->assertNotEmpty($component->getKind());
-                $this->assertNotEmpty($component->getName());
+            foreach ($value->addressComponents as $component) {
+                $this->assertNotEmpty($component->kind);
+                $this->assertNotEmpty($component->name);
             }
         }
     }

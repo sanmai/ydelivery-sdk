@@ -38,7 +38,7 @@ $builder->setLogger(new DebuggingLogger());
 $client = $builder->build();
 
 $request = new Requests\PostalCodeRequest();
-$request->setAddress('Москва, ул. Льва Толстого, 16');
+$request->address = 'Москва, ул. Льва Толстого, 16';
 
 $response = $client->sendPostalCodeRequest($request);
 

@@ -28,23 +28,24 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests\Templates;
 
-use CommonSDK\Concerns\MagicSetters;
 use CommonSDK\Concerns\ParamRequest as ParamRequestTrait;
+use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Concerns\RequestCore;
 use CommonSDK\Contracts\ParamRequest;
+use DateTimeInterface;
 use YDeliverySDK\Responses\IntervalsResponse;
 
 /**
  * Получить интервалы.
  *
- * @method IntervalsRequest setDate(string $isoDateString)
+ * @property-write string|DateTimeInterface $date
  */
 abstract class IntervalsRequest implements ParamRequest
 {
     public const DATE_FORMAT = 'Y-m-d';
 
     use RequestCore;
-    use MagicSetters;
+    use PropertyWrite;
     use ParamRequestTrait;
 
     protected const METHOD = 'GET';
@@ -58,9 +59,18 @@ abstract class IntervalsRequest implements ParamRequest
      */
     protected $date;
 
-    public function setDateObject(\DateTimeInterface $date)
+    /**
+     * @param DateTimeInterface|string $date
+     *
+     * @return IntervalsRequest
+     */
+    public function setDate($date)
     {
-        $this->date = $date->format(self::DATE_FORMAT);
+        if ($date instanceof \DateTimeInterface) {
+            $date = $date->format(self::DATE_FORMAT);
+        }
+
+        $this->date = $date;
 
         return $this;
     }

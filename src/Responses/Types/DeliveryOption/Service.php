@@ -28,10 +28,20 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types\DeliveryOption;
 
+use CommonSDK\Concerns\PropertyRead;
 use JMS\Serializer\Annotation as JMS;
 
+/**
+ * @property-read string $name Название услуги.
+ * @property-read string $code Код услуги.
+ * @property-read float  $cost Стоимость услуги.
+ * @property-read bool $customerPay Услуга оплачивается клиентом.
+ * @property-read bool $enabledByDefault Используется по умолчанию.
+ */
 final class Service
 {
+    use PropertyRead;
+
     const CODE_DELIVERY = 'DELIVERY'; // доставка.
     const CODE_CASH_SERVICE = 'CASH_SERVICE'; // вознаграждение за перечисление денежных средств.
     const CODE_SORT = 'SORT'; // сортировка на едином складе.
@@ -74,44 +84,4 @@ final class Service
      * @var bool
      */
     private $enabledByDefault;
-
-    /**
-     * Название услуги.
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * Код услуги.
-     */
-    public function getCode(): string
-    {
-        return $this->code;
-    }
-
-    /**
-     * Стоимость услуги.
-     */
-    public function getCost(): float
-    {
-        return $this->cost;
-    }
-
-    /**
-     * Услуга оплачивается клиентом.
-     */
-    public function getCustomerPay(): bool
-    {
-        return $this->customerPay;
-    }
-
-    /**
-     * Используется по умолчанию.
-     */
-    public function getEnabledByDefault(): bool
-    {
-        return $this->enabledByDefault;
-    }
 }

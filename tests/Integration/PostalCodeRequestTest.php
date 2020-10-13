@@ -44,15 +44,15 @@ final class PostalCodeRequestTest extends TestCase
     public function test_successful_request()
     {
         $request = new PostalCodeRequest();
-        $request->setAddress('Москва, ул. Льва Толстого, 16');
+        $request->address = 'Москва, ул. Льва Толстого, 16';
 
-        $resp = $this->getClient()->sendPostalCodeRequest($request);
+        $response = $this->getClient()->sendPostalCodeRequest($request);
 
-        $this->assertCount(1, $resp);
+        $this->assertCount(1, $response);
 
-        foreach ($resp as $value) {
+        foreach ($response as $value) {
             $this->assertSame('119021', (string) $value);
-            $this->assertSame('119021', $value->getPostalCode());
+            $this->assertSame('119021', $value->postalCode);
         }
     }
 }

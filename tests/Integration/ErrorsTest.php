@@ -69,7 +69,7 @@ final class ErrorsTest extends TestCase
     public function test_error_handling_with_invalid_data_but_correct_token()
     {
         $request = new \YDeliverySDK\Requests\DeliveryServicesRequest();
-        $request->setCabinetId(1);
+        $request->cabinetId = 1;
 
         $response = $this->getClient()->sendDeliveryServicesRequest($request);
 
@@ -89,7 +89,7 @@ final class ErrorsTest extends TestCase
     public function test_error_handling_with_missing_fields()
     {
         $request = new \YDeliverySDK\Requests\WithdrawIntervalsRequest();
-        $request->setDateObject(new \DateTime('next Monday'));
+        $request->date = new \DateTime('next Monday');
 
         $response = $this->getClient()->sendWithdrawIntervalsRequest($request);
 

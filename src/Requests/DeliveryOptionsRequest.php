@@ -28,7 +28,8 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests;
 
-use CommonSDK\Concerns\MagicSetters;
+use CommonSDK\Concerns\ObjectPropertyRead;
+use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Concerns\RequestCore;
 use CommonSDK\Contracts\JsonRequest;
 use JMS\Serializer\Annotation as JMS;
@@ -43,19 +44,20 @@ use YDeliverySDK\Responses\DeliveryOptionsResponse;
  *
  * @see https://yandex.ru/dev/delivery-3/doc/dg/reference/put-delivery-options-docpage/
  *
- * @method DeliveryOptionsRequest setSenderId(int $value)
- * @method DeliveryOptionsRequest setFrom(Address $value)
- * @method DeliveryOptionsRequest setTo(Address $value)
- * @method DeliveryOptionsRequest setDimensions(Dimensions $value)
- * @method DeliveryOptionsRequest setDeliveryType(string $value)
- * @method DeliveryOptionsRequest setShipment(Shipment $value)
- * @method DeliveryOptionsRequest setCost(Cost $value)
- * @method DeliveryOptionsRequest setTariffId(int $value)
+ * @property-write int $senderId
+ * @property-read Address $from
+ * @property-read Address $to
+ * @property-read Dimensions $dimensions
+ * @property-write string $deliveryType
+ * @property-read Shipment $shipment
+ * @property-read Cost $cost
+ * @property-write int $tariffId
  */
 final class DeliveryOptionsRequest implements JsonRequest
 {
     use RequestCore;
-    use MagicSetters;
+    use PropertyWrite;
+    use ObjectPropertyRead;
 
     private const METHOD = 'PUT';
     private const ADDRESS = '/delivery-options';
@@ -153,4 +155,18 @@ final class DeliveryOptionsRequest implements JsonRequest
      * @var int
      */
     private $tariffId;
+
+    public function __construct(
+        ?Address $from = null,
+        ?Address $to = null,
+        ?Dimensions $dimensions = null,
+        ?Shipment $shipment = null,
+        ?Cost $cost = null
+    ) {
+        $this->from = $from ?? new Address();
+        $this->to = $to ?? new Address();
+        $this->dimensions = $dimensions ?? new Dimensions();
+        $this->shipment = $shipment ?? new Shipment();
+        $this->cost = $cost ?? new Cost();
+    }
 }

@@ -28,6 +28,7 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types;
 
+use CommonSDK\Concerns\PropertyRead;
 use JMS\Serializer\Annotation as JMS;
 use YDeliverySDK\Responses\Types\DeliveryOption\Cost;
 use YDeliverySDK\Responses\Types\DeliveryOption\Delivery;
@@ -36,6 +37,8 @@ use YDeliverySDK\Responses\Types\DeliveryOption\Shipment;
 
 final class DeliveryOption
 {
+    use PropertyRead;
+
     /** самый быстрый */
     public const TAG_FASTEST = 'FASTEST';
 

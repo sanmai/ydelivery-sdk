@@ -33,7 +33,7 @@ use YDeliverySDK\Requests\Templates\IntervalsRequest;
 /**
  * Получить интервалы заборов.
  *
- * @method WithdrawIntervalsRequest setPartnerId(int $id)
+ * @property-write int $partnerId
  */
 final class WithdrawIntervalsRequest extends IntervalsRequest
 {

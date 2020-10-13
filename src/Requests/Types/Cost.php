@@ -28,18 +28,19 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests\Types;
 
-use CommonSDK\Concerns\MagicSetters;
+use CommonSDK\Concerns\PropertyWrite;
+use CommonSDK\Contracts\Property;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @method Cost setAssessedValue(float $value)
- * @method Cost setItemsSum(float $value)
- * @method Cost setManualDeliveryForCustomer(float $value)
- * @method Cost setFullyPrepaid(bool $value)
+ * @property-write float $assessedValue
+ * @property-write float $itemsSum
+ * @property-write float $manualDeliveryForCustomer
+ * @property-write bool $fullyPrepaid
  */
-final class Cost
+final class Cost implements Property
 {
-    use MagicSetters;
+    use PropertyWrite;
 
     /**
      * Объявленная стоимость заказа. Влияет на стоимость страховки.

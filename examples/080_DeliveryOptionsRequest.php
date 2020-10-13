@@ -28,9 +28,6 @@ declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
 use YDeliverySDK\Requests\DeliveryOptionsRequest;
-use YDeliverySDK\Requests\Types\Address;
-use YDeliverySDK\Requests\Types\Cost;
-use YDeliverySDK\Requests\Types\Dimensions;
 use YDeliverySDK\Requests\Types\Shipment;
 
 include_once 'vendor/autoload.php';
@@ -42,49 +39,34 @@ $builder->setLogger(new DebuggingLogger());
 $client = $builder->build();
 
 $request = new DeliveryOptionsRequest();
-$request->setSenderId($_SERVER['YANDEX_SHOP_ID']);
+$request->senderId = $_SERVER['YANDEX_SHOP_ID'];
 
-$from = new Address();
-$from->setLocation('Москва, Красная пл., 1');
-$from->setGeoId(890567);
+$request->from->location = 'Москва, Красная пл., 1';
+$request->from->geoId = 890567;
 
-// $request->setFrom($from);
+$request->to->location = 'Новосибирск, Красный пр., 36';
+//$request->to->geoId = 4444444;
+//$request->to->pickupPointIds = [11111, 222222];
 
-$to = new Address();
-$to->setLocation('Новосибирск, Красный пр., 36');
-//$to->setGeoId(4444444);
-//$to->setPickupPointIds([11111, 222222]);
+$request->dimensions->length = 10;
+$request->dimensions->width = 20;
+$request->dimensions->height = 30;
+$request->dimensions->weight = 5.25;
 
-$request->setTo($to);
+$request->deliveryType = $request::DELIVERY_TYPE_POST;
 
-$dimensions = new Dimensions();
-$dimensions->setLength(10);
-$dimensions->setWidth(20);
-$dimensions->setHeight(30);
-$dimensions->setWeight(5.25);
+$request->shipment->date = new DateTime('next Monday');
+$request->shipment->type = Shipment::TYPE_IMPORT;
+//$request->shipment->partnerId = 1111111111;
+//$request->shipment->warehouseId = 2222222222;
+//$request->shipment->includeNonDefault = true;
 
-$request->setDimensions($dimensions);
+$request->cost->assessedValue = 500;
+$request->cost->itemsSum = 1000;
+$request->cost->manualDeliveryForCustomer = 750;
+$request->cost->fullyPrepaid = true;
 
-$request->setDeliveryType($request::DELIVERY_TYPE_POST);
-
-$shipment = new Shipment();
-$shipment->setDate(new DateTime('next Monday'));
-$shipment->setType($shipment::TYPE_IMPORT);
-//$shipment->setPartnerId(1111111111);
-// $shipment->setWarehouseId(2222222222);
-//$shipment->setIncludeNonDefault(true);
-
-$request->setShipment($shipment);
-
-$cost = new Cost();
-$cost->setAssessedValue(500);
-$cost->setItemsSum(1000);
-$cost->setManualDeliveryForCustomer(750);
-$cost->setFullyPrepaid(true);
-
-$request->setCost($cost);
-
-// $request->setTariffId(333333333);
+// $request->tariffId = 333333333;
 
 $response = $client->sendDeliveryOptionsRequest($request);
 
@@ -92,29 +74,29 @@ $response = $client->sendDeliveryOptionsRequest($request);
 
 foreach ($response as $value) {
     echo \join("\t", [
-        $value->getTariffId(),
-        $value->getTariffName() ?? 'Без названия',
-        $value->getCost()->getDelivery(),
-        $value->getCost()->getDeliveryForCustomer(),
-        $value->getCost()->getDeliveryForSender(),
+        $value->tariffId,
+        $value->tariffName ?? 'Без названия',
+        $value->cost->delivery,
+        $value->cost->deliveryForCustomer,
+        $value->cost->deliveryForSender,
     ]), "\n";
 
     echo \join("\t", [
-        $value->getDelivery()->getType(),
-        $value->getDelivery()->getPartner()->getId(),
-        $value->getDelivery()->getPartner()->getName(),
-        $value->getDelivery()->getCalculatedDeliveryDateMin()->format('Y-m-d'),
-        $value->getDelivery()->getCalculatedDeliveryDateMax()->format('Y-m-d'),
+        $value->delivery->type,
+        $value->delivery->partner->id,
+        $value->delivery->partner->name,
+        $value->delivery->calculatedDeliveryDateMin->format('Y-m-d'),
+        $value->delivery->calculatedDeliveryDateMax->format('Y-m-d'),
     ]), "\n";
 
-    foreach ($value->getServices() as $service) {
+    foreach ($value->services as $service) {
         echo "\t- ";
         echo \join("\t", [
-            $service->getName(),
-            $service->getCode(),
-            $service->getCost(),
-            $service->getCustomerPay(),
-            $service->getEnabledByDefault(),
+            $service->name,
+            $service->code,
+            $service->cost,
+            $service->customerPay,
+            $service->enabledByDefault,
         ]), "\n";
     }
 }

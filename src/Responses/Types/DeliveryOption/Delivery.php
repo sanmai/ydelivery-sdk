@@ -28,17 +28,20 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types\DeliveryOption;
 
+use CommonSDK\Concerns\PropertyRead;
+use DateTimeImmutable;
 use JMS\Serializer\Annotation as JMS;
 
+/**
+ * @property-read Partner $partner Служба доставки.
+ * @property-read string $type Тип доставки: COURIER — курьером, PICKUP — в пункт выдачи, POST — по почте.
+ * @property-read DateTimeImmutable $calculatedDeliveryDateMin Начальная дата доставки.
+ * @property-read DateTimeImmutable $calculatedDeliveryDateMax Конечная дата доставки в формате.
+ * @property-read CourierSchedule|null $courierSchedule Расписание работы курьеров партнера.
+ */
 final class Delivery
 {
-    /*
-        "type": "POST",
-        "calculatedDeliveryDateMin": "2020-08-21",
-        "calculatedDeliveryDateMax": "2020-08-24",
-        "courierSchedule": null
-
-     */
+    use PropertyRead;
 
     /**
      * @JMS\Type("YDeliverySDK\Responses\Types\DeliveryOption\Partner")
@@ -75,41 +78,16 @@ final class Delivery
      */
     private $courierSchedule;
 
-    /**
-     * Служба доставки.
-     */
-    public function getPartner(): Partner
-    {
-        return $this->partner;
-    }
-
-    /**
-     * Тип доставки: COURIER — курьером, PICKUP — в пункт выдачи, POST — по почте.
-     */
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    /**
-     * Начальная дата доставки.
-     */
     public function getCalculatedDeliveryDateMin(): \DateTimeInterface
     {
         return $this->calculatedDeliveryDateMin;
     }
 
-    /**
-     * Конечная дата доставки в формате.
-     */
     public function getCalculatedDeliveryDateMax(): \DateTimeInterface
     {
         return $this->calculatedDeliveryDateMax;
     }
 
-    /**
-     * Расписание работы курьеров партнера.
-     */
     public function getCourierSchedule(): ?CourierSchedule
     {
         return $this->courierSchedule;

@@ -37,14 +37,16 @@ $builder->setLogger(new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$response = $client->sendDeliveryServicesRequest(DeliveryServicesRequest::withCabinetId((int) $_SERVER['YANDEX_CABINET_ID']));
+$response = $client->sendDeliveryServicesRequest(
+    DeliveryServicesRequest::withCabinetId((int) $_SERVER['YANDEX_CABINET_ID'])
+);
 
 \var_dump(\count($response));
 
 foreach ($response as $value) {
-    echo "{$value->getId()}\t{$value->getCode()}\t{$value->getName()}\n";
+    echo "{$value->id}\t{$value->code}\t{$value->name}\n";
 
-    foreach ($value->getWarehouses() as $warehouse) {
-        echo "- {$warehouse->getId()}\t{$warehouse->getName()}\t{$warehouse->getAddress()}\n";
+    foreach ($value->warehouses as $warehouse) {
+        echo "- {$warehouse->id}\t{$warehouse->name}\t{$warehouse->address}\n";
     }
 }

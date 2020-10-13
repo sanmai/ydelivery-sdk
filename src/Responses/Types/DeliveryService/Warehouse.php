@@ -28,11 +28,18 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types\DeliveryService;
 
+use CommonSDK\Concerns\PropertyRead;
 use JMS\Serializer\Annotation as JMS;
 use YDeliverySDK\Common\Concerns\NamedEntity;
 
+/**
+ * @property-read int $id
+ * @property-read string $name
+ * @property-read string $address
+ */
 final class Warehouse implements NamedEntity
 {
+    use PropertyRead;
     /**
      * @JMS\Type("int")
      *
@@ -54,18 +61,15 @@ final class Warehouse implements NamedEntity
      */
     private $address;
 
+    /** @deprecated */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /** @deprecated */
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
     }
 }

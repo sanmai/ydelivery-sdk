@@ -28,18 +28,19 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests\Types;
 
-use CommonSDK\Concerns\MagicSetters;
+use CommonSDK\Concerns\PropertyWrite;
+use CommonSDK\Contracts\Property;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @method Dimensions setLength(int $value)
- * @method Dimensions setHeight(int $value)
- * @method Dimensions setWidth(int $value)
- * @method Dimensions setWeight(float $value)
+ * @property-write int $length
+ * @property-write int $height
+ * @property-write int $width
+ * @property-write float $weight
  */
-final class Dimensions
+final class Dimensions implements Property
 {
-    use MagicSetters;
+    use PropertyWrite;
 
     /**
      * Длина в сантиметрах.

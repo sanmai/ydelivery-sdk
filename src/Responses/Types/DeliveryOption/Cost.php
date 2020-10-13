@@ -28,10 +28,18 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types\DeliveryOption;
 
+use CommonSDK\Concerns\PropertyRead;
 use JMS\Serializer\Annotation as JMS;
 
+/**
+ * @property-read float $delivery Стоимость доставки.
+ * @property-read float $deliveryForSender Стоимость доставки для магазина.
+ * @property-read float $deliveryForCustomer Стоимость доставки для клиента.
+ */
 final class Cost
 {
+    use PropertyRead;
+
     /**
      * @JMS\Type("float")
      *
@@ -52,28 +60,4 @@ final class Cost
      * @var float
      */
     private $deliveryForCustomer;
-
-    /**
-     * Стоимость доставки.
-     */
-    public function getDelivery(): float
-    {
-        return $this->delivery;
-    }
-
-    /**
-     * Стоимость доставки для магазина.
-     */
-    public function getDeliveryForSender(): float
-    {
-        return $this->deliveryForSender;
-    }
-
-    /**
-     * Стоимость доставки для клиента.
-     */
-    public function getDeliveryForCustomer(): float
-    {
-        return $this->deliveryForCustomer;
-    }
 }

@@ -28,10 +28,16 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types\DeliveryOption;
 
+use CommonSDK\Concerns\PropertyRead;
 use JMS\Serializer\Annotation as JMS;
 
+/**
+ * @property-read int $locationId
+ */
 final class CourierSchedule
 {
+    use PropertyRead;
+
     /**
      * @JMS\Type("int")
      *
@@ -47,12 +53,4 @@ final class CourierSchedule
      * @var mixed[]
      */
     private $schedule;
-
-    /**
-     * Стоимость доставки.
-     */
-    public function getLocationId(): int
-    {
-        return $this->locationId;
-    }
 }

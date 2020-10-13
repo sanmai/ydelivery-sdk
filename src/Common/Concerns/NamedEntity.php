@@ -28,9 +28,15 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Common\Concerns;
 
+/**
+ * @property-read int $id
+ * @property-read string $name
+ */
 interface NamedEntity
 {
+    /** @deprecated */
     public function getId(): int;
 
+    /** @deprecated */
     public function getName(): string;
 }

@@ -28,18 +28,21 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests\Types;
 
-use CommonSDK\Concerns\MagicSetters;
+use CommonSDK\Concerns\PropertyWrite;
+use CommonSDK\Contracts\Property;
+use DateTimeInterface;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @method Shipment setType(string $value)
- * @method Shipment setPartnerId(int $value)
- * @method Shipment setWarehouseId(int $value)
- * @method Shipment setIncludeNonDefault(bool $value)
+ * @property-write DateTimeInterface $date
+ * @property-write string $type
+ * @property-write int $partnerId
+ * @property-write int $warehouseId
+ * @property-write bool $includeNonDefault
  */
-final class Shipment
+final class Shipment implements Property
 {
-    use MagicSetters;
+    use PropertyWrite;
 
     /**
      * Вид отгрузки: самопривоз.
@@ -58,9 +61,9 @@ final class Shipment
     /**
      * Дата отгрузки в формате YYYY-MM-DD.
      *
-     * @JMS\Type("DateTimeImmutable<'Y-m-d'>")
+     * @JMS\Type("DateTimeInterface<'Y-m-d'>")
      *
-     * @var \DateTimeImmutable
+     * @var \DateTimeInterface
      */
     private $date;
 
@@ -99,15 +102,4 @@ final class Shipment
      * @var bool
      */
     private $includeNonDefault;
-
-    public function setDate(\DateTimeInterface $date)
-    {
-        if ($date instanceof \DateTime) {
-            $date = \DateTimeImmutable::createFromMutable($date);
-        }
-
-        $this->date = $date;
-
-        return $this;
-    }
 }

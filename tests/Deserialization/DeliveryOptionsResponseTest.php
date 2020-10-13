@@ -63,7 +63,7 @@ class DeliveryOptionsResponseTest extends TestCase
             /** @var $item DeliveryOption */
             $this->assertInstanceOf(DeliveryOption::class, $item);
 
-            $this->assertGreaterThan(0, $item->getCost()->getDelivery());
+            $this->assertGreaterThan(0, $item->cost->delivery);
         }
     }
 

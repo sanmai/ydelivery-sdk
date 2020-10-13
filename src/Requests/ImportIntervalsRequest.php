@@ -28,15 +28,18 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests;
 
+use CommonSDK\Concerns\PropertyWrite;
 use YDeliverySDK\Requests\Templates\IntervalsRequest;
 
 /**
  * Получить интервалы заборов.
  *
- * @method ImportIntervalsRequest setWarehouseId(int $id)
+ * @property-write int $warehouseId
  */
 final class ImportIntervalsRequest extends IntervalsRequest
 {
+    use PropertyWrite;
+
     protected const ADDRESS = '/shipments/intervals/import';
 
     /**

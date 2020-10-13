@@ -38,16 +38,16 @@ $builder->setLogger(new DebuggingLogger());
 $client = $builder->build();
 
 $request = new LocationRequest();
-$request->setTerm('Владимир');
+$request->term = 'Владимир';
 
 $response = $client->sendLocationRequest($request);
 
 \var_dump(\count($response));
 
 foreach ($response as $value) {
-    echo "{$value->getGeoId()}\t{$value->getAddress()}\n";
+    echo "{$value->geoId}\t{$value->address}\n";
 
-    foreach ($value->getAddressComponents() as $component) {
-        echo "- {$component->getKind()}: {$component->getName()}\n";
+    foreach ($value->addressComponents as $component) {
+        echo "- {$component->kind}: {$component->name}\n";
     }
 }

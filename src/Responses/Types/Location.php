@@ -28,15 +28,23 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types;
 
+use CommonSDK\Concerns\PropertyRead;
 use JMS\Serializer\Annotation as JMS;
 use YDeliverySDK\Responses\Types\Location\AddressComponent;
 
+/**
+ * @property-read int $geoId
+ * @property-read string $address
+ * @property-read AddressComponent[] $addressComponents
+ */
 final class Location
 {
+    use PropertyRead;
+
     /**
      * @JMS\Type("int")
      *
-     * @var string
+     * @var int
      */
     private $geoId;
 
@@ -50,25 +58,7 @@ final class Location
     /**
      * @JMS\Type("array<YDeliverySDK\Responses\Types\Location\AddressComponent>")
      *
-     * @var array
+     * @var AddressComponent[]
      */
     private $addressComponents = [];
-
-    public function getGeoId(): int
-    {
-        return $this->geoId;
-    }
-
-    public function getAddress(): string
-    {
-        return $this->address;
-    }
-
-    /**
-     * @return iterable|AddressComponent[]
-     */
-    public function getAddressComponents(): iterable
-    {
-        return $this->addressComponents;
-    }
 }

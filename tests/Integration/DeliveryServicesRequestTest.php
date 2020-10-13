@@ -43,23 +43,23 @@ final class DeliveryServicesRequestTest extends TestCase
 {
     public function test_successful_request()
     {
-        $resp = $this->getClient()->sendDeliveryServicesRequest(
+        $response = $this->getClient()->sendDeliveryServicesRequest(
             DeliveryServicesRequest::withCabinetId(
                 $this->getCabinetId()
             )
         );
 
-        $this->assertGreaterThan(0, \count($resp));
+        $this->assertGreaterThan(0, \count($response));
 
-        foreach ($resp as $value) {
-            $this->assertNotEmpty($value->getId());
-            $this->assertNotEmpty($value->getCode());
-            $this->assertNotEmpty($value->getName());
+        foreach ($response as $value) {
+            $this->assertNotEmpty($value->id);
+            $this->assertNotEmpty($value->code);
+            $this->assertNotEmpty($value->name);
 
-            foreach ($value->getWarehouses() as $warehouse) {
-                $this->assertNotEmpty($warehouse->getId());
-                $this->assertNotEmpty($warehouse->getName());
-                $warehouse->getAddress();
+            foreach ($value->warehouses as $warehouse) {
+                $this->assertNotEmpty($warehouse->id);
+                $this->assertNotEmpty($warehouse->name);
+                $warehouse->address;
             }
         }
     }

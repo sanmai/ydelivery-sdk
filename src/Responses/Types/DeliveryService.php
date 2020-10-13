@@ -28,11 +28,20 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types;
 
+use CommonSDK\Concerns\PropertyRead;
 use JMS\Serializer\Annotation as JMS;
 use YDeliverySDK\Responses\Types\DeliveryService\Warehouse;
 
+/**
+ * @property-read string $id
+ * @property-read string $code
+ * @property-read string $name
+ * @property-read Warehouse[] $warehouses
+ */
 final class DeliveryService
 {
+    use PropertyRead;
+
     /**
      * @JMS\Type("int")
      *
@@ -60,27 +69,4 @@ final class DeliveryService
      * @var Warehouse[]
      */
     private $warehouses = [];
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getCode(): string
-    {
-        return $this->code;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return Warehouse[]
-     */
-    public function getWarehouses()
-    {
-        return $this->warehouses;
-    }
 }

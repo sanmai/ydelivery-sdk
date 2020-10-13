@@ -28,13 +28,19 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Common;
 
+use CommonSDK\Concerns\PropertyRead;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  * @internal
+ *
+ * @property-read int $id
+ * @property-read string $name
  */
 final class NamedEntity implements Concerns\NamedEntity
 {
+    use PropertyRead;
+
     /**
      * Идентификатор.
      *
@@ -53,11 +59,13 @@ final class NamedEntity implements Concerns\NamedEntity
      */
     private $name;
 
+    /** @deprecated */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /** @deprecated */
     public function getName(): string
     {
         return $this->name;

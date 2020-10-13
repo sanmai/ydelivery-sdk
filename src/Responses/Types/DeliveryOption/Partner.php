@@ -28,11 +28,20 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types\DeliveryOption;
 
+use CommonSDK\Concerns\PropertyRead;
 use JMS\Serializer\Annotation as JMS;
 use YDeliverySDK\Common\Concerns\NamedEntity;
 
+/**
+ * @property-read string $code
+ * @property-read string $name
+ * @property-read string $partnerType
+ * @property-read string $logoUrl
+ */
 final class Partner implements NamedEntity
 {
+    use PropertyRead;
+
     /**
      * @JMS\Type("int")
      *
@@ -68,34 +77,15 @@ final class Partner implements NamedEntity
      */
     private $logoUrl;
 
-    /**
-     * Идентификатор службы доставки.
-     */
+    /** @deprecated */
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function getCode(): string
-    {
-        return $this->code;
-    }
-
-    /**
-     * Название службы доставки.
-     */
+    /** @deprecated */
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function getPartnerType(): string
-    {
-        return $this->partnerType;
-    }
-
-    public function getLogoUrl(): string
-    {
-        return $this->logoUrl;
     }
 }

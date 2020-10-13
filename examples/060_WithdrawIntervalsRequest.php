@@ -39,7 +39,7 @@ $builder->setLogger(new DebuggingLogger());
 $client = $builder->build();
 
 $request = new DeliveryServicesRequest();
-$request->setCabinetId($_SERVER['YANDEX_CABINET_ID']);
+$request->cabinetId = (int) $_SERVER['YANDEX_CABINET_ID'];
 
 // Получим ID первого попавшегося сервиса доставки.
 foreach ($client->sendDeliveryServicesRequest($request) as $partner) {
@@ -48,13 +48,13 @@ foreach ($client->sendDeliveryServicesRequest($request) as $partner) {
 
 // Для него получим расписание доставки.
 $request = new WithdrawIntervalsRequest();
-$request->setDateObject(new DateTime('next Monday'));
-$request->setPartnerId($partner->getId());
+$request->date = new DateTime('next Monday');
+$request->partnerId = $partner->id;
 
 $response = $client->sendWithdrawIntervalsRequest($request);
 
 \var_dump(\count($response));
 
 foreach ($response as $value) {
-    echo "{$value->getId()}\t{$value->getFrom()}\t{$value->getTo()}\n";
+    echo "{$value->id}\t{$value->from}\t{$value->to}\n";
 }

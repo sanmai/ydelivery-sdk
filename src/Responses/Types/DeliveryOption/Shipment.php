@@ -28,11 +28,23 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types\DeliveryOption;
 
+use CommonSDK\Concerns\PropertyRead;
+use DateTimeImmutable;
 use JMS\Serializer\Annotation as JMS;
 use YDeliverySDK\Common\Concerns\NamedEntity;
 
+/**
+ * @property-read DateTimeImmutable $date Дата отгрузки.
+ * @property-read string $type Вид отгрузки. IMPORT — самопривоз, WITHDRAW — забор.
+ * @property-read Partner $partner Принимающий партнер.
+ * @property-read NamedEntity|null $warehouse Принимающий склад.
+ * @property-read bool $settingsDefault Отгрузка соответствует настройкам магазина по умолчанию.
+ * @property-read bool|null $alreadyExists Отгрузка уже существует. Заполняется при указанном идентификаторе склада отправления.
+ */
 final class Shipment
 {
+    use PropertyRead;
+
     /**
      * @JMS\Type("DateTimeImmutable<'Y-m-d'>")
      *
@@ -74,52 +86,4 @@ final class Shipment
      * @var bool|null
      */
     private $alreadyExists;
-
-    /**
-     * Дата отгрузки.
-     */
-    public function getDate(): \DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    /**
-     * Вид отгрузки. IMPORT — самопривоз, WITHDRAW — забор.
-     */
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    /**
-     * Принимающий партнер.
-     */
-    public function getPartner(): Partner
-    {
-        return $this->partner;
-    }
-
-    /**
-     * Принимающий склад.
-     */
-    public function getWarehouse(): ?NamedEntity
-    {
-        return $this->warehouse;
-    }
-
-    /**
-     * Отгрузка соответствует настройкам магазина по умолчанию.
-     */
-    public function getSettingsDefault(): bool
-    {
-        return $this->settingsDefault;
-    }
-
-    /**
-     * Отгрузка уже существует. Заполняется при указанном идентификаторе склада отправления.
-     */
-    public function getAlreadyExists(): ?bool
-    {
-        return $this->alreadyExists;
-    }
 }

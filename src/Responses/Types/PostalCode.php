@@ -28,10 +28,16 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types;
 
+use CommonSDK\Concerns\PropertyRead;
 use JMS\Serializer\Annotation as JMS;
 
+/**
+ * @property-read string $postalCode
+ */
 final class PostalCode
 {
+    use PropertyRead;
+
     /**
      * @JMS\Type("string")
      *
@@ -39,13 +45,8 @@ final class PostalCode
      */
     private $postalCode;
 
-    public function getPostalCode(): string
-    {
-        return $this->postalCode;
-    }
-
     public function __toString()
     {
-        return $this->getPostalCode();
+        return $this->postalCode;
     }
 }

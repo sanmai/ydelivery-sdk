@@ -47,7 +47,7 @@ final class WithdrawIntervalsRequestTest extends TestCase
         $client = $this->getClient();
 
         $request = new DeliveryServicesRequest();
-        $request->setCabinetId($this->getCabinetId());
+        $request->cabinetId = $this->getCabinetId();
 
         // Получим ID первого попавшегося сервиса доставки.
         foreach ($client->sendDeliveryServicesRequest($request) as $partner) {
@@ -56,17 +56,17 @@ final class WithdrawIntervalsRequestTest extends TestCase
 
         // Для него получим расписание доставки.
         $request = new WithdrawIntervalsRequest();
-        $request->setDateObject(new \DateTime('next Monday'));
-        $request->setPartnerId($partner->getId());
+        $request->date = new \DateTime('next Monday');
+        $request->partnerId = $partner->id;
 
-        $resp = $client->sendWithdrawIntervalsRequest($request);
+        $response = $client->sendWithdrawIntervalsRequest($request);
 
-        $this->assertGreaterThan(0, \count($resp));
+        $this->assertGreaterThan(0, \count($response));
 
-        foreach ($resp as $value) {
-            $this->assertNotEmpty($value->getId());
-            $this->assertNotEmpty($value->getFrom());
-            $this->assertNotEmpty($value->getTo());
+        foreach ($response as $value) {
+            $this->assertNotEmpty($value->id);
+            $this->assertNotEmpty($value->from);
+            $this->assertNotEmpty($value->to);
         }
     }
 }

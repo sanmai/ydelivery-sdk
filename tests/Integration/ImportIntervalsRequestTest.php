@@ -47,7 +47,7 @@ final class ImportIntervalsRequestTest extends TestCase
         $client = $this->getClient();
 
         $request = new DeliveryServicesRequest();
-        $request->setCabinetId($this->getCabinetId());
+        $request->cabinetId = $this->getCabinetId();
 
         // Получим ID первого попавшегося сервиса доставки.
         foreach ($client->sendDeliveryServicesRequest($request) as $partner) {
@@ -56,11 +56,11 @@ final class ImportIntervalsRequestTest extends TestCase
 
         // Для него получим расписание доставки.
         $request = new ImportIntervalsRequest();
-        $request->setDateObject(new \DateTime('next Monday'));
+        $request->date = new \DateTime('next Monday');
 
         // Используя первый попавшийся склад.
-        foreach ($partner->getWarehouses() as $warehouse) {
-            $request->setWarehouseId($warehouse->getId());
+        foreach ($partner->warehouses as $warehouse) {
+            $request->warehouseId = $warehouse->id;
         }
 
         $resp = $client->sendImportIntervalsRequest($request);
@@ -68,9 +68,9 @@ final class ImportIntervalsRequestTest extends TestCase
         $this->assertGreaterThan(0, \count($resp));
 
         foreach ($resp as $value) {
-            $this->assertNotEmpty($value->getId());
-            $this->assertNotEmpty($value->getFrom());
-            $this->assertNotEmpty($value->getTo());
+            $this->assertNotEmpty($value->id);
+            $this->assertNotEmpty($value->from);
+            $this->assertNotEmpty($value->to);
         }
     }
 }

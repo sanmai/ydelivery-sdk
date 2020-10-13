@@ -28,14 +28,22 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Types;
 
+use CommonSDK\Concerns\PropertyRead;
 use JMS\Serializer\Annotation as JMS;
 
+/**
+ * @property-read int $id Идентификатор интервала.
+ * @property-read string $from Время начала интервала в формате HH:mm.
+ * @property-read string $to Время окончания интервала в формате HH:mm.
+ */
 final class Interval
 {
+    use PropertyRead;
+
     /**
      * @JMS\Type("int")
      *
-     * @var string
+     * @var int
      */
     private $id;
 
@@ -56,28 +64,4 @@ final class Interval
      * @var string
      */
     private $to;
-
-    /**
-     * Идентификатор интервала.
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * Время начала интервала в формате HH:mm.
-     */
-    public function getFrom(): string
-    {
-        return $this->from;
-    }
-
-    /**
-     * Время окончания интервала в формате HH:mm.
-     */
-    public function getTo(): string
-    {
-        return $this->to;
-    }
 }

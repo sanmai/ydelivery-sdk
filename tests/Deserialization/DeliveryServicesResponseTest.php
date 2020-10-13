@@ -57,10 +57,10 @@ class DeliveryServicesResponseTest extends TestCase
             /** @var $item DeliveryService */
             $this->assertInstanceOf(DeliveryService::class, $item);
 
-            $this->assertGreaterThan(0, $item->getId());
+            $this->assertGreaterThan(0, $item->id);
 
-            foreach ($item->getWarehouses() as $warehouse) {
-                $this->assertGreaterThan(0, $warehouse->getId());
+            foreach ($item->warehouses as $warehouse) {
+                $this->assertGreaterThan(0, $warehouse->id);
             }
         }
     }
