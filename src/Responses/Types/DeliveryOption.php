@@ -37,7 +37,7 @@ use YDeliverySDK\Responses\Types\DeliveryOption\Shipment;
 
 /**
  * @property-read int $tariffId Идентификатор тарифа.
- * @property-read string $tariffName Название тарифа.
+ * @property-read string|null $tariffName Название тарифа.
  * @property-read Cost $cost Информация о стоимости заказа.
  * @property-read Delivery $delivery Информация о доставке.
  * @property-read int[] $pickupPointIds Идентификаторы пунктов выдачи заказов (для доставки в ПВЗ и почтой).
@@ -68,7 +68,7 @@ final class DeliveryOption
     /**
      * @JMS\Type("string")
      *
-     * @var string
+     * @var string|null
      */
     private $tariffName;
 

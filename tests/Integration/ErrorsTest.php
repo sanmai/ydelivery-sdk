@@ -28,6 +28,8 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Integration;
 
+use YDeliverySDK\Client;
+
 /** @psalm-suppress TypeDoesNotContainType */
 if (false) {
     include 'examples/020_ResponseErrorHandling.php';
@@ -47,12 +49,11 @@ final class ErrorsTest extends TestCase
      */
     public function test_error_handling_with_invalid_token()
     {
-        $request = new \YDeliverySDK\Requests\DeliveryServicesRequest();
-
         $builder = new \YDeliverySDK\ClientBuilder();
         $builder->setToken('invalid');
         $client = $builder->build();
-
+        /** @var Client $client */
+        $request = new \YDeliverySDK\Requests\DeliveryServicesRequest();
         $response = $client->sendDeliveryServicesRequest($request);
 
         $this->assertTrue($response->hasErrors());

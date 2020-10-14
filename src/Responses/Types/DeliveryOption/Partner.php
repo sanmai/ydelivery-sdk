@@ -33,6 +33,7 @@ use JMS\Serializer\Annotation as JMS;
 use YDeliverySDK\Common\Concerns\NamedEntity;
 
 /**
+ * @property-read int $id
  * @property-read string $code
  * @property-read string $name
  * @property-read string $partnerType

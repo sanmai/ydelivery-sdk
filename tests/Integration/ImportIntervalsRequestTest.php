@@ -57,6 +57,8 @@ final class ImportIntervalsRequestTest extends TestCase
             break;
         }
 
+        $this->assertNotNull($partner);
+
         // Для него получим расписание доставки.
         $request = new ImportIntervalsRequest();
         $request->date = new \DateTime('next Monday');

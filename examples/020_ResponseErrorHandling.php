@@ -30,7 +30,7 @@ include_once 'vendor/autoload.php';
 /** @var \CommonSDK\Contracts\Request $request */
 /** @var \CommonSDK\Contracts\Response $response */
 $request = new \YDeliverySDK\Requests\DeliveryServicesRequest();
-$request->setCabinetId(1);
+$request->cabinetId = 1;
 
 /*
  * Случай ошибки авторизации с ошибочным токеном.
@@ -75,7 +75,7 @@ if ($response->hasErrors()) {
  * Случай отсутствующего параметра.
  */
 $request = new \YDeliverySDK\Requests\WithdrawIntervalsRequest();
-$request->setDateObject(new DateTime('next Monday'));
+$request->date = new DateTime('next Monday');
 
 $response = $client->sendWithdrawIntervalsRequest($request);
 
