@@ -57,12 +57,8 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "0.1.x-dev"
-        },
-        "test-only-require": [
-            "php-coveralls/php-coveralls",
-            "phpunit/phpunit"
-        ]
+            "dev-main": "0.2.x-dev"
+        }
     },
     "autoload": {
         "psr-4": {
