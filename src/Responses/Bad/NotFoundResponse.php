@@ -44,7 +44,6 @@ use JMS\Serializer\Annotation as JMS;
  * @property-read string $message
  * @property-read string $resourceType
  * @property-read string $type
- * @property-read
  */
 final class NotFoundResponse implements Response, HasErrorCode, Countable
 {
