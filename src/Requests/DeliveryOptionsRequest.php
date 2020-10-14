@@ -156,6 +156,9 @@ final class DeliveryOptionsRequest implements JsonRequest
      */
     private $tariffId;
 
+    /**
+     * @phan-suppress PhanAccessReadOnlyMagicProperty
+     */
     public function __construct(
         ?Address $from = null,
         ?Address $to = null,

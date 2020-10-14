@@ -35,6 +35,16 @@ use YDeliverySDK\Responses\Types\DeliveryOption\Delivery;
 use YDeliverySDK\Responses\Types\DeliveryOption\Service;
 use YDeliverySDK\Responses\Types\DeliveryOption\Shipment;
 
+/**
+ * @property-read int $tariffId Идентификатор тарифа.
+ * @property-read string $tariffName Название тарифа.
+ * @property-read Cost $cost Информация о стоимости заказа.
+ * @property-read Delivery $delivery Информация о доставке.
+ * @property-read int[] $pickupPointIds Идентификаторы пунктов выдачи заказов (для доставки в ПВЗ и почтой).
+ * @property-read Shipment[] $shipments Информация об отгрузке.
+ * @property-read Service[] $services Дополнительные услуги.
+ * @property-read string[] $tags Метки варианта доставки.
+ */
 final class DeliveryOption
 {
     use PropertyRead;
@@ -81,7 +91,7 @@ final class DeliveryOption
      *
      * @var int[]
      */
-    private $pickupPointIds;
+    private $pickupPointIds = [];
 
     /**
      * @JMS\Type("array<YDeliverySDK\Responses\Types\DeliveryOption\Shipment>")
@@ -95,7 +105,7 @@ final class DeliveryOption
      *
      * @var Service[]
      */
-    private $services;
+    private $services = [];
 
     /**
      * @JMS\Type("array<string>")
@@ -103,76 +113,4 @@ final class DeliveryOption
      * @var string[]
      */
     private $tags = [];
-
-    /**
-     * Идентификатор тарифа.
-     */
-    public function getTariffId(): int
-    {
-        return $this->tariffId;
-    }
-
-    /**
-     * Название тарифа.
-     */
-    public function getTariffName(): ?string
-    {
-        return $this->tariffName;
-    }
-
-    /**
-     * Информация о стоимости заказа.
-     */
-    public function getCost(): Cost
-    {
-        return $this->cost;
-    }
-
-    /**
-     * Информация о доставке.
-     */
-    public function getDelivery(): Delivery
-    {
-        return $this->delivery;
-    }
-
-    /**
-     * Идентификаторы пунктов выдачи заказов (для доставки в ПВЗ и почтой).
-     *
-     * @return int[]
-     */
-    public function getPickupPointIds()
-    {
-        return $this->pickupPointIds;
-    }
-
-    /**
-     * Информация об отгрузке.
-     *
-     * @return Shipment[]
-     */
-    public function getShipments()
-    {
-        return $this->shipments;
-    }
-
-    /**
-     * Дополнительные услуги.
-     *
-     * @return Service[]
-     */
-    public function getServices()
-    {
-        return $this->services;
-    }
-
-    /**
-     * Метки варианта доставки.
-     *
-     * @return string[]
-     */
-    public function getTags()
-    {
-        return $this->tags;
-    }
 }

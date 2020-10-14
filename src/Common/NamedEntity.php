@@ -71,6 +71,9 @@ final class NamedEntity implements Concerns\NamedEntity
         return $this->name;
     }
 
+    /**
+     * @phan-suppress PhanAccessReadOnlyMagicProperty
+     */
     public static function withIdAndName(int $id, string $name): NamedEntity
     {
         $self = new self();

@@ -49,6 +49,8 @@ final class WithdrawIntervalsRequestTest extends TestCase
         $request = new DeliveryServicesRequest();
         $request->cabinetId = $this->getCabinetId();
 
+        $partner = null;
+
         // Получим ID первого попавшегося сервиса доставки.
         foreach ($client->sendDeliveryServicesRequest($request) as $partner) {
             break;

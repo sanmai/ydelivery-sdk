@@ -42,6 +42,9 @@ use VersionInfo\ComposerBranchAliasVersionReader;
 use VersionInfo\GitVersionReader;
 use VersionInfo\PlaceholderVersionReader;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterface
 {
     use LoggerAwareTrait;
@@ -229,6 +232,6 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
             }
         }
 
-        return $version;
+        return (string) $version;
     }
 }
