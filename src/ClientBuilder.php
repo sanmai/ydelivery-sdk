@@ -56,7 +56,7 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
     private const PACKAGE_NAME = 'YDelivery-SDK';
     private const VERSION_INFO = '$Format:%h%d by %an +%ae$';
 
-    /** @var \GuzzleHttp\ClientInterface */
+    /** @var \GuzzleHttp\ClientInterface|null */
     private $http;
 
     /** @var string */
@@ -74,7 +74,7 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
     /** @var bool */
     private $cacheDebug = false;
 
-    /** @var SerializerInterface|Serializer */
+    /** @var SerializerInterface|Serializer|null */
     private $serializer;
 
     /** @var string|null */
@@ -92,14 +92,14 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
         return $builder->build();
     }
 
-    public function setToken(string $token)
+    public function setToken(string $token): self
     {
         $this->token = $token;
 
         return $this;
     }
 
-    public function setTimeout(int $timeout)
+    public function setTimeout(int $timeout): self
     {
         $this->timeout = $timeout;
 
@@ -109,7 +109,7 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
     /**
      * @see https://jmsyst.com/libs/serializer/master/configuration#configuring-a-cache-directory
      */
-    public function setCacheDir(string $cacheDirectory = null, bool $debug = false)
+    public function setCacheDir(string $cacheDirectory = null, bool $debug = false): self
     {
         $this->cacheDirectory = $cacheDirectory;
         $this->cacheDebug = $debug;
@@ -155,6 +155,7 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
 
         $client = new Client($this->http, $this->serializer);
 
+        /** @psalm-suppress RedundantConditionGivenDocblockType */
         if ($this->logger !== null) {
             $client->setLogger($this->logger);
         }
@@ -162,35 +163,35 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
         return $client;
     }
 
-    public function setBaseUrl(string $baseUrl)
+    public function setBaseUrl(string $baseUrl): self
     {
         $this->baseUrl = $baseUrl;
 
         return $this;
     }
 
-    public function setGuzzleClientExtraOptions(array $extraOptions)
+    public function setGuzzleClientExtraOptions(array $extraOptions): self
     {
         $this->extraOptions = $extraOptions;
 
         return $this;
     }
 
-    public function setUserAgent(string $product, string $versionDetails)
+    public function setUserAgent(string $product, string $versionDetails): self
     {
         $this->userAgentPostfix = \sprintf('%s/%s', $product, $versionDetails);
 
         return $this;
     }
 
-    public function setGuzzleClient(\GuzzleHttp\ClientInterface $http)
+    public function setGuzzleClient(\GuzzleHttp\ClientInterface $http): self
     {
         $this->http = $http;
 
         return $this;
     }
 
-    public function setSerializer(SerializerInterface $serializer)
+    public function setSerializer(SerializerInterface $serializer): self
     {
         $this->serializer = $serializer;
 
@@ -201,6 +202,7 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
      * @codeCoverageIgnore
      *
      * @phan-suppress PhanDeprecatedFunction
+     * @psalm-suppress RedundantConditionGivenDocblockType
      * @psalm-suppress DeprecatedFunction
      */
     private function getDefaultUserAgent(): string
@@ -218,7 +220,7 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
      * @codeCoverageIgnore
      * @psalm-suppress MixedArrayAccess
      */
-    private static function getVersion(): string
+    private static function getVersion(): ?string
     {
         foreach ([
             new PlaceholderVersionReader(self::VERSION_INFO),
@@ -232,6 +234,6 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
             }
         }
 
-        return (string) $version;
+        return $version;
     }
 }

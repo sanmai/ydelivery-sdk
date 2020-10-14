@@ -31,6 +31,7 @@ namespace Tests\YDeliverySDK\Integration;
 use YDeliverySDK\Requests\DeliveryServicesRequest;
 use YDeliverySDK\Requests\ImportIntervalsRequest;
 
+/** @psalm-suppress TypeDoesNotContainType */
 if (false) {
     include 'examples/070_ImportIntervalsRequest.php';
 }

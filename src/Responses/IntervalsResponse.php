@@ -34,7 +34,7 @@ use CommonSDK\Contracts\Response;
 use YDeliverySDK\Responses\Types\Interval;
 
 /**
- * @template-implements IteratorAggregate<WithdrawInterval>
+ * @template-implements \IteratorAggregate<Interval>
  */
 final class IntervalsResponse implements Response, ItemList, \IteratorAggregate
 {

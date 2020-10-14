@@ -28,6 +28,7 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Integration;
 
+/** @psalm-suppress TypeDoesNotContainType */
 if (false) {
     include 'examples/020_ResponseErrorHandling.php';
 }

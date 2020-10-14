@@ -33,7 +33,7 @@ use JMS\Serializer\Annotation as JMS;
 use YDeliverySDK\Responses\Types\DeliveryService\Warehouse;
 
 /**
- * @property-read string $id
+ * @property-read int $id
  * @property-read string $code
  * @property-read string $name
  * @property-read Warehouse[] $warehouses
@@ -45,7 +45,7 @@ final class DeliveryService
     /**
      * @JMS\Type("int")
      *
-     * @var string
+     * @var int
      */
     private $id;
 

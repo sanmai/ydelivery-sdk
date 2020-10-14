@@ -31,6 +31,7 @@ namespace Tests\YDeliverySDK\Integration;
 use YDeliverySDK\Requests\DeliveryServicesRequest;
 use YDeliverySDK\Requests\WithdrawIntervalsRequest;
 
+/** @psalm-suppress TypeDoesNotContainType */
 if (false) {
     include 'examples/060_WithdrawIntervalsRequest.php';
 }
@@ -55,6 +56,8 @@ final class WithdrawIntervalsRequestTest extends TestCase
         foreach ($client->sendDeliveryServicesRequest($request) as $partner) {
             break;
         }
+
+        $this->assertNotNull($partner);
 
         // Для него получим расписание доставки.
         $request = new WithdrawIntervalsRequest();

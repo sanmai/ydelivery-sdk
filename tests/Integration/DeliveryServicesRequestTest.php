@@ -30,6 +30,7 @@ namespace Tests\YDeliverySDK\Integration;
 
 use YDeliverySDK\Requests\DeliveryServicesRequest;
 
+/** @psalm-suppress TypeDoesNotContainType */
 if (false) {
     include 'examples/030_DeliveryServicesRequest.php';
 }

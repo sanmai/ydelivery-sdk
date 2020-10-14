@@ -34,7 +34,7 @@ use CommonSDK\Contracts\Response;
 use YDeliverySDK\Responses\Types\DeliveryOption;
 
 /**
- * @template-implements IteratorAggregate<DeliveryOption>
+ * @template-implements \IteratorAggregate<DeliveryOption>
  */
 final class DeliveryOptionsResponse implements Response, ItemList, \IteratorAggregate
 {

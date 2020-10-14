@@ -74,6 +74,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             self::markTestSkipped(\sprintf('Integration testing disabled (%s missing).', $varname));
         }
 
-        return \getenv($varname);
+        return (string) \getenv($varname);
     }
 }

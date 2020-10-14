@@ -34,7 +34,7 @@ use CommonSDK\Contracts\Response;
 use YDeliverySDK\Responses\Types\PostalCode;
 
 /**
- * @template-implements IteratorAggregate<DeliveryService>
+ * @template-implements \IteratorAggregate<PostalCode>
  */
 final class PostalCodeResponse implements Response, ItemList, \IteratorAggregate
 {

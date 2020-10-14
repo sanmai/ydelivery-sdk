@@ -34,7 +34,7 @@ use CommonSDK\Contracts\Response;
 use YDeliverySDK\Responses\Types\Location;
 
 /**
- * @template-implements IteratorAggregate<Location>
+ * @template-implements \IteratorAggregate<Location>
  */
 final class LocationResponse implements Response, ItemList, \IteratorAggregate
 {

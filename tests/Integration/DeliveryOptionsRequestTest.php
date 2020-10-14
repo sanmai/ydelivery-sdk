@@ -33,6 +33,7 @@ use YDeliverySDK\Requests\DeliveryOptionsRequest;
 use YDeliverySDK\Requests\Types\Shipment;
 use YDeliverySDK\Responses\DeliveryOptionsResponse;
 
+/** @psalm-suppress TypeDoesNotContainType */
 if (false) {
     include 'examples/080_DeliveryOptionsRequest.php';
 }

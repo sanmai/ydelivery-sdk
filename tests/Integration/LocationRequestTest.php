@@ -30,6 +30,7 @@ namespace Tests\YDeliverySDK\Integration;
 
 use YDeliverySDK\Requests\LocationRequest;
 
+/** @psalm-suppress TypeDoesNotContainType */
 if (false) {
     include 'examples/050_LocationRequest.php';
 }

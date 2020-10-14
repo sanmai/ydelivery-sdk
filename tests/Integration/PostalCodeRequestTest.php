@@ -30,6 +30,7 @@ namespace Tests\YDeliverySDK\Integration;
 
 use YDeliverySDK\Requests\PostalCodeRequest;
 
+/** @psalm-suppress TypeDoesNotContainType */
 if (false) {
     include 'examples/040_PostalCodeRequest.php';
 }
