@@ -59,13 +59,21 @@ final class NamedEntity implements Concerns\NamedEntity
      */
     private $name;
 
-    /** @deprecated */
+    /**
+     * @codeCoverageIgnore
+     *
+     * @deprecated
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /** @deprecated */
+    /**
+     * @codeCoverageIgnore
+     *
+     * @deprecated
+     */
     public function getName(): string
     {
         return $this->name;

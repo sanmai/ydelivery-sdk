@@ -26,37 +26,20 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Deserialization;
+namespace Tests\YDeliverySDK\Common;
 
-use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
-use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
-use JMS\Serializer\SerializerBuilder;
-use JSONSerializer\Serializer;
-use Tests\YDeliverySDK\Fixtures\FixtureLoader;
+use YDeliverySDK\Common\NamedEntity;
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase
+/**
+ * @covers \YDeliverySDK\Common\NamedEntity
+ */
+final class NamedEntityTest extends TestCase
 {
-    private $serializer;
-
-    protected function setUp(): void
+    public function test_create_with_name()
     {
-        $builder = SerializerBuilder::create();
-        $builder->setPropertyNamingStrategy(
-            new SerializedNameAnnotationStrategy(
-                new IdenticalPropertyNamingStrategy()
-            )
-        );
+        $entity = NamedEntity::withIdAndName(123, 'test');
 
-        $this->serializer = new Serializer($builder);
-    }
-
-    protected function getSerializer(): Serializer
-    {
-        return $this->serializer;
-    }
-
-    protected function loadFixtureWithType(string $filename, string $type)
-    {
-        return $this->getSerializer()->deserialize(FixtureLoader::loadResponse($filename), $type);
+        $this->assertSame(123, $entity->id);
+        $this->assertSame('test', $entity->name);
     }
 }

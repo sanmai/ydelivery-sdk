@@ -31,7 +31,8 @@
         "symfony/http-foundation": "^4 || ^5.0.7"
     },
     "conflict": {
-        "doctrine/annotations": "<1.10.3"
+        "doctrine/annotations": "<1.10.3",
+        "doctrine/lexer": "<1.2.0"
     },
     "require-dev": {
         "doctrine/cache": "^1.10.2",

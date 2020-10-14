@@ -26,37 +26,44 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Deserialization;
+namespace Tests\YDeliverySDK\Serialization;
 
-use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
-use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
-use JMS\Serializer\SerializerBuilder;
-use JSONSerializer\Serializer;
-use Tests\YDeliverySDK\Fixtures\FixtureLoader;
+use YDeliverySDK\Requests\DeliveryOptionsRequest;
+use YDeliverySDK\Requests\Types\Address;
+use YDeliverySDK\Requests\Types\Cost;
+use YDeliverySDK\Requests\Types\Dimensions;
+use YDeliverySDK\Requests\Types\Shipment;
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase
+/**
+ * @covers \YDeliverySDK\Requests\DeliveryOptionsRequest
+ */
+final class DeliveryOptionsRequestTest extends TestCase
 {
-    private $serializer;
-
-    protected function setUp(): void
+    public function test_constructor_default_arguments()
     {
-        $builder = SerializerBuilder::create();
-        $builder->setPropertyNamingStrategy(
-            new SerializedNameAnnotationStrategy(
-                new IdenticalPropertyNamingStrategy()
-            )
-        );
+        $request = new DeliveryOptionsRequest();
 
-        $this->serializer = new Serializer($builder);
+        $this->assertInstanceOf(Address::class, $request->from);
+        $this->assertInstanceOf(Address::class, $request->to);
+        $this->assertInstanceOf(Dimensions::class, $request->dimensions);
+        $this->assertInstanceOf(Shipment::class, $request->shipment);
+        $this->assertInstanceOf(Cost::class, $request->cost);
     }
 
-    protected function getSerializer(): Serializer
+    public function test_constructor_injected_arguments()
     {
-        return $this->serializer;
-    }
+        $from = new Address();
+        $to = new Address();
+        $dimensions = new Dimensions();
+        $shipment = new Shipment();
+        $cost = new Cost();
 
-    protected function loadFixtureWithType(string $filename, string $type)
-    {
-        return $this->getSerializer()->deserialize(FixtureLoader::loadResponse($filename), $type);
+        $request = new DeliveryOptionsRequest($from, $to, $dimensions, $shipment, $cost);
+
+        $this->assertSame($from, $request->from);
+        $this->assertSame($to, $request->to);
+        $this->assertSame($dimensions, $request->dimensions);
+        $this->assertSame($shipment, $request->shipment);
+        $this->assertSame($cost, $request->cost);
     }
 }
