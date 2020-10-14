@@ -70,10 +70,12 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     private static function getEnvOrSkipTest(string $varname): string
     {
-        if (false === \getenv($varname)) {
+        $var = \getenv($varname);
+
+        if (false === $var || '' === $var) {
             self::markTestSkipped(\sprintf('Integration testing disabled (%s missing).', $varname));
         }
 
-        return (string) \getenv($varname);
+        return $var;
     }
 }
