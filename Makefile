@@ -1,7 +1,7 @@
 .PHONY: ci test prerequisites
 
 # Use any most recent PHP version
-PHP=$(shell which php7.3 || which php7.2 || which php7.1 || which php)
+PHP=$(shell which php7.4 || which php7.3 || which php)
 PHPDBG=$(shell which phpdbg && echo -qrr || echo php)
 
 # Default parallelism
@@ -24,7 +24,7 @@ PHPUNIT_ARGS=--coverage-xml=build/logs/coverage-xml --log-junit=build/logs/junit
 # Phan
 PHAN=vendor/bin/phan
 PHAN_ARGS=-j $(JOBS)
-PHAN_PHP_VERSION=7.1
+PHAN_PHP_VERSION=7.3
 export PHAN_DISABLE_XDEBUG_WARN=1
 
 # PHPStan
@@ -34,7 +34,7 @@ PHPSTAN_ARGS=analyse src tests --level=2 -c .phpstan.neon
 # Psalm
 PSALM=vendor/bin/psalm
 PSALM_ARGS=--show-info=false
-PSALM_PHP_VERSION="PHP 7.2"
+PSALM_PHP_VERSION="PHP 7.3"
 
 # Composer
 COMPOSER=$(PHP) $(shell which composer)
@@ -44,7 +44,7 @@ INFECTION=vendor/bin/infection
 MIN_MSI=40
 MIN_COVERED_MSI=40
 INFECTION_ARGS=--min-msi=$(MIN_MSI) --min-covered-msi=$(MIN_COVERED_MSI) --threads=$(JOBS) --coverage=build/logs --log-verbosity=default --show-mutations --no-interaction
-INFECTION_PHP_VERSION="PHP 7.2"
+INFECTION_PHP_VERSION="PHP 7.3"
 
 all: test
 
@@ -54,14 +54,13 @@ all: test
 
 ci-test: SILENT=
 ci-test: prerequisites
-	$(SILENT) $(PHPDBG) $(PHPUNIT) $(PHPUNIT_COVERAGE_CLOVER) --verbose --group=$(PHPUNIT_GROUP)
+	$(SILENT) $(PHP) $(PHPUNIT) $(PHPUNIT_COVERAGE_CLOVER) --verbose --group=$(PHPUNIT_GROUP)
 
 ci-analyze: SILENT=
 ci-analyze: prerequisites ci-phpunit ci-infection ci-phan ci-phpstan ci-psalm
 
 ci-phpunit: ci-cs
 	$(SILENT) $(PHPDBG) $(PHPUNIT) $(PHPUNIT_ARGS)
-	cp build/logs/junit.xml build/logs/phpunit.junit.xml
 
 ci-infection: ci-phpunit
 	$(SILENT) $(PHP) $(INFECTION) $(INFECTION_ARGS)
@@ -83,7 +82,7 @@ ci-cs: prerequisites
 ##############################################################
 
 .PHONY: test
-test: analyze phpunit composer-validate
+test: analyze phpunit composer-validate yamllint
 
 .PHONY: composer-validate
 composer-validate: test-prerequisites
@@ -95,7 +94,6 @@ test-prerequisites: prerequisites composer.lock
 .PHONY: phpunit
 phpunit: cs
 	$(SILENT) $(PHP) $(PHPUNIT) $(PHPUNIT_ARGS) --verbose
-	cp build/logs/junit.xml build/logs/phpunit.junit.xml
 	CI=true $(SILENT) $(PHP) $(INFECTION) $(INFECTION_ARGS)
 
 .PHONY: analyze
@@ -144,11 +142,15 @@ build/cache:
 report-php-version:
 	# Using $(PHP)
 
+.PHONY: yamllint
+yamllint:
+	find .github/workflows/ -name \*.y*ml -print0 | xargs -n 1 -0 yamllint --no-warnings
+
 ##############################################################
 # Quick development testing procedure                        #
 ##############################################################
 
-PHP_VERSIONS=php7.0 php7.3
+PHP_VERSIONS=php7.3 php7.4
 
 .PHONY: quick
 quick:
