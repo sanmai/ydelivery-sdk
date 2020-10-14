@@ -77,19 +77,4 @@ final class Delivery
      * @var CourierSchedule|null
      */
     private $courierSchedule;
-
-    public function getCalculatedDeliveryDateMin(): \DateTimeInterface
-    {
-        return $this->calculatedDeliveryDateMin;
-    }
-
-    public function getCalculatedDeliveryDateMax(): \DateTimeInterface
-    {
-        return $this->calculatedDeliveryDateMax;
-    }
-
-    public function getCourierSchedule(): ?CourierSchedule
-    {
-        return $this->courierSchedule;
-    }
 }

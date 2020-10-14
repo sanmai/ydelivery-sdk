@@ -26,63 +26,31 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Responses\Bad;
+namespace Tests\YDeliverySDK\Common;
 
-use CommonSDK\Concerns\PropertyRead;
-use CommonSDK\Contracts\HasErrorCode;
-use CommonSDK\Contracts\Response;
-use CommonSDK\Types\Message;
-use JMS\Serializer\Annotation as JMS;
+use DateTime;
+use YDeliverySDK\Requests\Templates\IntervalsRequest;
 
 /**
- * Class BadRequestResponse.
- *
- * HTTP/1.1 400 Bad Request
- * {"message":"Required Long parameter 'partnerId' is not present","type":"UNKNOWN"}
- *
- * @property-read string $message
- * @property-read string $type
+ * @covers \YDeliverySDK\Requests\Templates\IntervalsRequest
  */
-final class BadRequestResponse implements Response, HasErrorCode, \Countable
+final class IntervalsRequestTest extends TestCase
 {
-    use PropertyRead;
-
-    /**
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    private $message;
-
-    /**
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    private $type;
-
-    public function hasErrors(): bool
+    public function test_it_handles_date_string()
     {
-        return true;
+        $request = new class() extends IntervalsRequest {
+        };
+        $request->date = '2020-01-01';
+
+        $this->assertSame(['date' => '2020-01-01'], $request->getParams());
     }
 
-    public function getMessages()
+    public function test_it_handles_date_object()
     {
-        return Message::from([$this]);
-    }
+        $request = new class() extends IntervalsRequest {
+        };
+        $request->date = new DateTime('2020-01-02');
 
-    public function getMessage(): string
-    {
-        return $this->message;
-    }
-
-    public function getErrorCode(): string
-    {
-        return $this->type;
-    }
-
-    public function count()
-    {
-        return 0;
+        $this->assertSame(['date' => '2020-01-02'], $request->getParams());
     }
 }

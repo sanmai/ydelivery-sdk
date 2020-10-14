@@ -26,63 +26,44 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Responses\Bad;
+namespace Tests\YDeliverySDK\Deserialization;
 
-use CommonSDK\Concerns\PropertyRead;
-use CommonSDK\Contracts\HasErrorCode;
-use CommonSDK\Contracts\Response;
-use CommonSDK\Types\Message;
-use JMS\Serializer\Annotation as JMS;
+use YDeliverySDK\Responses\PostalCodeResponse;
+use YDeliverySDK\Responses\Types\PostalCode;
 
 /**
- * Class BadRequestResponse.
- *
- * HTTP/1.1 400 Bad Request
- * {"message":"Required Long parameter 'partnerId' is not present","type":"UNKNOWN"}
- *
- * @property-read string $message
- * @property-read string $type
+ * @covers \YDeliverySDK\Responses\PostalCodeResponse
+ * @covers \YDeliverySDK\Responses\Types\PostalCode
  */
-final class BadRequestResponse implements Response, HasErrorCode, \Countable
+class PostalCodeResponseTest extends TestCase
 {
-    use PropertyRead;
+    public function commonResponsesProvider(): iterable
+    {
+        yield ['postal-code.json', 1];
+    }
 
     /**
-     * @JMS\Type("string")
-     *
-     * @var string
+     * @dataProvider commonResponsesProvider
      */
-    private $message;
-
-    /**
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    private $type;
-
-    public function hasErrors(): bool
+    public function test_successful_request(string $fixtureName, int $count)
     {
-        return true;
+        $response = $this->loadFixture($fixtureName);
+
+        $this->assertFalse($response->hasErrors());
+
+        $this->assertCount($count, $response);
+
+        foreach ($response as $item) {
+            /** @var $item PostalCode */
+            $this->assertInstanceOf(PostalCode::class, $item);
+
+            $this->assertSame(6, \strlen($item->postalCode));
+            $this->assertSame($item->postalCode, (string) $item);
+        }
     }
 
-    public function getMessages()
+    private function loadFixture(string $filename): PostalCodeResponse
     {
-        return Message::from([$this]);
-    }
-
-    public function getMessage(): string
-    {
-        return $this->message;
-    }
-
-    public function getErrorCode(): string
-    {
-        return $this->type;
-    }
-
-    public function count()
-    {
-        return 0;
+        return $this->loadFixtureWithType($filename, PostalCodeResponse::class);
     }
 }

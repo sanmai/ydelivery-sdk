@@ -28,9 +28,11 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Bad;
 
+use CommonSDK\Concerns\PropertyRead;
 use CommonSDK\Contracts\HasErrorCode;
 use CommonSDK\Contracts\Response;
 use CommonSDK\Types\Message;
+use Countable;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -38,9 +40,16 @@ use JMS\Serializer\Annotation as JMS;
  *
  * HTTP/1.1 404 Not Found
  * {"message":"Failed to find [SHOP] with ids [1]","resourceType":"SHOP","identifiers":[1],"type":"RESOURCE_NOT_FOUND"}
+ *
+ * @property-read string $message
+ * @property-read string $resourceType
+ * @property-read string $type
+ * @property-read
  */
-final class NotFoundResponse implements Response, HasErrorCode, \Countable
+final class NotFoundResponse implements Response, HasErrorCode, Countable
 {
+    use PropertyRead;
+
     /**
      * @JMS\Type("string")
      *
@@ -80,11 +89,6 @@ final class NotFoundResponse implements Response, HasErrorCode, \Countable
     public function getErrorCode(): string
     {
         return $this->type;
-    }
-
-    public function getResourceType(): string
-    {
-        return $this->resourceType;
     }
 
     public function count()

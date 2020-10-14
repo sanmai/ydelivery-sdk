@@ -55,7 +55,7 @@ class ErrorResponsesTest extends TestCase
     public function test_it_can_be_read(string $fixtureFileName, string $typeName, string $errorCode, string $messageText)
     {
         $response = $this->loadFixtureWithType($fixtureFileName, $typeName);
-        /** @var $response Response */
+        /** @var $response NotFoundResponse|UnauthorizedResponse|BadRequestResponse */
         $this->assertInstanceOf(Response::class, $response);
 
         $this->assertCount(0, $response);
@@ -67,5 +67,7 @@ class ErrorResponsesTest extends TestCase
             $this->assertSame($errorCode, $message->getErrorCode());
             $this->assertSame($messageText, $message->getMessage());
         }
+
+        $this->assertSame($messageText, $response->message);
     }
 }

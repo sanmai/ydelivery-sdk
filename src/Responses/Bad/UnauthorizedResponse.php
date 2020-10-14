@@ -28,9 +28,11 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses\Bad;
 
+use CommonSDK\Concerns\PropertyRead;
 use CommonSDK\Contracts\HasErrorCode;
 use CommonSDK\Contracts\Response;
 use CommonSDK\Types\Message;
+use DateTimeImmutable;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -38,13 +40,21 @@ use JMS\Serializer\Annotation as JMS;
  *
  * HTTP/1.1 401 Unauthorized
  * {"timestamp":"2020-01-01T00:00:00.000+0000","status":401,"error":"Unauthorized","message":"Unauthorized","path":"/api/example"}
+ *
+ * @property-read DateTimeImmutable $timestamp
+ * @property-read int $status
+ * @property-read string $error
+ * @property-read string $message
+ * @property-read string $path
  */
 final class UnauthorizedResponse implements Response, HasErrorCode, \Countable
 {
+    use PropertyRead;
+
     /**
      * @JMS\Type("DateTimeImmutable<'Y-m-d\TH:i:s.uO'>")
      *
-     * @var \DateTimeImmutable
+     * @var DateTimeImmutable
      */
     private $timestamp;
 
@@ -94,26 +104,6 @@ final class UnauthorizedResponse implements Response, HasErrorCode, \Countable
     public function getMessage(): string
     {
         return $this->message;
-    }
-
-    public function getTimestamp(): \DateTimeImmutable
-    {
-        return $this->timestamp;
-    }
-
-    public function getStatusCode(): int
-    {
-        return $this->status;
-    }
-
-    public function getError(): string
-    {
-        return $this->error;
-    }
-
-    public function getPath(): string
-    {
-        return $this->path;
     }
 
     public function count()

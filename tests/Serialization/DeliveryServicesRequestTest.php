@@ -26,63 +26,19 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Responses\Bad;
+namespace Tests\YDeliverySDK\Serialization;
 
-use CommonSDK\Concerns\PropertyRead;
-use CommonSDK\Contracts\HasErrorCode;
-use CommonSDK\Contracts\Response;
-use CommonSDK\Types\Message;
-use JMS\Serializer\Annotation as JMS;
+use YDeliverySDK\Requests\DeliveryServicesRequest;
 
 /**
- * Class BadRequestResponse.
- *
- * HTTP/1.1 400 Bad Request
- * {"message":"Required Long parameter 'partnerId' is not present","type":"UNKNOWN"}
- *
- * @property-read string $message
- * @property-read string $type
+ * @covers \YDeliverySDK\Requests\DeliveryServicesRequest
  */
-final class BadRequestResponse implements Response, HasErrorCode, \Countable
+final class DeliveryServicesRequestTest extends TestCase
 {
-    use PropertyRead;
-
-    /**
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    private $message;
-
-    /**
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    private $type;
-
-    public function hasErrors(): bool
+    public function test_create_with_cabinet_id()
     {
-        return true;
-    }
+        $request = DeliveryServicesRequest::withCabinetId(123);
 
-    public function getMessages()
-    {
-        return Message::from([$this]);
-    }
-
-    public function getMessage(): string
-    {
-        return $this->message;
-    }
-
-    public function getErrorCode(): string
-    {
-        return $this->type;
-    }
-
-    public function count()
-    {
-        return 0;
+        $this->assertSame(['cabinetId' => 123], $request->getParams());
     }
 }
