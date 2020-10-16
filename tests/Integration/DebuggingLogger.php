@@ -56,6 +56,11 @@ final class DebuggingLogger implements LoggerInterface
             $message = \strtr($message, \iterator_to_array(self::context2replacements($context), true));
         }
 
+        if (!self::WRITE_LOG_TO_FILE && \strpos($message, 'WITHDRAW') !== false) {
+            // Заявка на Забор (WITHDRAW) тарифицируется сразу же как была подтверждена службой доставки.
+            \trigger_error('Forbidden request', E_USER_ERROR);
+        }
+
         // В целях отладки приведём JSON в читаемый вид
         if (\strpos($message, '{') === 0 || \strpos($message, '[') === 0) {
             $message = \json_encode(\json_decode($message), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
