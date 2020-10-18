@@ -101,9 +101,11 @@ final class ValidationError implements HasErrorCode
 
     public function getErrorCode(): ?string
     {
+        return $this->errorCode;
     }
 
     public function getMessage(): string
     {
+        return \sprintf('%s->%s %s', $this->objectName, $this->field, $this->message);
     }
 }
