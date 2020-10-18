@@ -1,0 +1,22 @@
+[
+    {
+        "orderId": 3000001,
+        "status": "VALIDATION_ERROR",
+        "errors": null,
+        "violations": [
+            {
+                "missingFields": [
+                    "places.dimensions.height",
+                    "places.dimensions.width",
+                    "places.dimensions.length",
+                    "places.dimensions.weight",
+                    "deliveryOption.tariffId",
+                    "recipient.address",
+                    "shipment.partnerTo",
+                    "shipment.type"
+                ],
+                "errorCode": "INCOMPLETE_ORDER"
+            }
+        ]
+    }
+]

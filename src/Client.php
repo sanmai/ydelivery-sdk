@@ -44,6 +44,7 @@ use YDeliverySDK\Responses\Bad\UnauthorizedResponse;
  * @method Responses\IntervalsResponse|Responses\Types\Interval[]               sendImportIntervalsRequest(Requests\ImportIntervalsRequest $request)
  * @method Responses\DeliveryOptionsResponse|Responses\Types\DeliveryOption[]   sendDeliveryOptionsRequest(Requests\DeliveryOptionsRequest $request)
  * @method Responses\OrderResponse                                              sendCreateOrderRequest(Requests\CreateOrderRequest $request)
+ * @method Responses\SubmitOrderResponse|Responses\Types\SubmittedOrder[]       sendSubmitOrderRequest(Requests\SubmitOrderRequest $request)
  */
 final class Client extends CommonClient
 {
