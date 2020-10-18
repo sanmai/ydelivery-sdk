@@ -45,8 +45,11 @@ use JMS\Serializer\Annotation as JMS;
  *    "errorCode": "FIELD_NOT_VALID"
  * }
  *
+ * @property-read string $objectName
+ * @property-read string $field
  * @property-read string $message
- * @property-read string $type
+ * @property-read string $conditionCode
+ * @property-read string $errorCode
  */
 final class ValidationError implements HasErrorCode
 {

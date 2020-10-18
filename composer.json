@@ -24,9 +24,9 @@
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "jms/serializer": "^3.9",
         "psr/log": "^1.0",
-        "sanmai/json-serializer": "^0.1.1",
+        "sanmai/json-serializer": "^0.2",
         "sanmai/pipeline": "^5",
-        "sanmai/sdk-common": "^0.2.6",
+        "sanmai/sdk-common": "^0.2.7",
         "sanmai/version-info": "^0.2.0",
         "symfony/http-foundation": "^4.4.7 || ^5.0.7"
     },

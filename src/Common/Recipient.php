@@ -26,33 +26,72 @@
 
 declare(strict_types=1);
 
-use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\CreateOrderRequest;
+namespace YDeliverySDK\Common;
 
-include_once 'vendor/autoload.php';
+use JMS\Serializer\Annotation as JMS;
 
-$builder = new \YDeliverySDK\ClientBuilder();
-$builder->setToken($_SERVER['YANDEX_DELIVERY_TOKEN'] ?? '');
-$builder->setLogger(new DebuggingLogger());
-/** @var \YDeliverySDK\Client $client */
-$client = $builder->build();
+/*
+ *
+ * @property-read string $firstName
+ * @property-read string $middleName
+ * @property-read string $lastName
+ * @property-read string $email
+ * @property-read Address $address
+ * @property-read int $pickupPointId
+ *
+ * @property-write string $firstName
+ * @property-write string $middleName
+ * @property-write string $lastName
+ * @property-write string $email
+ * @property-read Address $address
+ * @property-write int $pickupPointId
+ *
+ */
 
-$request = new CreateOrderRequest();
-$request->deliveryType = 'COURIER';
-$request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
+/**
+ * Основа для объектов получателя, используемых в запросах и ответах.
+ */
+abstract class Recipient
+{
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $firstName;
 
-$response = $client->sendCreateOrderRequest($request);
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $middleName;
 
-if ($response->hasErrors()) {
-    // Обрабатываем ошибки
-    foreach ($response->getMessages() as $message) {
-        if ($message->getErrorCode() !== '') {
-            // Это ошибка
-            echo "{$message->getErrorCode()}: {$message->getMessage()}\n";
-        }
-    }
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $lastName;
 
-    return;
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $email;
+
+    /**
+     * @JMS\Type("YDeliverySDK\Common\Address")
+     *
+     * @var Address
+     */
+    protected $address;
+
+    /**
+     * @JMS\Type("int")
+     *
+     * @var int
+     */
+    protected $pickupPointId;
 }
-
-\var_dump($response->id);

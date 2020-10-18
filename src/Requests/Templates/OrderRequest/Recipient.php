@@ -26,33 +26,31 @@
 
 declare(strict_types=1);
 
-use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\CreateOrderRequest;
+namespace YDeliverySDK\Requests\Templates\OrderRequest;
 
-include_once 'vendor/autoload.php';
+use CommonSDK\Concerns\ObjectPropertyRead;
+use CommonSDK\Concerns\PropertyWrite;
+use CommonSDK\Contracts\ReadableRequestProperty;
+use YDeliverySDK\Common\Recipient as CommonRecipient;
 
-$builder = new \YDeliverySDK\ClientBuilder();
-$builder->setToken($_SERVER['YANDEX_DELIVERY_TOKEN'] ?? '');
-$builder->setLogger(new DebuggingLogger());
-/** @var \YDeliverySDK\Client $client */
-$client = $builder->build();
+/**
+ * @property-write string $firstName
+ * @property-write string $middleName
+ * @property-write string $lastName
+ * @property-write string $email
+ * @property-read Address $address
+ * @property-write int $pickupPointId
+ */
+final class Recipient extends CommonRecipient implements ReadableRequestProperty
+{
+    use PropertyWrite;
+    use ObjectPropertyRead;
 
-$request = new CreateOrderRequest();
-$request->deliveryType = 'COURIER';
-$request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
-
-$response = $client->sendCreateOrderRequest($request);
-
-if ($response->hasErrors()) {
-    // Обрабатываем ошибки
-    foreach ($response->getMessages() as $message) {
-        if ($message->getErrorCode() !== '') {
-            // Это ошибка
-            echo "{$message->getErrorCode()}: {$message->getMessage()}\n";
-        }
+    /**
+     * @phan-suppress PhanAccessReadOnlyMagicProperty
+     */
+    public function __construct(?Address $address = null)
+    {
+        $this->address = $address ?? new Address();
     }
-
-    return;
 }
-
-\var_dump($response->id);

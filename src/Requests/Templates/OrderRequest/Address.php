@@ -26,33 +26,27 @@
 
 declare(strict_types=1);
 
-use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\CreateOrderRequest;
+namespace YDeliverySDK\Requests\Templates\OrderRequest;
 
-include_once 'vendor/autoload.php';
+use CommonSDK\Concerns\PropertyWrite;
+use CommonSDK\Contracts\Property;
+use CommonSDK\Contracts\ReadableRequestProperty;
+use YDeliverySDK\Common\Address as CommonAddress;
 
-$builder = new \YDeliverySDK\ClientBuilder();
-$builder->setToken($_SERVER['YANDEX_DELIVERY_TOKEN'] ?? '');
-$builder->setLogger(new DebuggingLogger());
-/** @var \YDeliverySDK\Client $client */
-$client = $builder->build();
-
-$request = new CreateOrderRequest();
-$request->deliveryType = 'COURIER';
-$request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
-
-$response = $client->sendCreateOrderRequest($request);
-
-if ($response->hasErrors()) {
-    // Обрабатываем ошибки
-    foreach ($response->getMessages() as $message) {
-        if ($message->getErrorCode() !== '') {
-            // Это ошибка
-            echo "{$message->getErrorCode()}: {$message->getMessage()}\n";
-        }
-    }
-
-    return;
+/**
+ * @property-write int $geoId
+ * @property-write string $country
+ * @property-write string $region
+ * @property-write string $locality Населенный пункт.
+ * @property-write string $street
+ * @property-write string $house
+ * @property-write string $housing
+ * @property-write string $building
+ * @property-write string $apartment
+ * @property-write string $postalCode
+ * @property-write string $postCode
+ */
+final class Address extends CommonAddress implements ReadableRequestProperty
+{
+    use PropertyWrite;
 }
-
-\var_dump($response->id);

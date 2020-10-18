@@ -26,71 +26,115 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests\Templates;
+namespace YDeliverySDK\Common;
 
-use CommonSDK\Concerns\ObjectPropertyRead;
-use CommonSDK\Concerns\PropertyWrite;
-use CommonSDK\Contracts\JsonRequest;
 use JMS\Serializer\Annotation as JMS;
-use YDeliverySDK\Requests\Templates\OrderRequest\Recipient;
-use YDeliverySDK\Responses\OrderResponse;
+
+/*
+ * @property-read int $geoId
+ * @property-read string $country
+ * @property-read string $region
+ * @property-read string $locality
+ * @property-read string $street
+ * @property-read string $house
+ * @property-read string $housing
+ * @property-read string $building
+ * @property-read string $apartment
+ * @property-read string $postalCode
+ * @property-read string $postCode
+ *
+ * @property-write int $geoId
+ * @property-write string $country
+ * @property-write string $region
+ * @property-write string $locality
+ * @property-write string $street
+ * @property-write string $house
+ * @property-write string $housing
+ * @property-write string $building
+ * @property-write string $apartment
+ * @property-write string $postalCode
+ * @property-write string $postCode
+ */
 
 /**
- * Основа для методов создания или изменения заказов.
- *
- * @property-write int $senderId Идентификатор магазина.
- * @property-write string $externalId Идентификатор заказа в системе партнера.
- * @property-write string $comment
- * @property-write string $deliveryType Тип доставки (COURIER — курьером, PICKUP — в пункт выдачи, POST — на почту).
- * @property-read Recipient $recipient Данные о получателе.
+ * Основа для объектов адреса, используемых в запросах и ответах.
  */
-abstract class OrderRequest implements JsonRequest
+abstract class Address
 {
-    use PropertyWrite;
-    use ObjectPropertyRead;
-
-    protected const RESPONSE = OrderResponse::class;
-
     /**
      * @JMS\Type("int")
      *
      * @var int
      */
-    protected $senderId;
+    protected $geoId;
 
     /**
      * @JMS\Type("string")
      *
      * @var string
      */
-    protected $externalId;
+    protected $country;
 
     /**
      * @JMS\Type("string")
      *
      * @var string
      */
-    protected $comment;
+    protected $region;
 
     /**
      * @JMS\Type("string")
      *
      * @var string
      */
-    protected $deliveryType;
+    protected $locality;
 
     /**
-     * @JMS\Type("YDeliverySDK\Requests\Templates\OrderRequest\Recipient")
+     * @JMS\Type("string")
      *
-     * @var Recipient
+     * @var string
      */
-    protected $recipient;
+    protected $street;
 
     /**
-     * @phan-suppress PhanAccessReadOnlyMagicProperty
+     * @JMS\Type("string")
+     *
+     * @var string
      */
-    public function __construct(?Recipient $recipient = null)
-    {
-        $this->recipient = $recipient ?? new Recipient();
-    }
+    protected $house;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $housing;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $building;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $apartment;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $postalCode;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $postCode;
 }
