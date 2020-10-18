@@ -51,6 +51,7 @@ final class Recipient extends CommonRecipient implements ReadableRequestProperty
      */
     public function __construct(?Address $address = null)
     {
+        /** @phpstan-ignore-next-line */
         $this->address = $address ?? new Address();
     }
 }

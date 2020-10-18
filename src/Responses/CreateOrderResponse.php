@@ -48,6 +48,9 @@ final class CreateOrderResponse implements Response, ScalarValue
      */
     private $id;
 
+    /**
+     * @phan-suppress PhanAccessReadOnlyMagicProperty
+     */
     public static function withValue($value)
     {
         $response = new self();

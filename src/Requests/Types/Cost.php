@@ -29,7 +29,7 @@ declare(strict_types=1);
 namespace YDeliverySDK\Requests\Types;
 
 use CommonSDK\Concerns\PropertyWrite;
-use CommonSDK\Contracts\Property;
+use CommonSDK\Contracts\ReadableRequestProperty;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -38,7 +38,7 @@ use JMS\Serializer\Annotation as JMS;
  * @property-write float $manualDeliveryForCustomer
  * @property-write bool $fullyPrepaid
  */
-final class Cost implements Property
+final class Cost implements ReadableRequestProperty
 {
     use PropertyWrite;
 

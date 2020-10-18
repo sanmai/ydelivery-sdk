@@ -29,7 +29,7 @@ declare(strict_types=1);
 namespace YDeliverySDK\Requests\Types;
 
 use CommonSDK\Concerns\PropertyWrite;
-use CommonSDK\Contracts\Property;
+use CommonSDK\Contracts\ReadableRequestProperty;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -38,7 +38,7 @@ use JMS\Serializer\Annotation as JMS;
  * @property-write int $width
  * @property-write float $weight
  */
-final class Dimensions implements Property
+final class Dimensions implements ReadableRequestProperty
 {
     use PropertyWrite;
 

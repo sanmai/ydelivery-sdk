@@ -29,7 +29,7 @@ declare(strict_types=1);
 namespace YDeliverySDK\Requests\Types;
 
 use CommonSDK\Concerns\PropertyWrite;
-use CommonSDK\Contracts\Property;
+use CommonSDK\Contracts\ReadableRequestProperty;
 use JMS\Serializer\Annotation as JMS;
 
 /**
@@ -37,7 +37,7 @@ use JMS\Serializer\Annotation as JMS;
  * @property-write int $geoId
  * @property-write int[] $pickupPointIds
  */
-final class Address implements Property
+final class Address implements ReadableRequestProperty
 {
     use PropertyWrite;
 

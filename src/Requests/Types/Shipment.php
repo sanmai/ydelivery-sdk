@@ -29,7 +29,7 @@ declare(strict_types=1);
 namespace YDeliverySDK\Requests\Types;
 
 use CommonSDK\Concerns\PropertyWrite;
-use CommonSDK\Contracts\Property;
+use CommonSDK\Contracts\ReadableRequestProperty;
 use DateTimeInterface;
 use JMS\Serializer\Annotation as JMS;
 
@@ -40,7 +40,7 @@ use JMS\Serializer\Annotation as JMS;
  * @property-write int $warehouseId
  * @property-write bool $includeNonDefault
  */
-final class Shipment implements Property
+final class Shipment implements ReadableRequestProperty
 {
     use PropertyWrite;
 
