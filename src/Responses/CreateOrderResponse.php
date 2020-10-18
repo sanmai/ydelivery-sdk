@@ -26,23 +26,38 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests;
+namespace YDeliverySDK\Responses;
 
-use CommonSDK\Concerns\RequestCore;
-use YDeliverySDK\Requests\Templates\OrderRequest;
-use YDeliverySDK\Responses\CreateOrderResponse;
+use CommonSDK\Concerns\PropertyRead;
+use CommonSDK\Concerns\SuccessfulResponse;
+use CommonSDK\Contracts\Response;
+use JSONSerializer\Contracts\ScalarValue;
 
 /**
- * CreateOrderRequest.
+ * CreateOrderResponse.
  *
- * @see https://yandex.ru/dev/delivery-3/doc/dg/reference/post-orders.html
+ * @property-read int $id
  */
-final class CreateOrderRequest extends OrderRequest
+final class CreateOrderResponse implements Response, ScalarValue
 {
-    use RequestCore;
+    use PropertyRead;
+    use SuccessfulResponse;
 
-    private const METHOD = 'POST';
-    private const ADDRESS = '/orders';
+    /**
+     * @var int
+     */
+    private $id;
 
-    protected const RESPONSE = CreateOrderResponse::class;
+    public static function withValue($value)
+    {
+        $response = new self();
+        $response->id = $value;
+
+        return $response;
+    }
+
+    public static function getType(): string
+    {
+        return 'int';
+    }
 }
