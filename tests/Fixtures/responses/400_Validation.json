@@ -1,0 +1,22 @@
+{
+    "message": "Validation error",
+    "errors": [
+        {
+            "objectName": "senderOrderDraft",
+            "field": "deliveryType",
+            "message": "must not be null",
+            "conditionCode": "NotNull",
+            "arguments": {},
+            "errorCode": "FIELD_NOT_VALID"
+        },
+        {
+            "objectName": "senderOrderDraft",
+            "field": "senderId",
+            "message": "must not be null",
+            "conditionCode": "NotNull",
+            "arguments": {},
+            "errorCode": "FIELD_NOT_VALID"
+        }
+    ],
+    "type": "VALIDATION_ERROR"
+}

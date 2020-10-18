@@ -26,28 +26,45 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Responses\Bad;
+namespace YDeliverySDK\Responses\Bad\BadRequestResponse;
 
 use CommonSDK\Concerns\PropertyRead;
 use CommonSDK\Contracts\HasErrorCode;
-use CommonSDK\Contracts\Response;
 use CommonSDK\Types\Message;
 use JMS\Serializer\Annotation as JMS;
-use YDeliverySDK\Responses\Bad\BadRequestResponse\ValidationError;
 
 /**
- * Class BadRequestResponse.
+ * Validation error.
  *
- * HTTP/1.1 400 Bad Request
- * {"message":"Required Long parameter 'partnerId' is not present","type":"UNKNOWN"}
+ * {
+ *    "objectName": "senderOrderDraft",
+ *    "field": "deliveryType",
+ *    "message": "must not be null",
+ *    "conditionCode": "NotNull",
+ *    "arguments": {},
+ *    "errorCode": "FIELD_NOT_VALID"
+ * }
  *
  * @property-read string $message
  * @property-read string $type
- * @property-read ValidationError[] $errors
  */
-final class BadRequestResponse implements Response, HasErrorCode, \Countable
+final class ValidationError implements HasErrorCode
 {
     use PropertyRead;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    private $objectName;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    private $field;
 
     /**
      * @JMS\Type("string")
@@ -61,37 +78,29 @@ final class BadRequestResponse implements Response, HasErrorCode, \Countable
      *
      * @var string
      */
-    private $type;
+    private $conditionCode;
 
     /**
-     * @JMS\Type("array<YDeliverySDK\Responses\Bad\BadRequestResponse\ValidationError>")
+     * @JMS\Type("array<string, string>")
      *
-     * @var ValidationError[]
+     * @var array<string, string>
+     *
+     * @todo Needs an example.
      */
-    private $errors;
+    private $arguments;
 
-    public function hasErrors(): bool
-    {
-        return true;
-    }
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    private $errorCode;
 
-    public function getMessages()
+    public function getErrorCode(): ?string
     {
-        return Message::from([$this]);
     }
 
     public function getMessage(): string
     {
-        return $this->message;
-    }
-
-    public function getErrorCode(): string
-    {
-        return $this->type;
-    }
-
-    public function count()
-    {
-        return 0;
     }
 }

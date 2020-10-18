@@ -28,7 +28,9 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Deserialization;
 
+use CommonSDK\Contracts\HasErrorCode;
 use CommonSDK\Contracts\Response;
+use function Pipeline\zip;
 use YDeliverySDK\Responses\Bad\BadRequestResponse;
 use YDeliverySDK\Responses\Bad\NotFoundResponse;
 use YDeliverySDK\Responses\Bad\UnauthorizedResponse;
@@ -42,17 +44,27 @@ class ErrorResponsesTest extends TestCase
 {
     public function errorResponsesProvider()
     {
-        yield '400_Bad_Request.json' => ['400_Bad_Request.json', BadRequestResponse::class,  'UNKNOWN', "Required Long parameter 'partnerId' is not present"];
+        yield '400_Bad_Request.json' => ['400_Bad_Request.json', BadRequestResponse::class, [
+            ['UNKNOWN', "Required Long parameter 'partnerId' is not present"],
+        ]];
 
-        yield '401_Unauthorized.json' => ['401_Unauthorized.json', UnauthorizedResponse::class,  '401', 'Unauthorized'];
+        yield '401_Unauthorized.json' => ['401_Unauthorized.json', UnauthorizedResponse::class,  [
+            ['401', 'Unauthorized'],
+        ]];
 
-        yield '404_Not_Found.json' => ['404_Not_Found.json', NotFoundResponse::class, 'RESOURCE_NOT_FOUND', 'Failed to find [SHOP] with ids [1]'];
+        yield '404_Not_Found.json' => ['404_Not_Found.json', NotFoundResponse::class, [
+            ['RESOURCE_NOT_FOUND', 'Failed to find [SHOP] with ids [1]'],
+        ]];
+
+        yield '400_Validation.json' => ['400_Validation.json', BadRequestResponse::class, [
+            ['VALIDATION_ERROR', 'Validation error'],
+        ]];
     }
 
     /**
      * @dataProvider errorResponsesProvider
      */
-    public function test_it_can_be_read(string $fixtureFileName, string $typeName, string $errorCode, string $messageText)
+    public function test_it_can_be_read(string $fixtureFileName, string $typeName, array $errors)
     {
         $response = $this->loadFixtureWithType($fixtureFileName, $typeName);
         /** @var $response NotFoundResponse|UnauthorizedResponse|BadRequestResponse */
@@ -61,13 +73,13 @@ class ErrorResponsesTest extends TestCase
         $this->assertCount(0, $response);
         $this->assertTrue($response->hasErrors());
 
-        $this->assertCount(1, $response->getMessages());
+        $this->assertCount(\count($errors), $response->getMessages());
 
-        foreach ($response->getMessages() as $message) {
-            $this->assertSame($errorCode, $message->getErrorCode());
-            $this->assertSame($messageText, $message->getMessage());
-        }
-
-        $this->assertSame($messageText, $response->message);
+        $this->assertCount(\count($errors), zip($errors, $response->getMessages())
+            ->unpack(function (array $expected, HasErrorCode $message) {
+                $this->assertSame($expected[0], $message->getErrorCode());
+                $this->assertSame($expected[1], $message->getMessage());
+            })
+        );
     }
 }
