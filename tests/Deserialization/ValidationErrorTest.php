@@ -47,7 +47,7 @@ class ValidationErrorTest extends TestCase
 
     public function test_it_deserializes()
     {
-        /** @var ValidationError $error  */
+        /** @var ValidationError $error */
         $error = $this->getSerializer()->deserialize(self::EXAMPLE_ERROR, ValidationError::class);
 
         $this->assertSame('FIELD_NOT_VALID', $error->getErrorCode());
