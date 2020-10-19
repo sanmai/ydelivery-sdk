@@ -37,6 +37,8 @@ use YDeliverySDK\Responses\Types\SubmittedOrder\Violation;
 /**
  * @property-read int $orderId
  * @property-read string $status
+ * @property-read array $errors
+ * @property-read Violation[] $violations
  */
 final class SubmittedOrder
 {
@@ -48,14 +50,14 @@ final class SubmittedOrder
      *
      * @var int
      */
-    protected $orderId;
+    private $orderId;
 
     /**
      * @JMS\Type("string")
      *
      * @var string
      */
-    protected $status;
+    private $status;
 
     /**
      * @JMS\Exclude
@@ -64,14 +66,14 @@ final class SubmittedOrder
      *
      * @var array
      */
-    protected $errors = [];
+    private $errors = [];
 
     /**
      * @JMS\Type("array<YDeliverySDK\Responses\Types\SubmittedOrder\Violation>")
      *
      * @var Violation[]
      */
-    protected $violations = [];
+    private $violations = [];
 
     /**
      * @return iterable<Message>
