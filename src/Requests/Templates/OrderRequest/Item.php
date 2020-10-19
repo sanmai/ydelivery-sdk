@@ -26,19 +26,28 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests\Types;
+namespace YDeliverySDK\Requests\Templates\OrderRequest;
 
+use CommonSDK\Concerns\ObjectPropertyRead;
 use CommonSDK\Concerns\PropertyWrite;
-use CommonSDK\Contracts\ReadableRequestProperty;
 use YDeliverySDK\Common;
 
 /**
- * @property-write float $length Длина в сантиметрах.
- * @property-write float $height Высота в сантиметрах.
- * @property-write float $width Ширина в сантиметрах.
- * @property-write float $weight Вес брутто в килограммах.
+ * @property-write string $externalId Идентификатор заказа в системе партнера.
+ * @property-write string $name Название товара.
+ * @property-write int $count Количество единиц товара.
+ * @property-write float $price Цена товара в рублях.
+ * @property-write int $assessedValue Объявленная стоимость заказа.
+ * @property-write string $tax Вид налогообложения товара: VAT_20 — НДС 20%, VAT_10 — НДС 10%, VAT_0 — НДС 0%, NO_VAT — не облагается НДС.
+ * @property-read  Dimensions $dimensions Вес и габариты отправления.
  */
-final class Dimensions extends Common\Dimensions implements ReadableRequestProperty
+final class Item extends Common\Item
 {
     use PropertyWrite;
+    use ObjectPropertyRead;
+
+    public function __construct(?Dimensions $dimensions = null)
+    {
+        $this->dimensions = new Dimensions();
+    }
 }

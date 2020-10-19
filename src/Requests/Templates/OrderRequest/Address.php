@@ -31,7 +31,7 @@ namespace YDeliverySDK\Requests\Templates\OrderRequest;
 use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Contracts\Property;
 use CommonSDK\Contracts\ReadableRequestProperty;
-use YDeliverySDK\Common\Address as CommonAddress;
+use YDeliverySDK\Common;
 
 /**
  * @property-write int $geoId
@@ -46,7 +46,7 @@ use YDeliverySDK\Common\Address as CommonAddress;
  * @property-write string $postalCode
  * @property-write string $postCode
  */
-final class Address extends CommonAddress implements ReadableRequestProperty
+final class Address extends Common\Address implements ReadableRequestProperty
 {
     use PropertyWrite;
 }

@@ -26,19 +26,61 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests\Types;
+namespace YDeliverySDK\Common;
 
-use CommonSDK\Concerns\PropertyWrite;
-use CommonSDK\Contracts\ReadableRequestProperty;
-use YDeliverySDK\Common;
+use JMS\Serializer\Annotation as JMS;
 
-/**
+/*
+ *
+ * @property-read float $length Длина в сантиметрах.
+ * @property-read float $width Высота в сантиметрах.
+ * @property-read float $height Ширина в сантиметрах.
+ * @property-read float $weight Вес брутто в килограммах.
+ *
  * @property-write float $length Длина в сантиметрах.
  * @property-write float $height Высота в сантиметрах.
  * @property-write float $width Ширина в сантиметрах.
  * @property-write float $weight Вес брутто в килограммах.
  */
-final class Dimensions extends Common\Dimensions implements ReadableRequestProperty
+
+/**
+ * Основа для объектов, используемых в запросах и ответах.
+ */
+abstract class Dimensions
 {
-    use PropertyWrite;
+    /**
+     * Длина в сантиметрах.
+     *
+     * @JMS\Type("float")
+     *
+     * @var float
+     */
+    protected $length;
+
+    /**
+     * Высота в сантиметрах.
+     *
+     * @JMS\Type("float")
+     *
+     * @var float
+     */
+    protected $height;
+
+    /**
+     * Ширина в сантиметрах.
+     *
+     * @JMS\Type("float")
+     *
+     * @var float
+     */
+    protected $width;
+
+    /**
+     * Вес брутто в килограммах.
+     *
+     * @JMS\Type("float")
+     *
+     * @var float
+     */
+    protected $weight;
 }

@@ -26,19 +26,19 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests\Types;
+namespace YDeliverySDK\Requests\Templates\OrderRequest;
 
 use CommonSDK\Concerns\PropertyWrite;
-use CommonSDK\Contracts\ReadableRequestProperty;
+use CommonSDK\Contracts\Property;
 use YDeliverySDK\Common;
 
 /**
- * @property-write float $length Длина в сантиметрах.
- * @property-write float $height Высота в сантиметрах.
- * @property-write float $width Ширина в сантиметрах.
- * @property-write float $weight Вес брутто в килограммах.
+ * @property-write string $code
+ * @property-write float $cost
+ * @property-write bool $customerPay Услуга оплачивается клиентом.
+ * @property-write bool $enabledByDefault
  */
-final class Dimensions extends Common\Dimensions implements ReadableRequestProperty
+final class DeliveryService extends Common\DeliveryService
 {
     use PropertyWrite;
 }

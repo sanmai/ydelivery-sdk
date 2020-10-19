@@ -26,19 +26,20 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests\Types;
+namespace YDeliverySDK\Requests\Templates\OrderRequest;
 
 use CommonSDK\Concerns\PropertyWrite;
+use CommonSDK\Contracts\Property;
 use CommonSDK\Contracts\ReadableRequestProperty;
 use YDeliverySDK\Common;
 
 /**
- * @property-write float $length Длина в сантиметрах.
- * @property-write float $height Высота в сантиметрах.
- * @property-write float $width Ширина в сантиметрах.
- * @property-write float $weight Вес брутто в килограммах.
+ * @property-write float $manualDeliveryForCustomer Стоимость доставки для покупателя (определяется магазином).
+ * @property-write string $paymentMethod Способ оплаты заказа: CASH — наличными курьеру, CARD — картой курьеру, PREPAID — предоплата.
+ * @property-write float $assessedValue Объявленная стоимость заказа.
+ * @property-write bool $fullyPrepaid Заказ полностью предоплачен.
  */
-final class Dimensions extends Common\Dimensions implements ReadableRequestProperty
+final class Cost extends Common\Cost implements ReadableRequestProperty
 {
     use PropertyWrite;
 }

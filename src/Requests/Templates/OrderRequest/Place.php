@@ -26,19 +26,34 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests\Types;
+namespace YDeliverySDK\Requests\Templates\OrderRequest;
 
+use CommonSDK\Concerns\ObjectPropertyRead;
 use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Contracts\ReadableRequestProperty;
 use YDeliverySDK\Common;
 
 /**
- * @property-write float $length Длина в сантиметрах.
- * @property-write float $height Высота в сантиметрах.
- * @property-write float $width Ширина в сантиметрах.
- * @property-write float $weight Вес брутто в килограммах.
+ * @property-write string $externalId
+ * @property-read Dimensions $dimensions
  */
-final class Dimensions extends Common\Dimensions implements ReadableRequestProperty
+final class Place extends Common\Place implements ReadableRequestProperty
 {
     use PropertyWrite;
+    use ObjectPropertyRead;
+
+    public function __construct(?Dimensions $dimensions = null, array $items = [])
+    {
+        $this->dimensions = new Dimensions();
+        $this->items = $items;
+    }
+
+    public function addItem(): Item
+    {
+        $item = new Item();
+
+        $this->items[] = $item;
+
+        return $item;
+    }
 }

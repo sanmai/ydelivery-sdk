@@ -26,19 +26,42 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests\Types;
+namespace YDeliverySDK\Common;
 
-use CommonSDK\Concerns\PropertyWrite;
-use CommonSDK\Contracts\ReadableRequestProperty;
-use YDeliverySDK\Common;
+use JMS\Serializer\Annotation as JMS;
+
+/*
+ * @property-read string $externalId
+ * @property-read Dimensions $dimensions
+ * @property-read Item[] $items
+ *
+ * @property-write string $externalId
+ * @property-read Dimensions $dimensions
+ */
 
 /**
- * @property-write float $length Длина в сантиметрах.
- * @property-write float $height Высота в сантиметрах.
- * @property-write float $width Ширина в сантиметрах.
- * @property-write float $weight Вес брутто в килограммах.
+ * Основа для объектов, используемых в запросах и ответах.
  */
-final class Dimensions extends Common\Dimensions implements ReadableRequestProperty
+abstract class Place
 {
-    use PropertyWrite;
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $externalId;
+
+    /**
+     * @JMS\Type("YDeliverySDK\Common\Dimensions")
+     *
+     * @var Dimensions
+     */
+    protected $dimensions;
+
+    /**
+     * @JMS\Type("array<YDeliverySDK\Common\Item>")
+     *
+     * @var Item[]
+     */
+    protected $items = [];
 }

@@ -26,19 +26,36 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests\Types;
+namespace YDeliverySDK\Requests\Templates\OrderRequest;
 
 use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Contracts\ReadableRequestProperty;
 use YDeliverySDK\Common;
 
 /**
- * @property-write float $length Длина в сантиметрах.
- * @property-write float $height Высота в сантиметрах.
- * @property-write float $width Ширина в сантиметрах.
- * @property-write float $weight Вес брутто в килограммах.
+ * @property-write int $tariffId Идентификатор тарифа.
+ * @property-write int $delivery Стоимость доставки.
+ * @property-write int $deliveryForCustomer Стоимость доставки для покупателя.
+ * @property-write int $partnerId Идентификатор службы доставки.
+ * @property-write int $deliveryIntervalId Идентификатор интервала времени, в который нужно доставить заказ покупателю.
+ * @property-write \DateTimeInterface $calculatedDeliveryDateMin Начальная дата доставки в формате YYYY-MM-DD.
+ * @property-write \DateTimeInterface $calculatedDeliveryDateMax Конечная дата доставки в формате YYYY-MM-DD.
  */
-final class Dimensions extends Common\Dimensions implements ReadableRequestProperty
+final class DeliveryOption extends Common\DeliveryOption implements ReadableRequestProperty
 {
     use PropertyWrite;
+
+    public function __construct(array $services = [])
+    {
+        $this->services = $services;
+    }
+
+    public function addService(): DeliveryService
+    {
+        $service = new DeliveryService();
+
+        $this->services[] = $service;
+
+        return $service;
+    }
 }

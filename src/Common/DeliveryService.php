@@ -26,19 +26,52 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests\Types;
+namespace YDeliverySDK\Common;
 
-use CommonSDK\Concerns\PropertyWrite;
-use CommonSDK\Contracts\ReadableRequestProperty;
-use YDeliverySDK\Common;
+use JMS\Serializer\Annotation as JMS;
+
+/*
+ *
+ * @property-read string $code
+ * @property-read float $cost
+ * @property-read boolean $customerPay Услуга оплачивается клиентом.
+ *
+ * @property-write string $code
+ * @property-write float $cost
+ * @property-write boolean $customerPay Услуга оплачивается клиентом.
+ *
+ */
 
 /**
- * @property-write float $length Длина в сантиметрах.
- * @property-write float $height Высота в сантиметрах.
- * @property-write float $width Ширина в сантиметрах.
- * @property-write float $weight Вес брутто в килограммах.
+ * Основа для объектов, используемых в запросах и ответах.
  */
-final class Dimensions extends Common\Dimensions implements ReadableRequestProperty
+abstract class DeliveryService
 {
-    use PropertyWrite;
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $code;
+
+    /**
+     * @JMS\Type("float")
+     *
+     * @var float
+     */
+    protected $cost;
+
+    /**
+     * @JMS\Type("boolean")
+     *
+     * @var bool
+     */
+    protected $customerPay;
+
+    /**
+     * @JMS\Type("boolean")
+     *
+     * @var bool
+     */
+    protected $enabledByDefault;
 }

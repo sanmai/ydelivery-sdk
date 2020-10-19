@@ -31,7 +31,7 @@ namespace YDeliverySDK\Requests\Templates\OrderRequest;
 use CommonSDK\Concerns\ObjectPropertyRead;
 use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Contracts\ReadableRequestProperty;
-use YDeliverySDK\Common\Recipient as CommonRecipient;
+use YDeliverySDK\Common;
 
 /**
  * @property-write string $firstName
@@ -41,7 +41,7 @@ use YDeliverySDK\Common\Recipient as CommonRecipient;
  * @property-read Address $address
  * @property-write int $pickupPointId
  */
-final class Recipient extends CommonRecipient implements ReadableRequestProperty
+final class Recipient extends Common\Recipient implements ReadableRequestProperty
 {
     use PropertyWrite;
     use ObjectPropertyRead;

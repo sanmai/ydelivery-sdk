@@ -30,76 +30,16 @@ namespace YDeliverySDK\Requests\Types;
 
 use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Contracts\ReadableRequestProperty;
-use DateTimeInterface;
-use JMS\Serializer\Annotation as JMS;
+use YDeliverySDK\Common;
 
 /**
- * @property-write DateTimeInterface $date
- * @property-write string $type
- * @property-write int $partnerId
- * @property-write int $warehouseId
- * @property-write bool $includeNonDefault
+ * @property-write \DateTimeInterface $date Дата отгрузки в формате YYYY-MM-DD.
+ * @property-write string $type Тип отгрузки: IMPORT — самостоятельно, WITHDRAW — курьером.
+ * @property-write int $partnerId Параметр учитывается только при запросе всех вариантов доставки (includeNonDefault = true).
+ * @property-write int $warehouseId Идентификатор склада.
+ * @property-write bool $includeNonDefault Нужно ли включить дополнительные варианты доставки в запрос, кроме тех, что заявлены в ЛК.
  */
-final class Shipment implements ReadableRequestProperty
+final class Shipment extends Common\Shipment implements ReadableRequestProperty
 {
     use PropertyWrite;
-
-    /**
-     * Вид отгрузки: самопривоз.
-     *
-     * @var string
-     */
-    public const TYPE_IMPORT = 'IMPORT';
-
-    /**
-     * Вид отгрузки: забор.
-     *
-     * @var string
-     */
-    public const TYPE_WITHDRAW = 'WITHDRAW';
-
-    /**
-     * Дата отгрузки в формате YYYY-MM-DD.
-     *
-     * @JMS\Type("DateTimeInterface<'Y-m-d'>")
-     *
-     * @var \DateTimeInterface
-     */
-    private $date;
-
-    /**
-     * Вид отгрузки.
-     *
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    private $type;
-
-    /**
-     * Параметр учитывается только при запросе всех вариантов доставки (includeNonDefault = true).
-     *
-     * @JMS\Type("int")
-     *
-     * @var int
-     */
-    private $partnerId;
-
-    /**
-     * Идентификатор склада.
-     *
-     * @JMS\Type("int")
-     *
-     * @var int
-     */
-    private $warehouseId;
-
-    /**
-     * Нужно ли включить дополнительные варианты доставки в запрос, кроме тех, что заявлены в ЛК.
-     *
-     * @JMS\Type("bool")
-     *
-     * @var bool
-     */
-    private $includeNonDefault;
 }

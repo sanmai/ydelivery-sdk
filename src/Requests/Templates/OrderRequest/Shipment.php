@@ -26,19 +26,30 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests\Types;
+namespace YDeliverySDK\Requests\Templates\OrderRequest;
 
 use CommonSDK\Concerns\PropertyWrite;
+use CommonSDK\Contracts\Property;
 use CommonSDK\Contracts\ReadableRequestProperty;
 use YDeliverySDK\Common;
 
 /**
- * @property-write float $length Длина в сантиметрах.
- * @property-write float $height Высота в сантиметрах.
- * @property-write float $width Ширина в сантиметрах.
- * @property-write float $weight Вес брутто в килограммах.
+ * @property-write string $type Тип отгрузки: IMPORT — самостоятельно, WITHDRAW — курьером.
+ * @property-write \DateTimeInterface $date Дата отгрузки в формате YYYY-MM-DD.
+ * @property-write int $warehouseFrom Идентификатор склада, с которого отгружаются товары.
+ * @property-write int $warehouseTo Идентификатор склада, на который отгружаются товары.
+ * @property-write int $partnerTo Идентификатор партнера, которому отгружаются товары.
  */
-final class Dimensions extends Common\Dimensions implements ReadableRequestProperty
+final class Shipment extends Common\Shipment implements ReadableRequestProperty
 {
     use PropertyWrite;
+
+    private function setDate($date)
+    {
+        if (!$date instanceof \DateTimeInterface) {
+            $date = new \DateTimeImmutable((string) $date);
+        }
+
+        $this->date = $date;
+    }
 }

@@ -32,7 +32,12 @@ use CommonSDK\Concerns\ObjectPropertyRead;
 use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Contracts\JsonRequest;
 use JMS\Serializer\Annotation as JMS;
+use YDeliverySDK\Requests\Templates\OrderRequest\Contact;
+use YDeliverySDK\Requests\Templates\OrderRequest\Cost;
+use YDeliverySDK\Requests\Templates\OrderRequest\DeliveryOption;
+use YDeliverySDK\Requests\Templates\OrderRequest\Place;
 use YDeliverySDK\Requests\Templates\OrderRequest\Recipient;
+use YDeliverySDK\Requests\Templates\OrderRequest\Shipment;
 use YDeliverySDK\Responses\OrderResponse;
 
 /**
@@ -43,6 +48,9 @@ use YDeliverySDK\Responses\OrderResponse;
  * @property-write string $comment
  * @property-write string $deliveryType Тип доставки (COURIER — курьером, PICKUP — в пункт выдачи, POST — на почту).
  * @property-read Recipient $recipient Данные о получателе.
+ * @property-read Cost $cost
+ * @property-read DeliveryOption $deliveryOption
+ * @property-read Shipment $shipment
  */
 abstract class OrderRequest implements JsonRequest
 {
@@ -87,10 +95,74 @@ abstract class OrderRequest implements JsonRequest
     protected $recipient;
 
     /**
+     * @JMS\Type("YDeliverySDK\Requests\Templates\OrderRequest\Cost")
+     *
+     * @var Cost
+     */
+    protected $cost;
+
+    /**
+     * @JMS\Type("array<YDeliverySDK\Requests\Templates\OrderRequest\Contact>")
+     *
+     * @var Contact[]
+     */
+    protected $contacts = [];
+
+    /**
+     * @JMS\Type("YDeliverySDK\Requests\Templates\OrderRequest\DeliveryOption")
+     *
+     * @var DeliveryOption
+     */
+    protected $deliveryOption;
+
+    /**
+     * @JMS\Type("YDeliverySDK\Requests\Templates\OrderRequest\Shipment")
+     *
+     * @var Shipment
+     */
+    protected $shipment;
+
+    /**
+     * @JMS\Type("array<YDeliverySDK\Requests\Templates\OrderRequest\Place>")
+     *
+     * @var Place[]
+     */
+    protected $places = [];
+
+    /**
      * @phan-suppress PhanAccessReadOnlyMagicProperty
      */
-    public function __construct(?Recipient $recipient = null)
-    {
+    public function __construct(
+        ?Recipient $recipient = null,
+        ?Cost $cost = null,
+        array $contacts = [],
+        ?DeliveryOption $deliveryOption = null,
+        ?Shipment $shipment = null,
+        array $places = []
+    ) {
         $this->recipient = $recipient ?? new Recipient();
+        $this->cost = $cost ?? new Cost();
+        $this->contacts = $contacts;
+        $this->deliveryOption = $deliveryOption ?? new DeliveryOption();
+        $this->shipment = $shipment ?? new Shipment();
+        $this->places = $places;
+    }
+
+    public function addContact(): Contact
+    {
+        $contact = new Contact();
+
+        $this->contacts[] = $contact;
+
+        return $contact;
+    }
+
+    public function addPlace(): Place
+    {
+        $place = new Place();
+
+        $this->places[] = $place;
+
+        return $place;
     }
 }

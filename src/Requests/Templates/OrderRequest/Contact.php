@@ -26,19 +26,21 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests\Types;
+namespace YDeliverySDK\Requests\Templates\OrderRequest;
 
 use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Contracts\ReadableRequestProperty;
 use YDeliverySDK\Common;
 
 /**
- * @property-write float $length Длина в сантиметрах.
- * @property-write float $height Высота в сантиметрах.
- * @property-write float $width Ширина в сантиметрах.
- * @property-write float $weight Вес брутто в килограммах.
+ * @property-write string $type Тип контакта: RECIPIENT, CREDENTIALS, CONTACT.
+ * @property-write string $phone Номер телефона.
+ * @property-write string $additional Дополнительный номер телефона.
+ * @property-write string $firstName Имя получателя.
+ * @property-write string $middleName Отчество получателя.
+ * @property-write string $lastName Фамилия получателя.
  */
-final class Dimensions extends Common\Dimensions implements ReadableRequestProperty
+final class Contact extends Common\Contact implements ReadableRequestProperty
 {
     use PropertyWrite;
 }

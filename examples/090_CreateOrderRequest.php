@@ -41,6 +41,109 @@ $request = new CreateOrderRequest();
 $request->deliveryType = 'COURIER';
 $request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
 
+$request->shipment->date = '2020-02-12';
+$request->shipment->warehouseFrom = (int) $_SERVER['YANDEX_WAREHOUSE_ID'];
+$request->shipment->type = $request->shipment::TYPE_IMPORT;
+$request->shipment->warehouseTo = 10000816227;
+$request->shipment->partnerTo = 107;
+
+$request->recipient->firstName = 'Василий';
+$request->recipient->lastName = 'Юрочкин';
+$request->recipient->phone = '+79266056128';
+
+$request->recipient->address->apartment = '43';
+$request->recipient->address->country = 'Россия';
+$request->recipient->address->geoId = 213;
+$request->recipient->address->house = '8';
+$request->recipient->address->housing = '';
+$request->recipient->address->locality = 'Москва';
+$request->recipient->address->region = 'Москва';
+$request->recipient->address->street = 'Коктебельская улица';
+$request->recipient->pickupPointId = 10000018299;
+
+$place = $request->addPlace();
+
+$place->externalId = '427';
+$place->dimensions->length = 10;
+$place->dimensions->width = 20;
+$place->dimensions->height = 30;
+$place->dimensions->weight = 0.3;
+
+$item = $place->addItem();
+
+$item->externalId = '428';
+$item->name = '2 товар';
+$item->count = 1;
+$item->price = 1467;
+$item->assessedValue = 1467;
+$item->tax = 'NO_VAT';
+
+$item->dimensions->length = 10;
+$item->dimensions->width = 20;
+$item->dimensions->height = 30;
+$item->dimensions->weight = 0.3;
+
+$request->externalId = '426';
+$request->deliveryType = 'PICKUP';
+$request->comment = 'Доставки не будет - тестовый заказ';
+
+$request->deliveryOption->tariffId = 100040;
+
+$request->deliveryOption->tariffId = 100040;
+$request->deliveryOption->delivery = 198.00;
+$request->deliveryOption->deliveryForCustomer = 369.802;
+$request->deliveryOption->type = 'PICKUP';
+$request->deliveryOption->partnerId = 107;
+$request->deliveryOption->calculatedDeliveryDateMin = '2020-02-13';
+$request->deliveryOption->calculatedDeliveryDateMax = '2020-02-13';
+
+$service = $request->deliveryOption->addService();
+$service->name = 'Доставка';
+$service->code = 'DELIVERY';
+$service->cost = 188.00;
+$service->customerPay = true;
+$service->enabledByDefault = true;
+
+$service = $request->deliveryOption->addService();
+$service->name = 'Услуга Объявленная ценность';
+$service->code = 'INSURANCE';
+$service->cost = 7.335;
+$service->customerPay = true;
+$service->enabledByDefault = true;
+
+$service = $request->deliveryOption->addService();
+$service->name = 'Возврат';
+$service->code = 'RETURN';
+$service->cost = 141.0000;
+$service->customerPay = false;
+$service->enabledByDefault = false;
+
+$service = $request->deliveryOption->addService();
+$service->name = 'Сортировка возврата';
+$service->code = 'RETURN_SORT';
+$service->cost = 20;
+$service->customerPay = false;
+$service->enabledByDefault = false;
+
+$service = $request->deliveryOption->addService();
+$service->name = 'Вознаграждение за перечисление денежных средств';
+$service->code = 'CASH_SERVICE';
+$service->cost = 33.439;
+$service->customerPay = false;
+$service->enabledByDefault = true;
+
+$request->cost->assessedValue = 1467;
+$request->cost->fullyPrepaid = false;
+$request->cost->manualDeliveryForCustomer = 500;
+$request->cost->paymentMethod = 'CASH';
+
+$contact = $request->addContact();
+
+$contact->type = 'RECIPIENT';
+$contact->phone = '+79266056128';
+$contact->firstName = 'Василий';
+$contact->lastName = 'Юрочкин';
+
 $response = $client->sendCreateOrderRequest($request);
 
 if ($response->hasErrors()) {

@@ -30,51 +30,15 @@ namespace YDeliverySDK\Requests\Types;
 
 use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Contracts\ReadableRequestProperty;
-use JMS\Serializer\Annotation as JMS;
+use YDeliverySDK\Common;
 
 /**
- * @property-write float $assessedValue
- * @property-write float $itemsSum
- * @property-write float $manualDeliveryForCustomer
- * @property-write bool $fullyPrepaid
+ * @property-write float $assessedValue Объявленная стоимость заказа. Влияет на стоимость страховки.
+ * @property-write float $itemsSum Суммарная стоимость товаров заказа. Влияет на стоимость наложенного платежа.
+ * @property-write float $manualDeliveryForCustomer Стоимость доставки для покупателя (определяется магазином).
+ * @property-write bool $fullyPrepaid Заказ полностью предоплачен.
  */
-final class Cost implements ReadableRequestProperty
+final class Cost extends Common\Cost implements ReadableRequestProperty
 {
     use PropertyWrite;
-
-    /**
-     * Объявленная стоимость заказа. Влияет на стоимость страховки.
-     *
-     * @JMS\Type("float")
-     *
-     * @var float
-     */
-    private $assessedValue;
-
-    /**
-     * Суммарная стоимость товаров заказа. Влияет на стоимость наложенного платежа.
-     *
-     * @JMS\Type("float")
-     *
-     * @var float
-     */
-    private $itemsSum;
-
-    /**
-     * Стоимость доставки для покупателя (определяется магазином).
-     *
-     * @JMS\Type("float")
-     *
-     * @var float
-     */
-    private $manualDeliveryForCustomer;
-
-    /**
-     * Заказ полностью предоплачен.
-     *
-     * @JMS\Type("bool")
-     *
-     * @var bool
-     */
-    private $fullyPrepaid;
 }
