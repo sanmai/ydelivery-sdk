@@ -37,7 +37,7 @@ use YDeliverySDK\Requests\Templates\OrderRequest\Cost;
 use YDeliverySDK\Requests\Templates\OrderRequest\DeliveryOption;
 use YDeliverySDK\Requests\Templates\OrderRequest\Place;
 use YDeliverySDK\Requests\Templates\OrderRequest\Recipient;
-use YDeliverySDK\Requests\Templates\OrderRequest\Shipment;
+use YDeliverySDK\Requests\Types\Shipment;
 use YDeliverySDK\Responses\OrderResponse;
 
 /**

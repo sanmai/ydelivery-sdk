@@ -33,13 +33,28 @@ use CommonSDK\Contracts\ReadableRequestProperty;
 use YDeliverySDK\Common;
 
 /**
- * @property-write \DateTimeInterface $date Дата отгрузки в формате YYYY-MM-DD.
+ * @property-write string|\DateTimeInterface $date Дата отгрузки в формате YYYY-MM-DD.
  * @property-write string $type Тип отгрузки: IMPORT — самостоятельно, WITHDRAW — курьером.
  * @property-write int $partnerId Параметр учитывается только при запросе всех вариантов доставки (includeNonDefault = true).
  * @property-write int $warehouseId Идентификатор склада.
  * @property-write bool $includeNonDefault Нужно ли включить дополнительные варианты доставки в запрос, кроме тех, что заявлены в ЛК.
+ * @property-write int $warehouseFrom Идентификатор склада, с которого отгружаются товары.
+ * @property-write int $warehouseTo Идентификатор склада, на который отгружаются товары.
+ * @property-write int $partnerTo Идентификатор партнера, которому отгружаются товары.
  */
 final class Shipment extends Common\Shipment implements ReadableRequestProperty
 {
     use PropertyWrite;
+
+    /**
+     * @param string|\DateTimeInterface $date
+     */
+    private function setDate($date): void
+    {
+        if (!$date instanceof \DateTimeInterface) {
+            $date = new \DateTimeImmutable((string) $date);
+        }
+
+        $this->date = $date;
+    }
 }

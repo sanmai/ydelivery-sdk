@@ -32,6 +32,7 @@ use CommonSDK\Concerns\ObjectPropertyRead;
 use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Contracts\ReadableRequestProperty;
 use YDeliverySDK\Common;
+use YDeliverySDK\Requests\Types\Dimensions;
 
 /**
  * @property-write string $externalId

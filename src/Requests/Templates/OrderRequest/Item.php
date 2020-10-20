@@ -31,6 +31,7 @@ namespace YDeliverySDK\Requests\Templates\OrderRequest;
 use CommonSDK\Concerns\ObjectPropertyRead;
 use CommonSDK\Concerns\PropertyWrite;
 use YDeliverySDK\Common;
+use YDeliverySDK\Requests\Types\Dimensions;
 
 /**
  * @property-write string $externalId Идентификатор заказа в системе партнера.
