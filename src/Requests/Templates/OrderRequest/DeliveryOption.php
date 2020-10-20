@@ -34,12 +34,13 @@ use YDeliverySDK\Common;
 
 /**
  * @property-write int $tariffId Идентификатор тарифа.
- * @property-write int $delivery Стоимость доставки.
- * @property-write int $deliveryForCustomer Стоимость доставки для покупателя.
+ * @property-write float|int $delivery Стоимость доставки.
+ * @property-write float|int $deliveryForCustomer Стоимость доставки для покупателя.
+ * @property-write string $type
  * @property-write int $partnerId Идентификатор службы доставки.
  * @property-write int $deliveryIntervalId Идентификатор интервала времени, в который нужно доставить заказ покупателю.
- * @property-write \DateTimeInterface $calculatedDeliveryDateMin Начальная дата доставки в формате YYYY-MM-DD.
- * @property-write \DateTimeInterface $calculatedDeliveryDateMax Конечная дата доставки в формате YYYY-MM-DD.
+ * @property-write \DateTimeInterface|string $calculatedDeliveryDateMin Начальная дата доставки в формате YYYY-MM-DD.
+ * @property-write \DateTimeInterface|string $calculatedDeliveryDateMax Конечная дата доставки в формате YYYY-MM-DD.
  */
 final class DeliveryOption extends Common\DeliveryOption implements ReadableRequestProperty
 {

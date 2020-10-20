@@ -79,6 +79,13 @@ abstract class Recipient
      *
      * @var string
      */
+    protected $phone;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
     protected $email;
 
     /**

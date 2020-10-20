@@ -33,6 +33,7 @@ use CommonSDK\Contracts\Property;
 use YDeliverySDK\Common;
 
 /**
+ * @property-write string $name
  * @property-write string $code
  * @property-write float $cost
  * @property-write bool $customerPay Услуга оплачивается клиентом.

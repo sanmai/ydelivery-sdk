@@ -64,18 +64,25 @@ abstract class DeliveryOption
     protected $tariffId;
 
     /**
-     * @JMS\Type("int")
+     * @JMS\Type("float")
      *
-     * @var int
+     * @var float
      */
     protected $delivery;
 
     /**
-     * @JMS\Type("int")
+     * @JMS\Type("float")
      *
-     * @var int
+     * @var float
      */
     protected $deliveryForCustomer;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $type;
 
     /**
      * @JMS\Type("int")
@@ -112,16 +119,27 @@ abstract class DeliveryOption
      */
     protected $services = [];
 
-    protected function setCalculatedDeliveryDateMin($date)
+    /**
+     * @param string|\DateTimeInterface $date
+     */
+    protected function setCalculatedDeliveryDateMin($date): void
     {
         $this->calculatedDeliveryDateMin = self::dateStringToDateTime($date);
     }
 
-    protected function setCalculatedDeliveryDateMax($date)
+    /**
+     * @param string|\DateTimeInterface $date
+     */
+    protected function setCalculatedDeliveryDateMax($date): void
     {
         $this->calculatedDeliveryDateMax = self::dateStringToDateTime($date);
     }
 
+    /**
+     * @param string|\DateTimeInterface $date
+     *
+     * @return \DateTimeInterface
+     */
     private static function dateStringToDateTime($date)
     {
         if (!$date instanceof \DateTimeInterface) {

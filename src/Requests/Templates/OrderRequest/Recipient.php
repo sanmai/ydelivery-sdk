@@ -37,6 +37,7 @@ use YDeliverySDK\Common;
  * @property-write string $firstName
  * @property-write string $middleName
  * @property-write string $lastName
+ * @property-write string $phone
  * @property-write string $email
  * @property-read Address $address
  * @property-write int $pickupPointId

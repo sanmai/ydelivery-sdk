@@ -45,6 +45,7 @@ $request->cabinetId = (int) $_SERVER['YANDEX_CABINET_ID'];
 foreach ($client->sendDeliveryServicesRequest($request) as $partner) {
     break;
 }
+/** @var \YDeliverySDK\Responses\Types\DeliveryService $partner */
 
 // Для него получим расписание доставки.
 $request = new ImportIntervalsRequest();

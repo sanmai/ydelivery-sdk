@@ -52,6 +52,13 @@ abstract class DeliveryService
      *
      * @var string
      */
+    protected $name;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
     protected $code;
 
     /**

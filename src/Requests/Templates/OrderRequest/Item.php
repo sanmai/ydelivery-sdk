@@ -46,8 +46,12 @@ final class Item extends Common\Item
     use PropertyWrite;
     use ObjectPropertyRead;
 
+    /**
+     * @phan-suppress PhanAccessReadOnlyMagicProperty
+     */
     public function __construct(?Dimensions $dimensions = null)
     {
-        $this->dimensions = new Dimensions();
+        /** @phpstan-ignore-next-line */
+        $this->dimensions = $dimensions ?? new Dimensions();
     }
 }

@@ -42,9 +42,13 @@ final class Place extends Common\Place implements ReadableRequestProperty
     use PropertyWrite;
     use ObjectPropertyRead;
 
+    /**
+     * @phan-suppress PhanAccessReadOnlyMagicProperty
+     */
     public function __construct(?Dimensions $dimensions = null, array $items = [])
     {
-        $this->dimensions = new Dimensions();
+        /** @phpstan-ignore-next-line */
+        $this->dimensions = $dimensions ?? new Dimensions();
         $this->items = $items;
     }
 
