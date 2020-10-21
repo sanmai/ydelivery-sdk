@@ -39,7 +39,6 @@ $builder->setLogger(new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-
 /**
  * Получим данные по адресу.
  */
@@ -194,4 +193,3 @@ if ($response->hasErrors()) {
 foreach ($response as $order) {
     \var_dump($order->orderId);
 }
-
