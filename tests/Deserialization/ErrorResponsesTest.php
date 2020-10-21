@@ -30,7 +30,7 @@ namespace Tests\YDeliverySDK\Deserialization;
 
 use CommonSDK\Contracts\HasErrorCode;
 use CommonSDK\Contracts\Response;
-use function Pipeline\zip;
+use function Pipeline\take;
 use YDeliverySDK\Responses\Bad\BadRequestResponse;
 use YDeliverySDK\Responses\Bad\NotFoundResponse;
 use YDeliverySDK\Responses\Bad\UnauthorizedResponse;
@@ -58,17 +58,25 @@ class ErrorResponsesTest extends TestCase
 
         yield '400_Validation.json' => ['400_Validation.json', BadRequestResponse::class, [
             ['VALIDATION_ERROR', 'Validation error'],
+            ['FIELD_NOT_VALID', 'senderOrderDraft->deliveryType must not be null'],
+            ['FIELD_NOT_VALID', 'senderOrderDraft->senderId must not be null'],
         ]];
 
         yield '400_DELIVERY_OPTION_VALIDATION.json' => ['400_DELIVERY_OPTION_VALIDATION.json', BadRequestResponse::class, [
             ['DELIVERY_OPTION_VALIDATION', 'Delivery option validation failed'],
+            ['OPTION_SERVICE_NOT_FOUND', 'DELIVERY'],
+            ['OPTION_SERVICE_NOT_FOUND', 'CASH_SERVICE'],
+            ['OPTION_SERVICE_NOT_FOUND', 'RETURN'],
+            ['OPTION_SERVICE_NOT_FOUND', 'RETURN_SORT'],
+            ['OPTION_CALCULATED_DATE_MIN_MISMATCH', '2020-10-31'],
+            ['OPTION_CALCULATED_DATE_MAX_MISMATCH', '2020-10-31'],
         ]];
     }
 
     /**
      * @dataProvider errorResponsesProvider
      */
-    public function test_it_can_be_read(string $fixtureFileName, string $typeName, array $errors)
+    public function test_it_can_be_read(string $fixtureFileName, string $typeName, array $expectedErrors)
     {
         $response = $this->loadFixtureWithType($fixtureFileName, $typeName);
         /** @var $response NotFoundResponse|UnauthorizedResponse|BadRequestResponse */
@@ -77,13 +85,14 @@ class ErrorResponsesTest extends TestCase
         $this->assertCount(0, $response);
         $this->assertTrue($response->hasErrors());
 
-        $this->assertCount(\count($errors), $response->getMessages());
-
-        $this->assertCount(\count($errors), zip($errors, $response->getMessages())
-            ->unpack(function (array $expected, HasErrorCode $message) {
-                $this->assertSame($expected[0], $message->getErrorCode());
-                $this->assertSame($expected[1], $message->getMessage());
-            })
+        $this->assertSame(
+            $expectedErrors,
+            take($response->getMessages())->map(function (HasErrorCode $message) {
+                return [
+                    $message->getErrorCode(),
+                    $message->getMessage(),
+                ];
+            })->toArray()
         );
     }
 }

@@ -68,7 +68,7 @@ final class BadRequestResponse implements Response, HasErrorCode, \Countable
      *
      * @var ValidationError[]
      */
-    private $errors;
+    private $errors = [];
 
     public function hasErrors(): bool
     {
@@ -77,7 +77,7 @@ final class BadRequestResponse implements Response, HasErrorCode, \Countable
 
     public function getMessages()
     {
-        return Message::from([$this]);
+        return Message::from([$this], $this->errors);
     }
 
     public function getMessage(): string

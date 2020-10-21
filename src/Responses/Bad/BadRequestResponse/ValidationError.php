@@ -36,6 +36,8 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * Validation error.
  *
+ * Can be like:
+ *
  * {
  *    "objectName": "senderOrderDraft",
  *    "field": "deliveryType",
@@ -45,11 +47,29 @@ use JMS\Serializer\Annotation as JMS;
  *    "errorCode": "FIELD_NOT_VALID"
  * }
  *
- * @property-read string $objectName
- * @property-read string $field
- * @property-read string $message
- * @property-read string $conditionCode
+ * Or like:
+ *
+ * {
+ *    "errorCode": "OPTION_SERVICE_NOT_FOUND",
+ *    "extraService": "RETURN_SORT"
+ * }
+ *
+ * Or like:
+ *
+ * {
+ *    "errorCode": "OPTION_CALCULATED_DATE_MIN_MISMATCH",
+ *    "currentValue": null,
+ *    "actualValue": "2020-10-31"
+ * }
+ *
+ * @property-read string|null $objectName
+ * @property-read string|null $field
+ * @property-read string|null $message
+ * @property-read string|null $conditionCode
  * @property-read string $errorCode
+ * @property-read string|null $extraService
+ * @property-read string|null $currentValue
+ * @property-read string|null $actualValue
  */
 final class ValidationError implements HasErrorCode
 {
@@ -58,28 +78,28 @@ final class ValidationError implements HasErrorCode
     /**
      * @JMS\Type("string")
      *
-     * @var string
+     * @var string|null
      */
     private $objectName;
 
     /**
      * @JMS\Type("string")
      *
-     * @var string
+     * @var string|null
      */
     private $field;
 
     /**
      * @JMS\Type("string")
      *
-     * @var string
+     * @var string|null
      */
     private $message;
 
     /**
      * @JMS\Type("string")
      *
-     * @var string
+     * @var string|null
      */
     private $conditionCode;
 
@@ -90,7 +110,7 @@ final class ValidationError implements HasErrorCode
      *
      * @todo Needs an example.
      */
-    private $arguments;
+    private $arguments = [];
 
     /**
      * @JMS\Type("string")
@@ -99,6 +119,27 @@ final class ValidationError implements HasErrorCode
      */
     private $errorCode;
 
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string|null
+     */
+    private $extraService;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string|null
+     */
+    private $currentValue;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string|null
+     */
+    private $actualValue;
+
     public function getErrorCode(): ?string
     {
         return $this->errorCode;
@@ -106,6 +147,22 @@ final class ValidationError implements HasErrorCode
 
     public function getMessage(): string
     {
-        return \sprintf('%s->%s %s', $this->objectName, $this->field, $this->message);
+        if ($this->objectName !== null) {
+            return \sprintf('%s->%s %s', $this->objectName, $this->field, $this->message);
+        }
+
+        foreach (\get_object_vars($this) as $key => $value) {
+            if (!\is_string($value)) {
+                continue;
+            }
+
+            if ($key === 'errorCode') {
+                continue;
+            }
+
+            return $value;
+        }
+
+        return $this->errorCode;
     }
 }
