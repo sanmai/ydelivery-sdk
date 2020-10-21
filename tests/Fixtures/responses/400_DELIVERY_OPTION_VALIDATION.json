@@ -1,0 +1,32 @@
+{
+    "message": "Delivery option validation failed",
+    "type": "DELIVERY_OPTION_VALIDATION",
+    "errors": [
+        {
+            "errorCode": "OPTION_SERVICE_NOT_FOUND",
+            "extraService": "DELIVERY"
+        },
+        {
+            "errorCode": "OPTION_SERVICE_NOT_FOUND",
+            "extraService": "CASH_SERVICE"
+        },
+        {
+            "errorCode": "OPTION_SERVICE_NOT_FOUND",
+            "extraService": "RETURN"
+        },
+        {
+            "errorCode": "OPTION_SERVICE_NOT_FOUND",
+            "extraService": "RETURN_SORT"
+        },
+        {
+            "errorCode": "OPTION_CALCULATED_DATE_MIN_MISMATCH",
+            "currentValue": null,
+            "actualValue": "2020-10-31"
+        },
+        {
+            "errorCode": "OPTION_CALCULATED_DATE_MAX_MISMATCH",
+            "currentValue": null,
+            "actualValue": "2020-10-31"
+        }
+    ]
+}

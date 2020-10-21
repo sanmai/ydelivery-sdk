@@ -59,6 +59,10 @@ class ErrorResponsesTest extends TestCase
         yield '400_Validation.json' => ['400_Validation.json', BadRequestResponse::class, [
             ['VALIDATION_ERROR', 'Validation error'],
         ]];
+
+        yield '400_DELIVERY_OPTION_VALIDATION.json' => ['400_DELIVERY_OPTION_VALIDATION.json', BadRequestResponse::class, [
+            ['DELIVERY_OPTION_VALIDATION', 'Delivery option validation failed'],
+        ]];
     }
 
     /**
