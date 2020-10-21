@@ -38,7 +38,7 @@ $builder->setLogger(new DebuggingLogger());
 $client = $builder->build();
 
 $request = new LocationRequest();
-$request->term = 'Владимир';
+$request->term = 'Новосибирская область, Новосибирск';
 
 $response = $client->sendLocationRequest($request);
 

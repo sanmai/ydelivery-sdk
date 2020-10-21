@@ -41,6 +41,10 @@ use YDeliverySDK\Common;
  * @property-write string $email
  * @property-read Address $address
  * @property-write int $pickupPointId
+ * @property-write string $COUNTRY
+ * @property-write string $PROVINCE
+ * @property-write string $AREA
+ * @property-write string $LOCALITY
  */
 final class Recipient extends Common\Recipient implements ReadableRequestProperty
 {

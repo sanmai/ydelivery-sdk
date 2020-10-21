@@ -137,4 +137,25 @@ abstract class Address
      * @var string
      */
     protected $postCode;
+
+    protected function setCountry(string $country): void
+    {
+        $this->country = $country;
+    }
+
+    protected function setProvince(string $region): void
+    {
+        $this->region = $region;
+    }
+
+    protected function setArea(string $area): void
+    {
+        // Не используется:
+        // AREA: городской округ Новосибирск
+    }
+
+    protected function setLocality(string $locality): void
+    {
+        $this->locality = $locality;
+    }
 }

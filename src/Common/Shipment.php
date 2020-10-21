@@ -73,7 +73,7 @@ abstract class Shipment
     protected $type;
 
     /**
-     * @JMS\Type("DateTimeImmutable<'Y-m-d'>")
+     * @JMS\Type("DateTimeInterface<'Y-m-d'>")
      *
      * @var \DateTimeInterface
      */
@@ -120,4 +120,16 @@ abstract class Shipment
      * @var bool
      */
     protected $includeNonDefault;
+
+    /**
+     * @param string|\DateTimeInterface $date
+     */
+    protected function setDate($date): void
+    {
+        if (!$date instanceof \DateTimeInterface) {
+            $date = new \DateTimeImmutable((string) $date);
+        }
+
+        $this->date = $date;
+    }
 }

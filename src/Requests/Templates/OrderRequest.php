@@ -32,11 +32,9 @@ use CommonSDK\Concerns\ObjectPropertyRead;
 use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Contracts\JsonRequest;
 use JMS\Serializer\Annotation as JMS;
-use YDeliverySDK\Requests\Templates\OrderRequest\Contact;
-use YDeliverySDK\Requests\Templates\OrderRequest\Cost;
-use YDeliverySDK\Requests\Templates\OrderRequest\DeliveryOption;
+use YDeliverySDK\Common;
 use YDeliverySDK\Requests\Templates\OrderRequest\Place;
-use YDeliverySDK\Requests\Templates\OrderRequest\Recipient;
+use YDeliverySDK\Requests\Types\Dimensions;
 use YDeliverySDK\Requests\Types\Shipment;
 use YDeliverySDK\Responses\OrderResponse;
 
@@ -47,15 +45,30 @@ use YDeliverySDK\Responses\OrderResponse;
  * @property-write string $externalId Идентификатор заказа в системе партнера.
  * @property-write string $comment
  * @property-write string $deliveryType Тип доставки (COURIER — курьером, PICKUP — в пункт выдачи, POST — на почту).
- * @property-read Recipient $recipient Данные о получателе.
- * @property-read Cost $cost
- * @property-read DeliveryOption $deliveryOption
+ * @property-read OrderRequest\Recipient $recipient Данные о получателе.
+ * @property-read OrderRequest\Cost $cost
+ * @property-read OrderRequest\DeliveryOption $deliveryOption
  * @property-read Shipment $shipment
  */
 abstract class OrderRequest implements JsonRequest
 {
     use PropertyWrite;
     use ObjectPropertyRead;
+
+    /**
+     * Тип доставки — курьером
+     */
+    public const DELIVERY_TYPE_COURIER = 'COURIER';
+
+    /**
+     * Тип доставки — на почту.
+     */
+    public const DELIVERY_TYPE_POST = 'POST';
+
+    /**
+     * Тип доставки — в пункт выдачи.
+     */
+    public const DELIVERY_TYPE_PICKUP = 'PICKUP';
 
     protected const RESPONSE = OrderResponse::class;
 
@@ -90,33 +103,33 @@ abstract class OrderRequest implements JsonRequest
     /**
      * @JMS\Type("YDeliverySDK\Requests\Templates\OrderRequest\Recipient")
      *
-     * @var Recipient
+     * @var OrderRequest\Recipient
      */
     protected $recipient;
 
     /**
      * @JMS\Type("YDeliverySDK\Requests\Templates\OrderRequest\Cost")
      *
-     * @var Cost
+     * @var OrderRequest\Cost
      */
     protected $cost;
 
     /**
      * @JMS\Type("array<YDeliverySDK\Requests\Templates\OrderRequest\Contact>")
      *
-     * @var Contact[]
+     * @var OrderRequest\Contact[]
      */
     protected $contacts = [];
 
     /**
-     * @JMS\Type("YDeliverySDK\Requests\Templates\OrderRequest\DeliveryOption")
+     * @JMS\Type("YDeliverySDK\Common\DeliveryOption")
      *
-     * @var DeliveryOption
+     * @var Common\DeliveryOption
      */
     protected $deliveryOption;
 
     /**
-     * @JMS\Type("YDeliverySDK\Requests\Templates\OrderRequest\Shipment")
+     * @JMS\Type("YDeliverySDK\Requests\Types\Shipment")
      *
      * @var Shipment
      */
@@ -133,33 +146,33 @@ abstract class OrderRequest implements JsonRequest
      * @phan-suppress PhanAccessReadOnlyMagicProperty
      */
     public function __construct(
-        ?Recipient $recipient = null,
-        ?Cost $cost = null,
+        ?OrderRequest\DeliveryOption $deliveryOption = null,
+        ?OrderRequest\Recipient $recipient = null,
+        ?OrderRequest\Cost $cost = null,
         array $contacts = [],
-        ?DeliveryOption $deliveryOption = null,
         ?Shipment $shipment = null,
         array $places = []
     ) {
-        $this->recipient = $recipient ?? new Recipient();
-        $this->cost = $cost ?? new Cost();
+        $this->deliveryOption = $deliveryOption ?? new OrderRequest\DeliveryOption();
+        $this->recipient = $recipient ?? new OrderRequest\Recipient();
+        $this->cost = $cost ?? new OrderRequest\Cost();
         $this->contacts = $contacts;
-        $this->deliveryOption = $deliveryOption ?? new DeliveryOption();
         $this->shipment = $shipment ?? new Shipment();
         $this->places = $places;
     }
 
-    public function addContact(): Contact
+    public function addContact(string $type = OrderRequest\Contact::TYPE_RECIPIENT): OrderRequest\Contact
     {
-        $contact = new Contact();
+        $contact = new OrderRequest\Contact();
 
         $this->contacts[] = $contact;
 
         return $contact;
     }
 
-    public function addPlace(): Place
+    public function addPlace(?Dimensions $dimensions = null, array $items = []): Place
     {
-        $place = new Place();
+        $place = new Place($dimensions, $items);
 
         $this->places[] = $place;
 

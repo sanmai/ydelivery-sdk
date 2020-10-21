@@ -43,4 +43,12 @@ use YDeliverySDK\Common;
 final class Contact extends Common\Contact implements ReadableRequestProperty
 {
     use PropertyWrite;
+
+    /**
+     * @phan-suppress PhanAccessReadOnlyMagicProperty
+     */
+    public function __construct(string $type = self::TYPE_RECIPIENT)
+    {
+        $this->type = $type;
+    }
 }

@@ -147,7 +147,7 @@ final class ValidationError implements HasErrorCode
 
     public function getMessage(): string
     {
-        if ($this->objectName !== null) {
+        if ($this->objectName !== null && $this->field !== null && $this->message !== null) {
             return \sprintf('%s->%s %s', $this->objectName, $this->field, $this->message);
         }
 

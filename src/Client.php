@@ -36,18 +36,11 @@ use YDeliverySDK\Responses\Bad\UnauthorizedResponse;
 
 /**
  * Class Client.
- *
- * @method Responses\DeliveryServicesResponse|Responses\Types\DeliveryService[] sendDeliveryServicesRequest(Requests\DeliveryServicesRequest $request)
- * @method Responses\PostalCodeResponse|Responses\Types\PostalCode[]            sendPostalCodeRequest(Requests\PostalCodeRequest $request)
- * @method Responses\LocationResponse|Responses\Types\Location[]                sendLocationRequest(Requests\LocationRequest $request)
- * @method Responses\IntervalsResponse|Responses\Types\Interval[]               sendWithdrawIntervalsRequest(Requests\WithdrawIntervalsRequest $request)
- * @method Responses\IntervalsResponse|Responses\Types\Interval[]               sendImportIntervalsRequest(Requests\ImportIntervalsRequest $request)
- * @method Responses\DeliveryOptionsResponse|Responses\Types\DeliveryOption[]   sendDeliveryOptionsRequest(Requests\DeliveryOptionsRequest $request)
- * @method Responses\OrderResponse                                              sendCreateOrderRequest(Requests\CreateOrderRequest $request)
- * @method Responses\SubmitOrderResponse|Responses\Types\SubmittedOrder[]       sendSubmitOrderRequest(Requests\SubmitOrderRequest $request)
  */
 final class Client extends CommonClient
 {
+    use Requests\Shortcuts;
+
     protected const ERROR_CODE_RESPONSE_CLASS_MAP = [
         HttpResponse::HTTP_UNAUTHORIZED   => UnauthorizedResponse::class,
         HttpResponse::HTTP_NOT_FOUND      => NotFoundResponse::class,

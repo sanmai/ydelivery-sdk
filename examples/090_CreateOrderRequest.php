@@ -38,7 +38,7 @@ $builder->setLogger(new DebuggingLogger());
 $client = $builder->build();
 
 $request = new CreateOrderRequest();
-$request->deliveryType = 'COURIER';
+$request->deliveryType = $request::DELIVERY_TYPE_COURIER;
 $request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
 
 $request->shipment->date = '2020-02-12';

@@ -53,6 +53,11 @@ use JMS\Serializer\Annotation as JMS;
  */
 abstract class Item
 {
+    public const TAX_NO_VAT = 'NO_VAT';
+    public const TAX_VAT_20 = 'VAT_20';
+    public const TAX_VAT_10 = 'VAT_10';
+    public const TAX_VAT_0 = 'VAT_0';
+
     /**
      * @JMS\Type("string")
      *

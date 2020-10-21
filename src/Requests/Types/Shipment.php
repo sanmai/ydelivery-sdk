@@ -45,16 +45,4 @@ use YDeliverySDK\Common;
 final class Shipment extends Common\Shipment implements ReadableRequestProperty
 {
     use PropertyWrite;
-
-    /**
-     * @param string|\DateTimeInterface $date
-     */
-    private function setDate($date): void
-    {
-        if (!$date instanceof \DateTimeInterface) {
-            $date = new \DateTimeImmutable((string) $date);
-        }
-
-        $this->date = $date;
-    }
 }
