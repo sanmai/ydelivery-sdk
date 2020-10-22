@@ -85,8 +85,9 @@ final class Builder
 
         $this->request->deliveryOption->tariffId = $this->deliveryOption->tariffId;
         $this->request->deliveryOption->delivery = $this->deliveryOption->cost->delivery;
-        // $this->request->deliveryOption->deliveryForCustomer = ... ?
-        // $this->request->deliveryOption->type = 'PICKUP' ...?
+        $this->request->deliveryOption->deliveryForCustomer = $this->deliveryOption->cost->deliveryForCustomer;
+
+        // $this->request->deliveryOption->type = 'PICKUP';
         $this->request->deliveryOption->partnerId = $this->deliveryOption->delivery->partner->id;
         $this->request->deliveryOption->calculatedDeliveryDateMin = $this->deliveryOption->delivery->calculatedDeliveryDateMin;
         $this->request->deliveryOption->calculatedDeliveryDateMax = $this->deliveryOption->delivery->calculatedDeliveryDateMax;

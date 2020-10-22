@@ -77,7 +77,7 @@ $request->senderId = $_SERVER['YANDEX_SHOP_ID'];
 
 $request->to->location = 'Новосибирск, ул. Державина, 5';
 
-$request->dimensions->length = 10;
+$request->dimensions->length = $length = 10;
 $request->dimensions->width = 20;
 $request->dimensions->height = 30;
 $request->dimensions->weight = 1.25;
@@ -146,12 +146,17 @@ $request->recipient->address->street = 'ул. Державина';
 $place = $request->addPlace($dimensions);
 // $place->externalId = '427';
 $item = $place->addItem();
+$item->dimensions->length = $length / 2;
 $item->externalId = '428';
-$item->name = '2 товар';
-$item->count = 1;
+$item->name = 'HELP';
+$item->count = 2;
 $item->price = 500;
 $item->assessedValue = 500;
 // $item->tax = $item::TAX_NO_VAT;
+
+$request->cost->assessedValue = 1000;
+$request->cost->fullyPrepaid = true;
+$request->cost->paymentMethod = $request->cost::PAYMENT_METHOD_PREPAID;
 
 $contact = $request->addContact();
 

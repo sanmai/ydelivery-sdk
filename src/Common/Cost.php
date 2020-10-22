@@ -47,6 +47,13 @@ use JMS\Serializer\Annotation as JMS;
  */
 abstract class Cost
 {
+    /** наличными курьеру */
+    public const PAYMENT_METHOD_CASH = 'CASH';
+    /** картой курьеру */
+    public const PAYMENT_METHOD_CARD = 'CARD';
+    /** предоплата */
+    public const PAYMENT_METHOD_PREPAID = 'PREPAID';
+
     /**
      * @JMS\Type("float")
      *
