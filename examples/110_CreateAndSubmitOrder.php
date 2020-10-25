@@ -111,9 +111,11 @@ if (!\count($response)) {
  */
 $deliveryMethods = \iterator_to_array($response, false);
 
+/*
 \usort($deliveryMethods, function (\YDeliverySDK\Responses\Types\DeliveryOption $a, \YDeliverySDK\Responses\Types\DeliveryOption $b) {
     return $a->cost->deliveryForSender <=> $b->cost->deliveryForSender;
 });
+*/
 
 /** @var \YDeliverySDK\Responses\Types\DeliveryOption $deliveryMethod */
 foreach ($deliveryMethods as $deliveryMethod) {
