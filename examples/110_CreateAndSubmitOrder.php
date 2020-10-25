@@ -33,14 +33,16 @@ use YDeliverySDK\Requests\SubmitOrderRequest;
 
 include_once 'vendor/autoload.php';
 
+$logger = new DebuggingLogger();
+
 $builder = new \YDeliverySDK\ClientBuilder();
 $builder->setToken($_SERVER['YANDEX_DELIVERY_TOKEN'] ?? '');
-$builder->setLogger(new DebuggingLogger());
+$builder->setLogger($logger);
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
 /**
- * Получим данные по адресу.
+ * Получим данные по адресу получателя.
  */
 $response = $client->makeLocationRequest('Новосибирская область, Новосибирск');
 
@@ -75,6 +77,7 @@ $request = new DeliveryOptionsRequest();
 
 $request->senderId = $_SERVER['YANDEX_SHOP_ID'];
 
+$request->from->geoId = $_SERVER['YANDEX_SENDER_GEOID'];
 $request->to->location = 'Новосибирск, ул. Державина, 5';
 
 $request->dimensions->length = $length = 10;
@@ -88,11 +91,14 @@ $request->deliveryType = $request::DELIVERY_TYPE_COURIER;
 $request->shipment->date = new DateTime('next Monday');
 $request->shipment->type = $request->shipment::TYPE_WITHDRAW;
 
-$request->cost->assessedValue = 500;
+$request->cost->assessedValue = 1000;
 $request->cost->itemsSum = 1000;
 $request->cost->fullyPrepaid = true;
 
 // $request->tariffId = 333333333;
+
+$logger->addFile('delivery-options-request.json');
+$logger->addFile('delivery-options-response.json');
 
 $response = $client->sendDeliveryOptionsRequest($request);
 
@@ -164,6 +170,9 @@ $contact->phone = '+79266056128';
 $contact->firstName = 'Василий';
 $contact->lastName = 'Юрочкин';
 
+$logger->addFile('create-order-request.json');
+$logger->addFile('create-order-response.json');
+
 $response = $client->sendCreateOrderRequest($request);
 
 if ($response->hasErrors()) {
@@ -180,6 +189,9 @@ if ($response->hasErrors()) {
 
 $request = new SubmitOrderRequest();
 $request->orderIds = [$response->id];
+
+$logger->addFile('submit-order-request.json');
+$logger->addFile('submit-order-response.json');
 
 $response = $client->sendSubmitOrderRequest($request);
 

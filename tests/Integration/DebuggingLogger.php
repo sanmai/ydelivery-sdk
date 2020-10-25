@@ -35,13 +35,8 @@ final class DebuggingLogger implements LoggerInterface
 {
     use LoggerTrait;
 
-    /**
-     * Если нужна запись в файл, то нужно скопировать этот файл себе в проект, заменив namespace, и поменять константу ниже на true.
-     * Лог будет записан в delivery-requests.log в корне проекта.
-     *
-     * @var bool
-     */
-    private const WRITE_LOG_TO_FILE = false;
+    /** @var string[] */
+    private $filename = [];
 
     /**
      * @param mixed  $level
@@ -56,7 +51,7 @@ final class DebuggingLogger implements LoggerInterface
             $message = \strtr($message, \iterator_to_array(self::context2replacements($context), true));
         }
 
-        if (!self::WRITE_LOG_TO_FILE && \strpos($message, 'WITHDRAW') !== false) {
+        if (\strpos($message, 'WITHDRAW') !== false) {
             // Заявка на Забор (WITHDRAW) тарифицируется сразу же как была подтверждена службой доставки.
             \trigger_error('Forbidden request', E_USER_ERROR);
         }
@@ -64,30 +59,20 @@ final class DebuggingLogger implements LoggerInterface
         // В целях отладки приведём JSON в читаемый вид
         if (\strpos($message, '{') === 0 || \strpos($message, '[') === 0) {
             $message = \json_encode(\json_decode($message), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+            if ($this->filename !== []) {
+                $saveTo = \array_shift($this->filename);
+                \file_put_contents($saveTo, $message);
+                \fwrite(\STDERR, "\n\n(Saved below message to $saveTo)");
+            }
         }
 
-        \fwrite(self::WRITE_LOG_TO_FILE ? $this->getLogFileHandle() : \STDERR, "\n{$message}\n\n");
+        \fwrite(\STDERR, "\n{$message}\n\n");
     }
 
-    private const LOG_FILE = 'delivery-requests.log';
-
-    /**
-     * Возвращает указатель на открытый файл delivery-requests.log в корне проекта.
-     *
-     * @return resource
-     */
-    private static function getLogFileHandle()
+    public function addFile(string $filename): void
     {
-        static $fh;
-
-        if (!$fh) {
-            $reflection = new \ReflectionClass(\Composer\Autoload\ClassLoader::class);
-            $fh = \fopen(\dirname((string) $reflection->getFileName(), 3).DIRECTORY_SEPARATOR.self::LOG_FILE, 'a');
-        }
-
-        \assert(\is_resource($fh));
-
-        return $fh;
+        $this->filename[] = $filename;
     }
 
     /**
