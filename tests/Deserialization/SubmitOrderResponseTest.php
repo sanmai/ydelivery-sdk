@@ -40,7 +40,7 @@ use YDeliverySDK\Responses\Types\SubmittedOrder;
  */
 class SubmitOrderResponseTest extends TestCase
 {
-    public function test_with_validation_error()
+    public function test_with_violations()
     {
         $response = $this->loadFixture('submit-order-error.json');
 
@@ -65,6 +65,29 @@ class SubmitOrderResponseTest extends TestCase
                 ['INCOMPLETE_ORDER', 'recipient.address'],
                 ['INCOMPLETE_ORDER', 'shipment.partnerTo'],
                 ['INCOMPLETE_ORDER', 'shipment.type'],
+            ],
+            $this->toErrorsArray($response)
+        );
+    }
+
+    public function test_with_validation_error()
+    {
+        $response = $this->loadFixture('submit-order-error2.json');
+
+        $this->assertCount(1, $response);
+        $this->assertTrue($response->hasErrors());
+
+        $order = take($response)->toArray()[0];
+
+        $this->assertInstanceOf(SubmittedOrder::class, $order);
+
+        /** @var SubmittedOrder $order */
+        $this->assertSame(3000002, $order->orderId);
+        $this->assertSame('VALIDATION_ERROR', $order->status);
+
+        $this->assertSame(
+            [
+                ['VALIDATION_ERROR', 'waybill[0] must be assigned to a shipment'],
             ],
             $this->toErrorsArray($response)
         );

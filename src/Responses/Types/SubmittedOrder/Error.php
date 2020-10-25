@@ -26,67 +26,35 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Responses\Types;
+namespace YDeliverySDK\Responses\Types\SubmittedOrder;
 
-use CommonSDK\Concerns\HasErrors;
 use CommonSDK\Concerns\PropertyRead;
-use CommonSDK\Types\Message;
 use JMS\Serializer\Annotation as JMS;
-use YDeliverySDK\Responses\Types\SubmittedOrder\Error;
-use YDeliverySDK\Responses\Types\SubmittedOrder\Violation;
 
 /**
- * @property-read int $orderId
- * @property-read string $status
- * @property-read array $errors
- * @property-read Violation[] $violations
+ * @property-read string $field
+ * @property-read string $message
  */
-final class SubmittedOrder
+final class Error
 {
     use PropertyRead;
-    use HasErrors;
-
-    /**
-     * @JMS\Type("int")
-     *
-     * @var int
-     */
-    private $orderId;
 
     /**
      * @JMS\Type("string")
      *
      * @var string
      */
-    private $status;
+    private $field;
 
     /**
-     * @JMS\Type("array<YDeliverySDK\Responses\Types\SubmittedOrder\Error>")
+     * @JMS\Type("string")
      *
-     * @var Error[]|null
+     * @var string
      */
-    private $errors = [];
+    private $message;
 
-    /**
-     * @JMS\Type("array<YDeliverySDK\Responses\Types\SubmittedOrder\Violation>")
-     *
-     * @var Violation[]|null
-     */
-    private $violations = [];
-
-    /**
-     * @return iterable<Message>
-     */
-    public function getMessages()
+    public function __toString()
     {
-        foreach ((array) $this->violations as $violation) {
-            foreach ($violation->missingFields as $field) {
-                yield new Message($field, $violation->errorCode);
-            }
-        }
-
-        foreach ((array) $this->errors as $error) {
-            yield new Message((string) $error, $this->status);
-        }
+        return \sprintf('%s %s', $this->field, $this->message);
     }
 }

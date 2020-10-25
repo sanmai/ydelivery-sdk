@@ -1,0 +1,13 @@
+[
+    {
+        "orderId": 3000002,
+        "status": "VALIDATION_ERROR",
+        "errors": [
+            {
+                "field": "waybill[0]",
+                "message": "must be assigned to a shipment"
+            }
+        ],
+        "violations": null
+    }
+]
