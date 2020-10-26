@@ -39,6 +39,7 @@ use YDeliverySDK\Responses;
  * @method Responses\DeliveryOptionsResponse|Responses\Types\DeliveryOption[]   sendDeliveryOptionsRequest(DeliveryOptionsRequest $request)
  * @method Responses\OrderResponse                                              sendCreateOrderRequest(CreateOrderRequest $request)
  * @method Responses\SubmitOrderResponse|Responses\Types\SubmittedOrder[]       sendSubmitOrderRequest(SubmitOrderRequest $request)
+ * @method Responses\OrdersSearchResponse|Responses\Types\Order[]               sendOrdersSearchRequest(OrdersSearchRequest $request)
  */
 trait Shortcuts
 {

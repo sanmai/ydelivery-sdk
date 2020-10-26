@@ -44,6 +44,8 @@ use VersionInfo\PlaceholderVersionReader;
 
 /**
  * @codeCoverageIgnore
+ *
+ * @method \YDeliverySDK\Client build()
  */
 final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterface
 {
@@ -137,7 +139,6 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
         return new Serializer($builder);
     }
 
-    /** @return Client */
     public function build(): ClientInterface
     {
         if ($this->serializer === null) {

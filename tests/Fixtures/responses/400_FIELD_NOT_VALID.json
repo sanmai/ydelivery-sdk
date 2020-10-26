@@ -1,0 +1,14 @@
+{
+    "message": "Validation error",
+    "errors": [
+        {
+            "objectName": "apiOrderSearchFilter",
+            "field": "senderIds",
+            "message": "must not be null",
+            "conditionCode": "NotNull",
+            "arguments": {},
+            "errorCode": "FIELD_NOT_VALID"
+        }
+    ],
+    "type": "VALIDATION_ERROR"
+}

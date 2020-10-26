@@ -71,6 +71,11 @@ class ErrorResponsesTest extends TestCase
             ['OPTION_CALCULATED_DATE_MIN_MISMATCH', '2020-10-31'],
             ['OPTION_CALCULATED_DATE_MAX_MISMATCH', '2020-10-31'],
         ]];
+
+        yield '400_FIELD_NOT_VALID.json' => ['400_FIELD_NOT_VALID.json', BadRequestResponse::class, [
+            ['VALIDATION_ERROR', 'Validation error'],
+            ['FIELD_NOT_VALID', 'apiOrderSearchFilter->senderIds must not be null'],
+        ]];
     }
 
     /**
