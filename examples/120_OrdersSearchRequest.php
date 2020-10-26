@@ -65,4 +65,20 @@ foreach ($response as $order) {
     echo "{$order->id}\t{$order->comment}\n";
 }
 
-\var_dump($response);
+if (\strpos($order->comment, 'тестовый заказ') === false) {
+    return;
+}
+
+$response = $client->makeDeleteOrderRequest($order->id);
+
+if ($response->hasErrors()) {
+    // Обрабатываем ошибки
+    foreach ($response->getMessages() as $message) {
+        if ($message->getErrorCode() !== '') {
+            // Это ошибка
+            echo "{$message->getErrorCode()}: {$message->getMessage()}\n";
+        }
+    }
+
+    return;
+}

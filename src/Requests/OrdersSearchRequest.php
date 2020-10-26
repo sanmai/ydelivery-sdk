@@ -32,6 +32,7 @@ use CommonSDK\Concerns\ObjectPropertyRead;
 use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Concerns\RequestCore;
 use CommonSDK\Contracts\JsonRequest;
+use CommonSDK\Contracts\ParamRequest;
 use CommonSDK\Types\ArrayProperty;
 use JMS\Serializer\Annotation as JMS;
 use YDeliverySDK\Responses\OrdersSearchResponse;
@@ -41,7 +42,7 @@ use YDeliverySDK\Responses\OrdersSearchResponse;
  * @property-write int $page Номер текущей страницы (начиная с 0).
  * @property-write int $size Количество объектов на странице.
  */
-final class OrdersSearchRequest implements JsonRequest
+final class OrdersSearchRequest implements JsonRequest, ParamRequest
 {
     use RequestCore;
     use ObjectPropertyRead;
@@ -119,13 +120,13 @@ final class OrdersSearchRequest implements JsonRequest
         $this->statuses = new ArrayProperty($statuses);
     }
 
-    public function getAddress(): string
+    public function getParams(): array
     {
-        return self::ADDRESS.'?'.\http_build_query(\array_filter([
+        return \array_filter([
             'page' => $this->page,
             'size' => $this->size,
         ], function ($val) {
             return $val !== null;
-        }));
+        });
     }
 }

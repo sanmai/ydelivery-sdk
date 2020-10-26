@@ -28,6 +28,7 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests;
 
+use CommonSDK\Contracts;
 use YDeliverySDK\Responses;
 
 /**
@@ -39,7 +40,7 @@ use YDeliverySDK\Responses;
  * @method Responses\DeliveryOptionsResponse|Responses\Types\DeliveryOption[]   sendDeliveryOptionsRequest(DeliveryOptionsRequest $request)
  * @method Responses\OrderResponse                                              sendCreateOrderRequest(CreateOrderRequest $request)
  * @method Responses\SubmitOrderResponse|Responses\Types\SubmittedOrder[]       sendSubmitOrderRequest(SubmitOrderRequest $request)
- * @method Responses\OrdersSearchResponse|Responses\Types\Order[]               sendOrdersSearchRequest(OrdersSearchRequest $request)
+ * @method Contracts\Response                                                   sendDeleteOrderRequest(DeleteOrderRequest $request)
  */
 trait Shortcuts
 {
@@ -63,5 +64,15 @@ trait Shortcuts
         $request->address = $address;
 
         return $this->sendPostalCodeRequest($request);
+    }
+
+    /**
+     * @return Contracts\Response
+     */
+    public function makeDeleteOrderRequest(int $orderId)
+    {
+        $request = new DeleteOrderRequest($orderId);
+
+        return $this->sendDeleteOrderRequest($request);
     }
 }
