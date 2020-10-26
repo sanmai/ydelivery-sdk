@@ -30,7 +30,7 @@ namespace YDeliverySDK\Requests;
 
 use CommonSDK\Concerns\RequestCore;
 use CommonSDK\Contracts\Request;
-use YDeliverySDK\Responses\DeliveryOptionsResponse;
+use CommonSDK\Contracts\Response;
 
 /**
  * DeleteOrderRequest.
@@ -43,7 +43,7 @@ final class DeleteOrderRequest implements Request
 
     private const METHOD = 'DELETE';
     private const ADDRESS = '/orders/%s';
-    private const RESPONSE = DeliveryOptionsResponse::class;
+    private const RESPONSE = Response::class;
 
     public function __construct(int $orderId)
     {
