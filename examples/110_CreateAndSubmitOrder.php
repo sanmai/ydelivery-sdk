@@ -137,6 +137,7 @@ $requestBuilder = new CreateOrderRequest\Builder($deliveryMethod, $location);
 $requestBuilder->setPostalCode($postalCode);
 $request = $requestBuilder->build();
 
+$request->shipment->warehouseFrom = (int) $_SERVER['YANDEX_WAREHOUSE_ID'];
 $request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
 $request->comment = 'Доставки не будет - тестовый заказ';
 // $request->externalId = '426';
