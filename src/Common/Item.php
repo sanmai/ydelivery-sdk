@@ -102,6 +102,7 @@ abstract class Item
 
     /**
      * @JMS\Type("YDeliverySDK\Common\Dimensions")
+     * @JMS\SkipWhenEmpty
      *
      * @var Dimensions
      */

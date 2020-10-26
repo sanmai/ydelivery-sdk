@@ -55,7 +55,7 @@ final class Place extends Common\Place implements ReadableRequestProperty
 
     public function addItem(?Dimensions $dimensions = null): Item
     {
-        $item = new Item($dimensions ?? $this->dimensions);
+        $item = new Item($dimensions);
 
         $this->items[] = $item;
 

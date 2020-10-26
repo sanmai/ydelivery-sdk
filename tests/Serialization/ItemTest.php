@@ -26,43 +26,29 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Common;
+namespace Tests\YDeliverySDK\Serialization;
 
-use JMS\Serializer\Annotation as JMS;
-
-/*
- * @property-read string $externalId
- * @property-read Dimensions $dimensions
- * @property-read Item[] $items
- *
- * @property-write string $externalId
- * @property-read Dimensions $dimensions
- */
+use YDeliverySDK\Requests\Templates\OrderRequest;
 
 /**
- * Основа для объектов, используемых в запросах и ответах.
+ * @covers \YDeliverySDK\Requests\Templates\OrderRequest\Item
  */
-abstract class Place
+final class ItemTest extends TestCase
 {
-    /**
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    protected $externalId;
+    public function test_serialize_item_without_dimensions()
+    {
+        $item = new OrderRequest\Item();
+        $item->externalId = '123';
 
-    /**
-     * @JMS\Type("YDeliverySDK\Common\Dimensions")
-     * @JMS\SkipWhenEmpty
-     *
-     * @var Dimensions
-     */
-    protected $dimensions;
+        $this->assertSameAsJSON('{"externalId":"123"}', $item);
+    }
 
-    /**
-     * @JMS\Type("array<YDeliverySDK\Common\Item>")
-     *
-     * @var Item[]
-     */
-    protected $items = [];
+    public function test_serialize_item_with_dimensions()
+    {
+        $item = new OrderRequest\Item();
+        $item->externalId = '123';
+        $item->dimensions->height = 100;
+
+        $this->assertSameAsJSON('{"externalId":"123","dimensions":{"height":100.0}}', $item);
+    }
 }

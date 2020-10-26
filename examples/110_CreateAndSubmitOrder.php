@@ -155,7 +155,6 @@ $request->recipient->address->street = 'ул. Державина';
 $place = $request->addPlace($dimensions);
 // $place->externalId = '427';
 $item = $place->addItem();
-$item->dimensions->length = $length / 2;
 $item->externalId = '428';
 $item->name = 'HELP';
 $item->count = 2;

@@ -90,6 +90,7 @@ abstract class Recipient
 
     /**
      * @JMS\Type("YDeliverySDK\Common\Address")
+     * @JMS\SkipWhenEmpty
      *
      * @var Address
      */

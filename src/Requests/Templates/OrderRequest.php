@@ -102,6 +102,7 @@ abstract class OrderRequest implements JsonRequest
 
     /**
      * @JMS\Type("YDeliverySDK\Requests\Templates\OrderRequest\Recipient")
+     * @JMS\SkipWhenEmpty
      *
      * @var OrderRequest\Recipient
      */
@@ -109,6 +110,7 @@ abstract class OrderRequest implements JsonRequest
 
     /**
      * @JMS\Type("YDeliverySDK\Requests\Templates\OrderRequest\Cost")
+     * @JMS\SkipWhenEmpty
      *
      * @var OrderRequest\Cost
      */
@@ -123,6 +125,7 @@ abstract class OrderRequest implements JsonRequest
 
     /**
      * @JMS\Type("YDeliverySDK\Common\DeliveryOption")
+     * @JMS\SkipWhenEmpty
      *
      * @var Common\DeliveryOption
      */
@@ -130,6 +133,7 @@ abstract class OrderRequest implements JsonRequest
 
     /**
      * @JMS\Type("YDeliverySDK\Requests\Types\Shipment")
+     * @JMS\SkipWhenEmpty
      *
      * @var Shipment
      */
