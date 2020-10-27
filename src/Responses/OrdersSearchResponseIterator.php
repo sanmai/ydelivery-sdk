@@ -36,6 +36,8 @@ use YDeliverySDK\Client;
 use YDeliverySDK\Requests\OrdersSearchRequest;
 
 /**
+ * @internal
+ *
  * @property-read int $totalElements Количество объектов в ответе.
  * @property-read int $totalPages Количество страниц в ответе.
  * @property-read int $size	Количество объектов на странице.

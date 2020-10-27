@@ -79,7 +79,7 @@ trait Shortcuts
     }
 
     /**
-     * @return OrdersSearchResponseIterator|Responses\Types\Order[]
+     * @return Responses\OrdersSearchResponse|Responses\Types\Order[]
      */
     public function searchOrders(OrdersSearchRequest $request)
     {
