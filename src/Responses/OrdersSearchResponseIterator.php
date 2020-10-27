@@ -28,75 +28,80 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses;
 
-use ArrayIterator;
-use CommonSDK\Concerns\PropertyRead;
-use CommonSDK\Concerns\SuccessfulResponse;
 use CommonSDK\Contracts\Response;
 use Countable;
 use IteratorAggregate;
-use JMS\Serializer\Annotation as JMS;
-use YDeliverySDK\Responses\Types\Order;
+use function Pipeline\map;
+use YDeliverySDK\Client;
+use YDeliverySDK\Requests\OrdersSearchRequest;
 
 /**
- * @property-read Order[] $data
  * @property-read int $totalElements Количество объектов в ответе.
  * @property-read int $totalPages Количество страниц в ответе.
  * @property-read int $size	Количество объектов на странице.
  * @property-read int $pageNumber Номер текущей страницы (начиная с 0).
- * @property-read int $lastPageNumber Номер последней страницы.
  */
-final class OrdersSearchResponse implements Response, Countable, IteratorAggregate
+final class OrdersSearchResponseIterator implements Response, Countable, IteratorAggregate
 {
-    use PropertyRead;
-    use SuccessfulResponse;
+    private $client;
+    private $request;
 
-    /**
-     * @JMS\Type("array<YDeliverySDK\Responses\Types\Order>")
-     *
-     * @var Order[]
-     */
-    private $data;
+    /** @var Response|null */
+    private $response;
 
-    /**
-     * @JMS\Type("int")
-     *
-     * @var int
-     */
-    private $totalElements;
-
-    /**
-     * @JMS\Type("int")
-     *
-     * @var int
-     */
-    private $totalPages;
-
-    /**
-     * @JMS\Type("int")
-     *
-     * @var int
-     */
-    private $size;
-
-    /**
-     * @JMS\Type("int")
-     *
-     * @var int
-     */
-    private $pageNumber;
-
-    public function count()
+    public function __construct(Client $client, OrdersSearchRequest $request)
     {
-        return \count($this->data);
+        $this->client = $client;
+        $this->request = $request;
+    }
+
+    private function makeRequest(): void
+    {
+        $this->response = $this->client->sendOrdersSearchRequest($this->request);
+        $this->request->addPage();
+    }
+
+    /**
+     * @return OrdersSearchResponse
+     */
+    private function getLastResponse()
+    {
+        if ($this->response === null) {
+            $this->makeRequest();
+        }
+
+        return $this->response;
     }
 
     public function getIterator()
     {
-        return new ArrayIterator($this->data);
+        return map(function () {
+            do {
+                yield from $this->getLastResponse();
+                $this->makeRequest();
+            } while ($this->getLastResponse()->pageNumber < $this->getLastResponse()->lastPageNumber);
+
+            yield from $this->getLastResponse();
+        });
     }
 
-    protected function getLastPageNumber(): int
+    public function hasErrors(): bool
     {
-        return $this->totalPages - 1;
+        return $this->getLastResponse()->hasErrors();
+    }
+
+    public function getMessages()
+    {
+        return $this->getLastResponse()->getMessages();
+    }
+
+    public function count()
+    {
+        return $this->getLastResponse()->totalElements;
+    }
+
+    public function __get(string $property)
+    {
+        return $this->getLastResponse()->{$property};
     }
 }

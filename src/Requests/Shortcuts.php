@@ -29,10 +29,8 @@ declare(strict_types=1);
 namespace YDeliverySDK\Requests;
 
 use CommonSDK\Contracts;
-use IteratorAggregate;
-use function Pipeline\map;
-use YDeliverySDK\Client;
 use YDeliverySDK\Responses;
+use YDeliverySDK\Responses\OrdersSearchResponseIterator;
 
 /**
  * @method Responses\DeliveryServicesResponse|Responses\Types\DeliveryService[] sendDeliveryServicesRequest(DeliveryServicesRequest $request)
@@ -85,53 +83,6 @@ trait Shortcuts
      */
     public function searchOrders(OrdersSearchRequest $request)
     {
-        return new class($this, $request) implements Contracts\Response, IteratorAggregate {
-            private $client;
-            private $request;
-
-            /** @var Contracts\Response|null */
-            private $response;
-
-            public function __construct(Client $client, OrdersSearchRequest $request)
-            {
-                $this->client = $client;
-                $this->request = $request;
-            }
-
-            private function makeRequest(): void
-            {
-                $this->response = $this->client->sendOrdersSearchRequest($this->request);
-                $this->request->addPage();
-            }
-
-            private function getLastResponse(): Contracts\Response
-            {
-                if ($this->response === null) {
-                    $this->makeRequest();
-                }
-
-                return $this->response;
-            }
-
-            public function hasErrors(): bool
-            {
-                return $this->getLastResponse()->hasErrors();
-            }
-
-            public function getMessages()
-            {
-                return $this->getLastResponse()->getMessages();
-            }
-
-            public function getIterator()
-            {
-                return map(function () {
-                    do {
-                        yield from $this->getLastResponse();
-                        $this->makeRequest();
-                    } while (\count($this->getLastResponse()) > 0);
-                });
-            }
-        };
+        return new OrdersSearchResponseIterator($this, $request);
     }
 }
