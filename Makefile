@@ -1,7 +1,7 @@
 .PHONY: ci test prerequisites
 
 # Use any most recent PHP version
-PHP=$(shell which php7.4 || which php7.3 || which php)
+PHP=$(shell which php)
 PHPDBG=$(shell which phpdbg && echo -qrr || echo php)
 
 # Default parallelism
@@ -60,7 +60,7 @@ ci-analyze: SILENT=
 ci-analyze: prerequisites ci-phpunit ci-infection ci-phan ci-phpstan ci-psalm
 
 ci-phpunit: ci-cs
-	$(SILENT) $(PHPDBG) $(PHPUNIT) $(PHPUNIT_ARGS)
+	$(SILENT) $(PHP) $(PHPUNIT) $(PHPUNIT_ARGS)
 
 ci-infection: ci-phpunit
 	$(SILENT) $(PHP) $(INFECTION) $(INFECTION_ARGS)
