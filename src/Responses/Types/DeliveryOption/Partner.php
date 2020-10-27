@@ -77,24 +77,4 @@ final class Partner implements NamedEntity
      * @var string
      */
     private $logoUrl;
-
-    /**
-     * @codeCoverageIgnore
-     *
-     * @deprecated
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     *
-     * @deprecated
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
 }

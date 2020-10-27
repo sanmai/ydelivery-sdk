@@ -60,26 +60,6 @@ final class NamedEntity implements Concerns\NamedEntity
     private $name;
 
     /**
-     * @codeCoverageIgnore
-     *
-     * @deprecated
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     *
-     * @deprecated
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
      * @phan-suppress PhanAccessReadOnlyMagicProperty
      */
     public static function withIdAndName(int $id, string $name): NamedEntity

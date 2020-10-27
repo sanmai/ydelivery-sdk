@@ -60,24 +60,4 @@ final class Warehouse implements NamedEntity
      * @var string
      */
     private $address;
-
-    /**
-     * @codeCoverageIgnore
-     *
-     * @deprecated
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     *
-     * @deprecated
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
 }

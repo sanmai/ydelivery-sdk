@@ -34,9 +34,4 @@ namespace YDeliverySDK\Common\Concerns;
  */
 interface NamedEntity
 {
-    /** @deprecated */
-    public function getId(): int;
-
-    /** @deprecated */
-    public function getName(): string;
 }
