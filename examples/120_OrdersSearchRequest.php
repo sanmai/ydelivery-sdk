@@ -39,19 +39,20 @@ $builder->setLogger($logger);
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$request = new OrdersSearchRequest();
-$request->senderIds[] = $_SERVER['YANDEX_SHOP_ID'];
+$request = new OrdersSearchRequest([
+    (int) $_SERVER['YANDEX_SHOP_ID'],
+]);
 $request->term = '+79266056128';
 $request->size = 2;
 
 $logger->addFile('orders-search-request.json');
 $logger->addFile('orders-search-response.json');
 
-$response = $client->sendOrdersSearchRequest($request);
+$orders = $client->searchOrders($request);
 
-if ($response->hasErrors()) {
+if ($orders->hasErrors()) {
     // Обрабатываем ошибки
-    foreach ($response->getMessages() as $message) {
+    foreach ($orders->getMessages() as $message) {
         if ($message->getErrorCode() !== '') {
             // Это ошибка
             echo "{$message->getErrorCode()}: {$message->getMessage()}\n";
@@ -61,24 +62,28 @@ if ($response->hasErrors()) {
     return;
 }
 
-foreach ($response as $order) {
-    echo "{$order->id}\t{$order->comment}\n";
-}
+foreach ($orders as $order) {
+    echo "{$order->id}\t{$order->status}\t{$order->comment}\n";
 
-if (\strpos($order->comment, 'тестовый заказ') === false) {
-    return;
-}
-
-$response = $client->makeDeleteOrderRequest($order->id);
-
-if ($response->hasErrors()) {
-    // Обрабатываем ошибки
-    foreach ($response->getMessages() as $message) {
-        if ($message->getErrorCode() !== '') {
-            // Это ошибка
-            echo "{$message->getErrorCode()}: {$message->getMessage()}\n";
-        }
+    if (\strpos($order->comment, 'тестовый заказ') === false) {
+        continue;
     }
 
-    return;
+    if ($order->status === 'CANCELLED') {
+        continue;
+    }
+
+    $response = $client->makeDeleteOrderRequest($order->id);
+
+    if ($response->hasErrors()) {
+        // Обрабатываем ошибки
+        foreach ($response->getMessages() as $message) {
+            if ($message->getErrorCode() !== '') {
+                // Это ошибка
+                echo "{$message->getErrorCode()}: {$message->getMessage()}\n";
+            }
+        }
+
+        return;
+    }
 }

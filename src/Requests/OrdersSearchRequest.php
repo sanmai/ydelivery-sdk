@@ -112,12 +112,17 @@ final class OrdersSearchRequest implements JsonRequest, ParamRequest
      * @param array<int>    $partnerIds
      * @param array<string> $statuses
      */
-    public function __construct(array $senderIds = [], array $orderIds = [], array $partnerIds = [], array $statuses = [])
+    public function __construct(array $senderIds, array $orderIds = [], array $partnerIds = [], array $statuses = [])
     {
         $this->senderIds = new ArrayProperty($senderIds);
         $this->orderIds = new ArrayProperty($orderIds);
         $this->partnerIds = new ArrayProperty($partnerIds);
         $this->statuses = new ArrayProperty($statuses);
+    }
+
+    public function addPage(): void
+    {
+        ++$this->page;
     }
 
     public function getParams(): array

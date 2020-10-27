@@ -29,11 +29,15 @@ declare(strict_types=1);
 namespace YDeliverySDK\Responses\Types;
 
 use CommonSDK\Concerns\PropertyRead;
+use DateTimeImmutable;
 use JMS\Serializer\Annotation as JMS;
 
 /**
  * @property-read int $id
  * @property-read string|null $externalId
+ * @property-read string|null $comment;
+ * @property-read DateTimeImmutable $created
+ * @property-read string $status
  */
 final class Order
 {
@@ -59,4 +63,18 @@ final class Order
      * @var string
      */
     private $comment;
+
+    /**
+     * @JMS\Type("DateTimeImmutable<'Y-m-d\TH:i:s.uO'>")
+     *
+     * @var DateTimeImmutable
+     */
+    private $created;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    private $status;
 }
