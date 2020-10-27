@@ -63,7 +63,7 @@ if ($orders->hasErrors()) {
 }
 
 foreach ($orders as $order) {
-    echo "{$order->id}\t{$order->status}\t{$order->comment}\n";
+    echo "{$orders->pageNumber}\t{$order->id}\t{$order->status}\t{$order->comment}\n";
 
     if (\strpos($order->comment, 'тестовый заказ') === false) {
         continue;
