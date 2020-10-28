@@ -29,25 +29,23 @@ declare(strict_types=1);
 namespace YDeliverySDK\Requests;
 
 use CommonSDK\Concerns\RequestCore;
+use CommonSDK\Contracts\Request;
 use JMS\Serializer\Annotation as JMS;
-use YDeliverySDK\Requests\Builders\OrderRequestBuilder;
-use YDeliverySDK\Requests\Templates\OrderRequest;
-use YDeliverySDK\Responses\OrderResponse;
 use YDeliverySDK\Responses\Types as ResponsesTypes;
 
 /**
- * UpdateOrderRequest.
+ * GetOrderRequest.
  *
- * @see https://yandex.ru/dev/delivery-3/doc/dg/reference/put-orders-id.html
+ * @see https://yandex.ru/dev/delivery-3/doc/dg/reference/get-orders-id.html/
  */
-final class UpdateOrderRequest extends OrderRequest
+final class GetOrderRequest implements Request
 {
     use RequestCore;
 
-    private const METHOD = 'PUT';
+    private const METHOD = 'GET';
     private const ADDRESS = '/orders/%s';
 
-    protected const RESPONSE = OrderResponse::class;
+    protected const RESPONSE = ResponsesTypes\Order::class;
 
     /**
      * @JMS\Exclude
@@ -56,33 +54,9 @@ final class UpdateOrderRequest extends OrderRequest
      */
     private $id;
 
-    public function __construct(
-        int $id,
-        ?OrderRequest\DeliveryOption $deliveryOption = null,
-        ?OrderRequest\Recipient $recipient = null,
-        ?OrderRequest\Cost $cost = null,
-        array $contacts = [],
-        ?Types\Shipment $shipment = null,
-        array $places = []
-    ) {
-        parent::__construct($deliveryOption, $recipient, $cost, $contacts, $shipment, $places);
-
+    public function __construct(int $id)
+    {
         $this->id = $id;
-    }
-
-    /**
-     * @return OrderRequestBuilder
-     * @psalm-return OrderRequestBuilder<UpdateOrderRequest>
-     */
-    public static function builder(
-        int $id,
-        ResponsesTypes\DeliveryOption $deliveryOption,
-        ResponsesTypes\Location $location
-    ) {
-        return new OrderRequestBuilder($deliveryOption, $location, new static(
-            $id,
-            new OrderRequest\DeliveryOption($deliveryOption->services)
-        ));
     }
 
     public function getAddress(): string

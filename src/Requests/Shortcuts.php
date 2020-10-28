@@ -45,6 +45,7 @@ use YDeliverySDK\Responses\OrdersSearchResponseIterator;
  * @method Responses\SubmitOrderResponse|Responses\Types\SubmittedOrder[]       sendSubmitOrderRequest(SubmitOrderRequest $request)
  * @method Responses\OrdersSearchResponse|Responses\Types\Order[]               sendOrdersSearchRequest(OrdersSearchRequest $request)
  * @method Contracts\Response                                                   sendDeleteOrderRequest(DeleteOrderRequest $request)
+ * @method Responses\Types\Order                                                sendGetOrderRequest(GetOrderRequest $request)
  *
  * @phan-file-suppress PhanTypeMismatchArgument
  */
@@ -90,5 +91,15 @@ trait Shortcuts
     {
         /** @var Client $this */
         return new OrdersSearchResponseIterator($this, $request);
+    }
+
+    /**
+     * @return Responses\Types\Order
+     */
+    public function getOrder(int $orderId)
+    {
+        $request = new GetOrderRequest($orderId);
+
+        return $this->sendGetOrderRequest($request);
     }
 }

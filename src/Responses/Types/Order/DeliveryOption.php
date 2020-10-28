@@ -26,36 +26,45 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Responses\Types\DeliveryOption;
+namespace YDeliverySDK\Responses\Types\Order;
 
 use CommonSDK\Concerns\PropertyRead;
 use DateTimeImmutable;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @property-read Partner $partner Служба доставки.
- * @property-read string $type Тип доставки: COURIER — курьером, PICKUP — в пункт выдачи, POST — по почте.
- * @property-read DateTimeImmutable $calculatedDeliveryDateMin Начальная дата доставки.
- * @property-read DateTimeImmutable $calculatedDeliveryDateMax Конечная дата доставки в формате.
- * @property-read CourierSchedule|null $courierSchedule Расписание работы курьеров партнера.
+ * @property-read int|null $tariffId
+ * @property-read DateTimeImmutable|null $calculatedDeliveryDateMin Начальная дата доставки.
+ * @property-read DateTimeImmutable|null $calculatedDeliveryDateMax Конечная дата доставки в формате.
  */
-final class Delivery
+final class DeliveryOption
 {
     use PropertyRead;
 
     /**
-     * @JMS\Type("YDeliverySDK\Responses\Types\DeliveryOption\Partner")
-     *
-     * @var Partner
+     * @JMS\Exclude
      */
-    private $partner;
+    private $tariffId;
 
     /**
-     * @JMS\Type("string")
-     *
-     * @var string
+     * @JMS\Exclude
      */
-    private $type;
+    private $delivery;
+
+    /**
+     * @JMS\Exclude
+     */
+    private $deliveryForCustomer;
+
+    /**
+     * @JMS\Exclude
+     */
+    private $deliveryForSender;
+
+    /**
+     * @JMS\Exclude
+     */
+    private $services;
 
     /**
      * @JMS\Type("DateTimeImmutable<'Y-m-d'>")
@@ -72,16 +81,12 @@ final class Delivery
     private $calculatedDeliveryDateMax;
 
     /**
-     * @JMS\Type("YDeliverySDK\Responses\Types\DeliveryOption\CourierSchedule")
-     *
-     * @var CourierSchedule|null
+     * @JMS\Exclude
      */
-    private $courierSchedule;
+    private $partner;
 
-    private $tariffId;
-    private $delivery;
-    private $deliveryForCustomer;
-    private $deliveryForSender;
-    private $services;
+    /**
+     * @JMS\Exclude
+     */
     private $deliveryTimeInterval;
 }

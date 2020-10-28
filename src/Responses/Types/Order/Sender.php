@@ -26,62 +26,30 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Responses\Types\DeliveryOption;
+namespace YDeliverySDK\Responses\Types\Order;
 
 use CommonSDK\Concerns\PropertyRead;
-use DateTimeImmutable;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @property-read Partner $partner Служба доставки.
- * @property-read string $type Тип доставки: COURIER — курьером, PICKUP — в пункт выдачи, POST — по почте.
- * @property-read DateTimeImmutable $calculatedDeliveryDateMin Начальная дата доставки.
- * @property-read DateTimeImmutable $calculatedDeliveryDateMax Конечная дата доставки в формате.
- * @property-read CourierSchedule|null $courierSchedule Расписание работы курьеров партнера.
+ * @property-read int $id
+ * @property-read string $name
  */
-final class Delivery
+final class Sender
 {
     use PropertyRead;
 
     /**
-     * @JMS\Type("YDeliverySDK\Responses\Types\DeliveryOption\Partner")
+     * @JMS\Type("int")
      *
-     * @var Partner
+     * @var int
      */
-    private $partner;
+    private $id;
 
     /**
      * @JMS\Type("string")
      *
      * @var string
      */
-    private $type;
-
-    /**
-     * @JMS\Type("DateTimeImmutable<'Y-m-d'>")
-     *
-     * @var \DateTimeImmutable
-     */
-    private $calculatedDeliveryDateMin;
-
-    /**
-     * @JMS\Type("DateTimeImmutable<'Y-m-d'>")
-     *
-     * @var \DateTimeImmutable
-     */
-    private $calculatedDeliveryDateMax;
-
-    /**
-     * @JMS\Type("YDeliverySDK\Responses\Types\DeliveryOption\CourierSchedule")
-     *
-     * @var CourierSchedule|null
-     */
-    private $courierSchedule;
-
-    private $tariffId;
-    private $delivery;
-    private $deliveryForCustomer;
-    private $deliveryForSender;
-    private $services;
-    private $deliveryTimeInterval;
+    private $name;
 }

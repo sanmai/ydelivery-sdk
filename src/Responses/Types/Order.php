@@ -29,6 +29,8 @@ declare(strict_types=1);
 namespace YDeliverySDK\Responses\Types;
 
 use CommonSDK\Concerns\PropertyRead;
+use CommonSDK\Concerns\SuccessfulResponse;
+use CommonSDK\Contracts\Response;
 use DateTimeImmutable;
 use JMS\Serializer\Annotation as JMS;
 
@@ -38,9 +40,15 @@ use JMS\Serializer\Annotation as JMS;
  * @property-read string $comment
  * @property-read DateTimeImmutable $created
  * @property-read string $status
+ * @property-read string $deliveryType
+ * @property-read Order\Sender $sender
+ * @property-read Order\DeliveryOption $deliveryOption
+ * @property-read bool $hasLabel
+ * @property-read Order\AvailableActions $availableActions
  */
-final class Order
+final class Order implements Response
 {
+    use SuccessfulResponse;
     use PropertyRead;
 
     /**
@@ -77,4 +85,69 @@ final class Order
      * @var string
      */
     private $status;
+
+    /**
+     * @JMS\Exclude
+     */
+    private $cost;
+
+    /**
+     * @JMS\Exclude
+     */
+    private $places = [];
+
+    /**
+     * @JMS\Exclude
+     */
+    private $contacts = [];
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    private $deliveryType;
+
+    /**
+     * @JMS\Exclude
+     */
+    private $deliveryServiceExternalId;
+
+    /**
+     * @JMS\Type("YDeliverySDK\Responses\Types\Order\Sender")
+     *
+     * @var Order\Sender
+     */
+    private $sender;
+
+    /**
+     * @JMS\Exclude
+     */
+    private $recipient;
+
+    /**
+     * @JMS\Exclude
+     */
+    private $shipment;
+
+    /**
+     * @JMS\Type("YDeliverySDK\Responses\Types\Order\DeliveryOption")
+     *
+     * @var Order\DeliveryOption
+     */
+    private $deliveryOption;
+
+    /**
+     * @JMS\Type("bool")
+     *
+     * @var bool
+     */
+    private $hasLabel;
+
+    /**
+     * @JMS\Type("YDeliverySDK\Responses\Types\Order\AvailableActions")
+     *
+     * @var Order\AvailableActions
+     */
+    private $availableActions;
 }

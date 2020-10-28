@@ -117,6 +117,7 @@ if (!$deliveryMethod) {
  */
 $request = new CreateOrderRequest();
 $request->deliveryType = $request::DELIVERY_TYPE_COURIER;
+$request->comment = 'Пустой тестовый заказ.';
 $request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
 $response = $client->sendCreateOrderRequest($request);
 
@@ -134,10 +135,14 @@ if ($response->hasErrors()) {
 
 echo "\n\nCreated: {$response->id}\n\n";
 
+$order = $client->getOrder($response->id);
+
+echo "\n\nLoaded: {$order->id} ({$order->comment})\n\n";
+
 /**
  * Наполним заказ данными.
  */
-$requestBuilder = UpdateOrderRequest::builder($response->id, $deliveryMethod, $location);
+$requestBuilder = UpdateOrderRequest::builder($order->id, $deliveryMethod, $location);
 $requestBuilder->setPostalCode($postalCode);
 $request = $requestBuilder->build();
 

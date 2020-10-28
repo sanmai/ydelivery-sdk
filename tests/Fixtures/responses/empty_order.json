@@ -1,0 +1,34 @@
+{
+    "externalId": null,
+    "comment": "Пустой тестовый заказ.",
+    "cost": null,
+    "places": [],
+    "contacts": [],
+    "deliveryType": "COURIER",
+    "id": 3553000,
+    "deliveryServiceExternalId": null,
+    "sender": {
+        "id": 500002300,
+        "name": "Example"
+    },
+    "recipient": null,
+    "created": "2020-10-10T00:00:00.000000Z",
+    "status": "DRAFT",
+    "shipment": null,
+    "deliveryOption": {
+        "tariffId": null,
+        "delivery": null,
+        "deliveryForCustomer": null,
+        "deliveryForSender": null,
+        "services": null,
+        "calculatedDeliveryDateMin": null,
+        "calculatedDeliveryDateMax": null,
+        "partner": null,
+        "deliveryTimeInterval": null
+    },
+    "hasLabel": false,
+    "availableActions": {
+        "untieFromShipment": false,
+        "generateLabel": false
+    }
+}
