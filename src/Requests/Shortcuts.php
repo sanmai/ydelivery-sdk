@@ -48,6 +48,7 @@ use YDeliverySDK\Responses\OrdersSearchResponseIterator;
  * @method Contracts\Response                                                   sendDeleteOrderRequest(DeleteOrderRequest $request)
  * @method Responses\Types\Order                                                sendGetOrderRequest(GetOrderRequest $request)
  * @method FileResponse                                                         sendOrderLabelRequest(OrderLabelRequest $request)
+ * @method Responses\OrderStatusesResponse|Responses\Types\Status[]             sendOrderStatusesRequest(OrderStatusesRequest $request)
  *
  * @phan-file-suppress PhanTypeMismatchArgument
  */
@@ -103,5 +104,15 @@ trait Shortcuts
         $request = new GetOrderRequest($orderId);
 
         return $this->sendGetOrderRequest($request);
+    }
+
+    /**
+     * @return FileResponse
+     */
+    public function getLabel(int $orderId)
+    {
+        $request = new OrderLabelRequest($orderId);
+
+        return $this->sendOrderLabelRequest($request);
     }
 }

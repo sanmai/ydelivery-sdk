@@ -30,9 +30,6 @@ namespace YDeliverySDK;
 
 use CommonSDK\Contracts;
 use function GuzzleHttp\default_user_agent;
-use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
-use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
-use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use JSONSerializer\Serializer;
 use Psr\Log\LoggerAwareInterface;
@@ -122,12 +119,7 @@ final class ClientBuilder implements LoggerAwareInterface, Contracts\ClientBuild
 
     private function buildSerializer(): Serializer
     {
-        $builder = SerializerBuilder::create();
-        $builder->setPropertyNamingStrategy(
-            new SerializedNameAnnotationStrategy(
-                new IdenticalPropertyNamingStrategy()
-            )
-        );
+        $builder = Serialization\Builder::create();
 
         /**
          * @see https://jmsyst.com/libs/serializer/master/configuration#configuring-a-cache-directory

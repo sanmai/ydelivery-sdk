@@ -1,0 +1,41 @@
+{
+    "id": 3500000,
+    "externalId": null,
+    "statuses": [
+        {
+            "code": "DRAFT",
+            "description": "Заказ доступен для редактирования.",
+            "datetime": "2020-10-10T00:00:26.989031Z"
+        },
+        {
+            "code": "VALIDATING",
+            "description": "Заказ находится на этапе валидации.",
+            "datetime": "2020-10-10T00:00:27.861469Z"
+        },
+        {
+            "code": "CREATED",
+            "description": "Заказ проверен и отправлен в службу доставки.",
+            "datetime": "2020-10-10T00:00:28.341069Z"
+        },
+        {
+            "code": "SORTING_CENTER_PROCESSING_STARTED",
+            "description": "Отправлен запрос на создание заказа в системе СЦ.",
+            "datetime": "2020-10-10T00:00:28.697971Z"
+        },
+        {
+            "code": "SORTING_CENTER_LOADED",
+            "description": "Заказ создан в информационной системе СЦ корректно.",
+            "datetime": "2020-10-10T00:00:30Z"
+        },
+        {
+            "code": "DELIVERY_PROCESSING_STARTED",
+            "description": "Отправлен запрос на создание заказа в системе службы доставки.",
+            "datetime": "2020-10-10T00:00:31.890518Z"
+        },
+        {
+            "code": "DELIVERY_LOADED",
+            "description": "Заказ подтвержден службой доставки.",
+            "datetime": "2020-10-10T00:00:35Z"
+        }
+    ]
+}

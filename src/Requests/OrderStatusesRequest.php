@@ -26,30 +26,38 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Deserialization;
+namespace YDeliverySDK\Requests;
 
-use JSONSerializer\Serializer;
-use Tests\YDeliverySDK\Fixtures\FixtureLoader;
-use YDeliverySDK\Serialization;
+use CommonSDK\Concerns\RequestCore;
+use CommonSDK\Contracts\Request;
+use YDeliverySDK\Responses\OrderStatusesResponse;
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase
+/**
+ * OrderStatusesRequest.
+ *
+ * @see https://yandex.ru/dev/delivery-3/doc/dg/reference/get-orders-id-statuses.html/
+ */
+final class OrderStatusesRequest implements Request
 {
-    private $serializer;
+    use RequestCore;
 
-    protected function setUp(): void
+    private const METHOD = 'GET';
+    private const ADDRESS = '/orders/%s/statuses';
+
+    protected const RESPONSE = OrderStatusesResponse::class;
+
+    /**
+     * @var int
+     */
+    private $id;
+
+    public function __construct(int $id)
     {
-        $builder = Serialization\Builder::create();
-
-        $this->serializer = new Serializer($builder);
+        $this->id = $id;
     }
 
-    protected function getSerializer(): Serializer
+    public function getAddress(): string
     {
-        return $this->serializer;
-    }
-
-    protected function loadFixtureWithType(string $filename, string $type)
-    {
-        return $this->getSerializer()->deserialize(FixtureLoader::loadResponse($filename), $type);
+        return \sprintf(static::ADDRESS, $this->id);
     }
 }

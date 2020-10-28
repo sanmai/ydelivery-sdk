@@ -28,28 +28,33 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Deserialization;
 
-use JSONSerializer\Serializer;
-use Tests\YDeliverySDK\Fixtures\FixtureLoader;
-use YDeliverySDK\Serialization;
+use YDeliverySDK\Responses\OrderStatusesResponse;
+use YDeliverySDK\Responses\Types\Status;
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase
+/**
+ * @covers \YDeliverySDK\Responses\Types\Order
+ */
+class OrderStatusesResponseTest extends TestCase
 {
-    private $serializer;
-
-    protected function setUp(): void
+    public function test_empty_order()
     {
-        $builder = Serialization\Builder::create();
+        $response = $this->loadFixture('statuses.json');
 
-        $this->serializer = new Serializer($builder);
+        $this->assertFalse($response->hasErrors());
+
+        $this->assertSame(3500000, $response->id);
+        $this->assertCount(7, $response);
+
+        foreach ($response as $status) {
+            /** @var $status Status */
+            $this->assertNotEmpty($status->code);
+            $this->assertNotEmpty($status->description);
+            $this->assertGreaterThan(0, $status->datetime->getTimestamp());
+        }
     }
 
-    protected function getSerializer(): Serializer
+    private function loadFixture(string $filename): OrderStatusesResponse
     {
-        return $this->serializer;
-    }
-
-    protected function loadFixtureWithType(string $filename, string $type)
-    {
-        return $this->getSerializer()->deserialize(FixtureLoader::loadResponse($filename), $type);
+        return $this->loadFixtureWithType($filename, OrderStatusesResponse::class);
     }
 }

@@ -26,30 +26,58 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Deserialization;
+namespace YDeliverySDK\Responses;
 
-use JSONSerializer\Serializer;
-use Tests\YDeliverySDK\Fixtures\FixtureLoader;
-use YDeliverySDK\Serialization;
+use CommonSDK\Concerns\PropertyRead;
+use CommonSDK\Concerns\SuccessfulResponse;
+use CommonSDK\Contracts\Response;
+use Countable;
+use IteratorAggregate;
+use JMS\Serializer\Annotation as JMS;
+use YDeliverySDK\Responses\Types\Status;
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase
+/**
+ * OrderStatusesResponse.
+ *
+ * @property-read int $id
+ * @property-read string $externalId
+ * @property-read Status[] $statuses
+ *
+ * @implements \IteratorAggregate<Status>
+ */
+final class OrderStatusesResponse implements Response, IteratorAggregate, Countable
 {
-    private $serializer;
+    use PropertyRead;
+    use SuccessfulResponse;
 
-    protected function setUp(): void
+    /**
+     * @JMS\Type("int")
+     *
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    private $externalId;
+
+    /**
+     * @JMS\Type("array<YDeliverySDK\Responses\Types\Status>")
+     *
+     * @var Status[]
+     */
+    private $statuses = [];
+
+    public function getIterator()
     {
-        $builder = Serialization\Builder::create();
-
-        $this->serializer = new Serializer($builder);
+        return new \ArrayIterator($this->statuses);
     }
 
-    protected function getSerializer(): Serializer
+    public function count()
     {
-        return $this->serializer;
-    }
-
-    protected function loadFixtureWithType(string $filename, string $type)
-    {
-        return $this->getSerializer()->deserialize(FixtureLoader::loadResponse($filename), $type);
+        return \count($this->statuses);
     }
 }

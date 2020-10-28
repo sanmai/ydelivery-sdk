@@ -26,30 +26,41 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Deserialization;
+namespace YDeliverySDK\Serialization;
 
-use JSONSerializer\Serializer;
-use Tests\YDeliverySDK\Fixtures\FixtureLoader;
-use YDeliverySDK\Serialization;
+use JMS\Serializer\EventDispatcher\EventDispatcher;
+use JMS\Serializer\EventDispatcher\Events;
+use JMS\Serializer\EventDispatcher\PreDeserializeEvent;
+use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
+use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
+use JMS\Serializer\SerializerBuilder;
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase
+final class Builder
 {
-    private $serializer;
-
-    protected function setUp(): void
+    public static function create(): SerializerBuilder
     {
-        $builder = Serialization\Builder::create();
+        $builder = SerializerBuilder::create();
+        $builder->setPropertyNamingStrategy(
+            new SerializedNameAnnotationStrategy(
+                new IdenticalPropertyNamingStrategy()
+            )
+        );
 
-        $this->serializer = new Serializer($builder);
-    }
+        $builder->configureListeners(function (EventDispatcher $dispatcher) {
+            /** @psalm-suppress MixedAssignment */
+            $dispatcher->addListener(Events::PRE_DESERIALIZE, function (PreDeserializeEvent $event) {
+                $data = $event->getData();
 
-    protected function getSerializer(): Serializer
-    {
-        return $this->serializer;
-    }
+                if (!\is_string($data)) {
+                    return;
+                }
 
-    protected function loadFixtureWithType(string $filename, string $type)
-    {
-        return $this->getSerializer()->deserialize(FixtureLoader::loadResponse($filename), $type);
+                if (\preg_match('/(^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(Z)/', $data, $match)) {
+                    $event->setData("{$match[1]}.000000{$match[2]}");
+                }
+            }, null, 'json');
+        });
+
+        return $builder;
     }
 }

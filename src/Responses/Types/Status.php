@@ -26,30 +26,39 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Deserialization;
+namespace YDeliverySDK\Responses\Types;
 
-use JSONSerializer\Serializer;
-use Tests\YDeliverySDK\Fixtures\FixtureLoader;
-use YDeliverySDK\Serialization;
+use CommonSDK\Concerns\PropertyRead;
+use DateTimeImmutable;
+use JMS\Serializer\Annotation as JMS;
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase
+/**
+ * @property-read string $code Код статуса заказа.
+ * @property-read string $description Описание статуса.
+ * @property-read DateTimeImmutable $datetime Дата и время установки статуса.
+ */
+final class Status
 {
-    private $serializer;
+    use PropertyRead;
 
-    protected function setUp(): void
-    {
-        $builder = Serialization\Builder::create();
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    private $code;
 
-        $this->serializer = new Serializer($builder);
-    }
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    private $description;
 
-    protected function getSerializer(): Serializer
-    {
-        return $this->serializer;
-    }
-
-    protected function loadFixtureWithType(string $filename, string $type)
-    {
-        return $this->getSerializer()->deserialize(FixtureLoader::loadResponse($filename), $type);
-    }
+    /**
+     * @JMS\Type("DateTimeImmutable<'Y-m-d\TH:i:s.uO'>")
+     *
+     * @var DateTimeImmutable
+     */
+    private $datetime;
 }

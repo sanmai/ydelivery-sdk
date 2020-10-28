@@ -27,7 +27,7 @@
 declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\OrderLabelRequest;
+use YDeliverySDK\Requests\OrderStatusesRequest;
 
 include_once 'vendor/autoload.php';
 
@@ -41,11 +41,23 @@ $client = $builder->build();
 
 $order = $client->getOrder((int) $argv[1]);
 
+$request = new OrderStatusesRequest($order->id);
+$statuses = $client->sendOrderStatusesRequest($request);
+
+foreach ($statuses as $status) {
+    echo \join("\t", [
+        $statuses->id,
+        $status->code,
+        $status->description,
+        $status->datetime->format('r'),
+    ]), "\n";
+}
+
 if (!$order->hasLabel) {
     return;
 }
 
-$response = $client->sendOrderLabelRequest(new OrderLabelRequest($order->id));
+$response = $client->getLabel($order->id);
 
 if ($response->hasErrors()) {
     // Обрабатываем ошибки
