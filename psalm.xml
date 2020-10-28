@@ -21,6 +21,8 @@
         <MissingConstructor errorLevel="suppress" />
         <PropertyNotSetInConstructor errorLevel="suppress" />
 
+        <MissingPropertyType errorLevel="info" />
+
         <ForbiddenCode>
             <errorLevel type="suppress">
                 <directory name="examples" />
