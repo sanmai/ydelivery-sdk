@@ -28,7 +28,6 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests\Builders;
 
-use YDeliverySDK\Requests\CreateOrderRequest;
 use YDeliverySDK\Requests\Templates\OrderRequest;
 use YDeliverySDK\Requests\Types\Dimensions;
 use YDeliverySDK\Responses\Types\DeliveryOption;
