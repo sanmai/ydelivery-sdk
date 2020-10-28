@@ -49,7 +49,8 @@ final class CreateOrderRequest extends OrderRequest
     protected const RESPONSE = OrderResponse::class;
 
     /**
-     * @return OrderRequestBuilder<CreateOrderRequest>
+     * @return OrderRequestBuilder
+     * @psalm-return OrderRequestBuilder<CreateOrderRequest>
      */
     public static function builder(
         ResponsesTypes\DeliveryOption $deliveryOption,
