@@ -124,7 +124,7 @@ cs: test-prerequisites
 prerequisites: report-php-version build/cache vendor/autoload.php .phan composer.lock
 
 # Do install if there's no 'vendor'
-vendor/autoload.php:
+vendor/autoload.php: composer.lock
 	$(SILENT) $(COMPOSER) install --prefer-dist
 
 # If composer.lock is older than `composer.json`, do update,
