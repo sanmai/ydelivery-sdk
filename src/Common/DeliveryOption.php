@@ -114,6 +114,7 @@ abstract class DeliveryOption
 
     /**
      * @JMS\Type("array<YDeliverySDK\Common\DeliveryService>")
+     * @JMS\SkipWhenEmpty
      *
      * @var DeliveryService[]
      */

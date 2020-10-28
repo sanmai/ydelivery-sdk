@@ -74,7 +74,8 @@ final class UpdateOrderRequest extends OrderRequest
     }
 
     /**
-     * @return OrderRequestBuilder<UpdateOrderRequest>
+     * @return OrderRequestBuilder
+     * @psalm-return OrderRequestBuilder<UpdateOrderRequest>
      */
     public static function builder(
         int $id,

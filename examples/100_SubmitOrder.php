@@ -39,9 +39,21 @@ $builder->setLogger(new DebuggingLogger());
 $client = $builder->build();
 
 $request = new CreateOrderRequest();
-$request->deliveryType = 'COURIER';
+$request->deliveryType = $request::DELIVERY_TYPE_COURIER;
 $request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
 $response = $client->sendCreateOrderRequest($request);
+
+if ($response->hasErrors()) {
+    // Обрабатываем ошибки
+    foreach ($response->getMessages() as $message) {
+        if ($message->getErrorCode() !== '') {
+            // Это ошибка
+            echo "{$message->getErrorCode()}: {$message->getMessage()}\n";
+        }
+    }
+
+    return;
+}
 
 $request = new SubmitOrderRequest();
 $request->orderIds = [$response->id];

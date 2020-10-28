@@ -118,6 +118,7 @@ abstract class OrderRequest implements JsonRequest
 
     /**
      * @JMS\Type("array<YDeliverySDK\Requests\Templates\OrderRequest\Contact>")
+     * @JMS\SkipWhenEmpty
      *
      * @var OrderRequest\Contact[]
      */
@@ -141,6 +142,7 @@ abstract class OrderRequest implements JsonRequest
 
     /**
      * @JMS\Type("array<YDeliverySDK\Requests\Templates\OrderRequest\Place>")
+     * @JMS\SkipWhenEmpty
      *
      * @var Place[]
      */

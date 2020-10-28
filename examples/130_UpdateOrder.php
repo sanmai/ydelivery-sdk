@@ -113,50 +113,11 @@ if (!$deliveryMethod) {
 }
 
 /**
- * Отправим заказ.
+ * Создадим заказ без данных.
  */
-$requestBuilder = CreateOrderRequest::builder($deliveryMethod, $location);
-$requestBuilder->setPostalCode($postalCode);
-$request = $requestBuilder->build();
-
-$request->shipment->warehouseFrom = (int) $_SERVER['YANDEX_WAREHOUSE_ID'];
+$request = new CreateOrderRequest();
+$request->deliveryType = $request::DELIVERY_TYPE_COURIER;
 $request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
-$request->comment = 'Доставки не будет - тестовый заказ';
-// $request->externalId = '426';
-
-$request->recipient->firstName = 'Василий';
-$request->recipient->lastName = 'Юрочкин';
-$request->recipient->phone = '+79266056128';
-
-$request->recipient->address->apartment = '43';
-$request->recipient->address->house = '5';
-$request->recipient->address->housing = '';
-$request->recipient->address->street = 'ул. Державина';
-//$request->recipient->pickupPointId = 10000018299;
-
-$place = $request->addPlace($dimensions);
-// $place->externalId = '427';
-$item = $place->addItem();
-$item->externalId = '428';
-$item->name = 'HELP';
-$item->count = 2;
-$item->price = 500;
-$item->assessedValue = 500;
-// $item->tax = $item::TAX_NO_VAT;
-
-$request->cost->assessedValue = 1000;
-$request->cost->fullyPrepaid = true;
-$request->cost->paymentMethod = $request->cost::PAYMENT_METHOD_PREPAID;
-
-$contact = $request->addContact();
-
-$contact->phone = '+79266056128';
-$contact->firstName = 'Василий';
-$contact->lastName = 'Юрочкин';
-
-$logger->addFile('create-order-request.json');
-$logger->addFile('create-order-response.json');
-
 $response = $client->sendCreateOrderRequest($request);
 
 if ($response->hasErrors()) {
@@ -171,6 +132,11 @@ if ($response->hasErrors()) {
     return;
 }
 
+echo "\n\nCreated: {$response->id}\n\n";
+
+/**
+ * Наполним заказ данными.
+ */
 $requestBuilder = UpdateOrderRequest::builder($response->id, $deliveryMethod, $location);
 $requestBuilder->setPostalCode($postalCode);
 $request = $requestBuilder->build();
@@ -209,8 +175,6 @@ $contact = $request->addContact();
 $contact->phone = '+79266056128';
 $contact->firstName = 'Василий';
 $contact->lastName = 'Юрочкин';
-
-$request->comment = 'Доставки не будет - тестовый заказ (обновлено)';
 
 $logger->addFile('update-order-request.json');
 $logger->addFile('update-order-response.json');
