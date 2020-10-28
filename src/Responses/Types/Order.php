@@ -41,6 +41,7 @@ use JMS\Serializer\Annotation as JMS;
  * @property-read DateTimeImmutable $created
  * @property-read string $status
  * @property-read string $deliveryType
+ * @property-read string $deliveryServiceExternalId
  * @property-read Order\Sender $sender
  * @property-read Order\DeliveryOption $deliveryOption
  * @property-read bool $hasLabel
@@ -109,7 +110,9 @@ final class Order implements Response
     private $deliveryType;
 
     /**
-     * @JMS\Exclude
+     * @JMS\Type("string")
+     *
+     * @var string
      */
     private $deliveryServiceExternalId;
 

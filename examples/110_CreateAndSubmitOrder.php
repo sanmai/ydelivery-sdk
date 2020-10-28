@@ -29,6 +29,7 @@ declare(strict_types=1);
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
 use YDeliverySDK\Requests\CreateOrderRequest;
 use YDeliverySDK\Requests\DeliveryOptionsRequest;
+use YDeliverySDK\Requests\OrderLabelRequest;
 use YDeliverySDK\Requests\SubmitOrderRequest;
 
 include_once 'vendor/autoload.php';
@@ -216,4 +217,18 @@ if ($response->hasErrors()) {
 
 foreach ($response as $order) {
     \var_dump($order->orderId);
+}
+
+$response = $client->sendOrderLabelRequest(new OrderLabelRequest($order->orderId));
+
+if ($response->hasErrors()) {
+    // Обрабатываем ошибки
+    foreach ($response->getMessages() as $message) {
+        if ($message->getErrorCode() !== '') {
+            // Это ошибка
+            echo "{$message->getErrorCode()}: {$message->getMessage()}\n";
+        }
+    }
+
+    return;
 }

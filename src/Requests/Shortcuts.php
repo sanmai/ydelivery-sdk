@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace YDeliverySDK\Requests;
 
 use CommonSDK\Contracts;
+use CommonSDK\Types\FileResponse;
 use YDeliverySDK\Client;
 use YDeliverySDK\Responses;
 use YDeliverySDK\Responses\OrdersSearchResponseIterator;
@@ -46,6 +47,7 @@ use YDeliverySDK\Responses\OrdersSearchResponseIterator;
  * @method Responses\OrdersSearchResponse|Responses\Types\Order[]               sendOrdersSearchRequest(OrdersSearchRequest $request)
  * @method Contracts\Response                                                   sendDeleteOrderRequest(DeleteOrderRequest $request)
  * @method Responses\Types\Order                                                sendGetOrderRequest(GetOrderRequest $request)
+ * @method FileResponse                                                         sendOrderLabelRequest(OrderLabelRequest $request)
  *
  * @phan-file-suppress PhanTypeMismatchArgument
  */
