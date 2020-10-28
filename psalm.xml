@@ -45,6 +45,18 @@
             </errorLevel>
         </RedundantCondition>
 
+        <MoreSpecificReturnType>
+            <errorLevel type="suppress">
+                <directory name="tests/Integration" />
+            </errorLevel>
+        </MoreSpecificReturnType>
+
+        <LessSpecificReturnStatement>
+            <errorLevel type="suppress">
+                <directory name="tests/Integration" />
+            </errorLevel>
+        </LessSpecificReturnStatement>
+
         <PossiblyInvalidMethodCall>
             <errorLevel type="suppress">
                 <directory name="examples" />

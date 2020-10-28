@@ -56,6 +56,7 @@ if ($response->hasErrors()) {
  */
 $builder = new \YDeliverySDK\ClientBuilder();
 $builder->setToken($_SERVER['YANDEX_DELIVERY_TOKEN'] ?? '');
+/** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
 $response = $client->sendDeliveryServicesRequest($request);

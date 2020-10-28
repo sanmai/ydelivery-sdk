@@ -342,6 +342,7 @@ return [
     'directory_list' => [
         'src',
         'vendor/doctrine/cache/lib/Doctrine/Common/Cache',
+        'vendor/doctrine/collections/lib',
         'vendor/gamez/psr-testlogger/src',
         'vendor/guzzlehttp/guzzle/src',
         'vendor/jms/serializer/src',

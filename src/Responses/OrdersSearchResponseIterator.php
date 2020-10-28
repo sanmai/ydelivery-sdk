@@ -28,35 +28,53 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Responses;
 
+use CommonSDK\Contracts;
 use CommonSDK\Contracts\Response;
 use Countable;
 use IteratorAggregate;
 use function Pipeline\map;
 use YDeliverySDK\Client;
-use YDeliverySDK\Requests\OrdersSearchRequest;
+use YDeliverySDK\Requests;
+use YDeliverySDK\Responses\Types\Order;
 
 /**
- * @internal
- *
  * @property-read int $totalElements Количество объектов в ответе.
  * @property-read int $totalPages Количество страниц в ответе.
  * @property-read int $size	Количество объектов на странице.
  * @property-read int $pageNumber Номер текущей страницы (начиная с 0).
+ *
+ * @template-implements \IteratorAggregate<Order>
  */
 final class OrdersSearchResponseIterator implements Response, Countable, IteratorAggregate
 {
+    /**
+     * @var Client
+     */
     private $client;
+
+    /**
+     * @var Requests\OrdersSearchRequest
+     */
     private $request;
 
     /** @var Response|null */
     private $response;
 
-    public function __construct(Client $client, OrdersSearchRequest $request)
+    /**
+     * @param Client|Contracts\Client                        $client
+     * @param Requests\OrdersSearchRequest|Contracts\Request $request
+     *
+     * @psalm-suppress PropertyTypeCoercion
+     */
+    public function __construct(Contracts\Client $client, Contracts\Request $request)
     {
         $this->client = $client;
         $this->request = $request;
     }
 
+    /**
+     * @psalm-suppress PossiblyInvalidPropertyAssignmentValue
+     */
     private function makeRequest(): void
     {
         $this->response = $this->client->sendOrdersSearchRequest($this->request);
@@ -64,6 +82,9 @@ final class OrdersSearchResponseIterator implements Response, Countable, Iterato
     }
 
     /**
+     * @psalm-suppress MoreSpecificReturnType
+     * @psalm-suppress LessSpecificReturnStatement
+     *
      * @return OrdersSearchResponse
      */
     private function getLastResponse()
@@ -75,13 +96,21 @@ final class OrdersSearchResponseIterator implements Response, Countable, Iterato
         return $this->response;
     }
 
+    private function haveMoreResults(): bool
+    {
+        /** @var OrdersSearchResponse|Response $lastResponse */
+        $lastResponse = $this->getLastResponse();
+
+        return $lastResponse instanceof OrdersSearchResponse && $lastResponse->pageNumber < $lastResponse->lastPageNumber;
+    }
+
     public function getIterator()
     {
         return map(function () {
             do {
                 yield from $this->getLastResponse();
                 $this->makeRequest();
-            } while ($this->getLastResponse()->pageNumber < $this->getLastResponse()->lastPageNumber);
+            } while ($this->haveMoreResults());
 
             yield from $this->getLastResponse();
         });

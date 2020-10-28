@@ -34,8 +34,8 @@ use JMS\Serializer\Annotation as JMS;
 
 /**
  * @property-read int $id
- * @property-read string|null $externalId
- * @property-read string|null $comment;
+ * @property-read string $externalId
+ * @property-read string $comment
  * @property-read DateTimeImmutable $created
  * @property-read string $status
  */

@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace YDeliverySDK\Requests;
 
 use CommonSDK\Contracts;
+use YDeliverySDK\Client;
 use YDeliverySDK\Responses;
 use YDeliverySDK\Responses\OrdersSearchResponseIterator;
 
@@ -43,11 +44,13 @@ use YDeliverySDK\Responses\OrdersSearchResponseIterator;
  * @method Responses\SubmitOrderResponse|Responses\Types\SubmittedOrder[]       sendSubmitOrderRequest(SubmitOrderRequest $request)
  * @method Responses\OrdersSearchResponse|Responses\Types\Order[]               sendOrdersSearchRequest(OrdersSearchRequest $request)
  * @method Contracts\Response                                                   sendDeleteOrderRequest(DeleteOrderRequest $request)
+ *
+ * @phan-file-suppress PhanTypeMismatchArgument
  */
 trait Shortcuts
 {
     /**
-     * @return \YDeliverySDK\Responses\LocationResponse|\YDeliverySDK\Responses\Types\Location[]
+     * @return Responses\LocationResponse|Responses\Types\Location[]
      */
     public function makeLocationRequest(string $term)
     {
@@ -58,7 +61,7 @@ trait Shortcuts
     }
 
     /**
-     * @return \YDeliverySDK\Responses\PostalCodeResponse|\YDeliverySDK\Responses\Types\PostalCode[]
+     * @return Responses\PostalCodeResponse|Responses\Types\PostalCode[]
      */
     public function makePostalCodeRequest(string $address)
     {
@@ -79,10 +82,12 @@ trait Shortcuts
     }
 
     /**
-     * @return Responses\OrdersSearchResponse|Responses\Types\Order[]
+     * @return Responses\OrdersSearchResponseIterator|Responses\Types\Order[]
+     * @psalm-return Responses\OrdersSearchResponseIterator
      */
     public function searchOrders(OrdersSearchRequest $request)
     {
+        /** @var Client $this */
         return new OrdersSearchResponseIterator($this, $request);
     }
 }

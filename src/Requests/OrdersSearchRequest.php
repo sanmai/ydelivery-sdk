@@ -39,8 +39,14 @@ use YDeliverySDK\Responses\OrdersSearchResponse;
 
 /**
  * @property-write int[] $senderIds Идентификаторы магазинов. Обязательный параметр.
+ * @property-write int[] $orderIds Список идентификаторов заказов.
+ * @property-write int[] $partnerIds Идентификаторы служб доставки.
+ * @property-write string[] $statuses Коды статусов заказа.
+ * @property-write string $term Поисковый запрос. Разбивается по пробелам на слова, каждое из которых ищется по вхождению без учета регистра в полях заказа.
  * @property-write int $page Номер текущей страницы (начиная с 0).
  * @property-write int $size Количество объектов на странице.
+ *
+ * @phan-file-suppress PhanAccessWriteOnlyMagicProperty
  */
 final class OrdersSearchRequest implements JsonRequest, ParamRequest
 {
@@ -107,10 +113,12 @@ final class OrdersSearchRequest implements JsonRequest, ParamRequest
     private const RESPONSE = OrdersSearchResponse::class;
 
     /**
-     * @param array<int>    $senderIds
-     * @param array<int>    $orderIds
-     * @param array<int>    $partnerIds
-     * @param array<string> $statuses
+     * @phan-suppress PhanTypeMismatchPropertyProbablyReal
+     *
+     * @param int[]    $senderIds
+     * @param int[]    $orderIds
+     * @param int[]    $partnerIds
+     * @param string[] $statuses
      */
     public function __construct(array $senderIds, array $orderIds = [], array $partnerIds = [], array $statuses = [])
     {

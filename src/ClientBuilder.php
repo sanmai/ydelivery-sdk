@@ -28,8 +28,7 @@ declare(strict_types=1);
 
 namespace YDeliverySDK;
 
-use CommonSDK\Contracts\Client as ClientInterface;
-use CommonSDK\Contracts\ClientBuilder as ClientBuilderInterface;
+use CommonSDK\Contracts;
 use function GuzzleHttp\default_user_agent;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
@@ -44,10 +43,8 @@ use VersionInfo\PlaceholderVersionReader;
 
 /**
  * @codeCoverageIgnore
- *
- * @method \YDeliverySDK\Client build()
  */
-final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterface
+final class ClientBuilder implements LoggerAwareInterface, Contracts\ClientBuilder
 {
     use LoggerAwareTrait;
 
@@ -85,12 +82,16 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
     /** @var array */
     private $extraOptions = [];
 
+    /**
+     * @psalm-suppress MoreSpecificReturnType
+     */
     public static function clientWithToken(string $token = '', int $timeout = self::DEFAULT_TIMEOUT): Client
     {
         $builder = new self();
         $builder->setToken($token);
         $builder->setTimeout($timeout);
 
+        /** @psalm-suppress LessSpecificReturnStatement */
         return $builder->build();
     }
 
@@ -139,7 +140,10 @@ final class ClientBuilder implements LoggerAwareInterface, ClientBuilderInterfac
         return new Serializer($builder);
     }
 
-    public function build(): ClientInterface
+    /**
+     * @return \YDeliverySDK\Client|Contracts\Client
+     */
+    public function build(): Contracts\Client
     {
         if ($this->serializer === null) {
             $this->serializer = $this->buildSerializer();

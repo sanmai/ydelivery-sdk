@@ -44,6 +44,8 @@ use YDeliverySDK\Responses\Types\Order;
  * @property-read int $size	Количество объектов на странице.
  * @property-read int $pageNumber Номер текущей страницы (начиная с 0).
  * @property-read int $lastPageNumber Номер последней страницы.
+ *
+ * @template-implements \IteratorAggregate<Order>
  */
 final class OrdersSearchResponse implements Response, Countable, IteratorAggregate
 {
