@@ -125,12 +125,12 @@ prerequisites: report-php-version build/cache vendor/autoload.php .phan composer
 
 # Do install if there's no 'vendor'
 vendor/autoload.php: composer.lock
-	$(SILENT) $(COMPOSER) install --prefer-dist
+	$(SILENT) $(COMPOSER) install --prefer-dist && touch -c vendor/autoload.php
 
 # If composer.lock is older than `composer.json`, do update,
 # and touch composer.lock because composer not always does that
 composer.lock: composer.json
-	$(SILENT) $(COMPOSER) update && touch composer.lock
+	$(SILENT) $(COMPOSER) update && touch -c composer.lock
 
 .phan:
 	$(PHP) $(PHAN) --init --init-level=1 --init-overwrite --target-php-version=$(PHAN_PHP_VERSION) > /dev/null
