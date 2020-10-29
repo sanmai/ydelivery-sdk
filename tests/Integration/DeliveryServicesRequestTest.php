@@ -45,7 +45,7 @@ final class DeliveryServicesRequestTest extends TestCase
     public function test_successful_request()
     {
         $response = $this->getClient()->sendDeliveryServicesRequest(
-            DeliveryServicesRequest::withCabinetId(
+            new DeliveryServicesRequest(
                 $this->getCabinetId()
             )
         );

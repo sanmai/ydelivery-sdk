@@ -26,48 +26,38 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Integration;
+namespace YDeliverySDK\Responses\Types\PickupPoint;
 
-use YDeliverySDK\Requests\WithdrawIntervalsRequest;
-
-/** @psalm-suppress TypeDoesNotContainType */
-if (false) {
-    include 'examples/060_WithdrawIntervals.php';
-}
+use CommonSDK\Concerns\PropertyRead;
+use JMS\Serializer\Annotation as JMS;
 
 /**
- * @covers \YDeliverySDK\Requests\WithdrawIntervalsRequest
- *
- * @group integration
+ * @property-read int $day Номер дня недели (например, 1 — понедельник, 2 — вторник).
+ * @property-read string $from Время в формате HH:MM
+ * @property-read string $to Время в формате HH:MM
  */
-final class WithdrawIntervalsRequestTest extends TestCase
+final class DaySchedule
 {
-    public function test_successful_request()
-    {
-        $client = $this->getClient();
+    use PropertyRead;
 
-        $partner = null;
+    /**
+     * @JMS\Type("int")
+     *
+     * @var int
+     */
+    protected $day;
 
-        // Получим ID первого попавшегося сервиса доставки.
-        foreach ($client->getDeliveryServices($this->getCabinetId()) as $partner) {
-            break;
-        }
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $from;
 
-        $this->assertNotNull($partner);
-
-        // Для него получим расписание доставки.
-        $request = new WithdrawIntervalsRequest();
-        $request->date = new \DateTime('next Monday');
-        $request->partnerId = $partner->id;
-
-        $response = $client->sendWithdrawIntervalsRequest($request);
-
-        $this->assertGreaterThan(0, \count($response));
-
-        foreach ($response as $value) {
-            $this->assertNotEmpty($value->id);
-            $this->assertNotEmpty($value->from);
-            $this->assertNotEmpty($value->to);
-        }
-    }
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    protected $to;
 }

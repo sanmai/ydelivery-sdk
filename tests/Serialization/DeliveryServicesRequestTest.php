@@ -37,7 +37,7 @@ final class DeliveryServicesRequestTest extends TestCase
 {
     public function test_create_with_cabinet_id()
     {
-        $request = DeliveryServicesRequest::withCabinetId(123);
+        $request = new DeliveryServicesRequest(123);
 
         $this->assertSame(['cabinetId' => 123], $request->getParams());
     }

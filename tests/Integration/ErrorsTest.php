@@ -53,7 +53,7 @@ final class ErrorsTest extends TestCase
         $builder->setToken('invalid');
         $client = $builder->build();
         /** @var Client $client */
-        $request = new \YDeliverySDK\Requests\DeliveryServicesRequest();
+        $request = new \YDeliverySDK\Requests\DeliveryServicesRequest(-1);
         $response = $client->sendDeliveryServicesRequest($request);
 
         $this->assertTrue($response->hasErrors());
@@ -70,8 +70,7 @@ final class ErrorsTest extends TestCase
      */
     public function test_error_handling_with_invalid_data_but_correct_token()
     {
-        $request = new \YDeliverySDK\Requests\DeliveryServicesRequest();
-        $request->cabinetId = 1;
+        $request = new \YDeliverySDK\Requests\DeliveryServicesRequest(1);
 
         $response = $this->getClient()->sendDeliveryServicesRequest($request);
 

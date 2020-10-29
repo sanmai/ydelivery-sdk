@@ -1,0 +1,143 @@
+[
+    {
+        "id": 10000000033,
+        "partnerId": 9,
+        "type": "PICKUP_POINT",
+        "name": null,
+        "instruction": null,
+        "address": {
+            "locationId": 65,
+            "latitude": 55.012929906689074,
+            "longitude": 82.86385370851319,
+            "postalCode": "630032",
+            "region": "Новосибирская область",
+            "subRegion": "городской округ Новосибирск",
+            "locality": "Новосибирск",
+            "street": "Большая улица",
+            "house": "280",
+            "housing": null,
+            "building": null,
+            "addressString": "630032, Новосибирская область, городской округ Новосибирск, Новосибирск, Большая улица, д. 280",
+            "shortAddressString": "Большая улица, д. 280"
+        },
+        "phones": [
+            {
+                "type": "PRIMARY",
+                "number": "8(383) 209-60-10",
+                "internalNumber": null
+            },
+            {
+                "type": "PRIMARY",
+                "number": "8(383) 362-25-25",
+                "internalNumber": null
+            }
+        ],
+        "schedule": [
+            {
+                "day": 1,
+                "from": "09:00",
+                "to": "20:00"
+            },
+            {
+                "day": 2,
+                "from": "09:00",
+                "to": "20:00"
+            },
+            {
+                "day": 3,
+                "from": "09:00",
+                "to": "20:00"
+            },
+            {
+                "day": 4,
+                "from": "09:00",
+                "to": "20:00"
+            },
+            {
+                "day": 5,
+                "from": "09:00",
+                "to": "20:00"
+            },
+            {
+                "day": 6,
+                "from": "10:00",
+                "to": "16:00"
+            }
+        ],
+        "contact": null,
+        "supportedFeatures": {
+            "cash": true,
+            "prepay": true,
+            "card": true,
+            "orderReturn": false
+        }
+    },
+    {
+        "id": 10000001630,
+        "partnerId": 106,
+        "type": "PICKUP_POINT",
+        "name": "Новосибирск Красный_5426_С",
+        "instruction": "Остановка: Гагаринская. Пункт выдачи находится в БЦ \"Зеленые Купола\" Красный проспект,д. 79. На 1-м этаже БЦ стеклянная дверь с вывеской \"Аист Пункт выдачи заказов \" и \"BoxBerry\" . Выйти из метро , подняться по лестнице по направлению к БЦ \"Зеленые купола\", обойти здание слевой стороны -большое крыльцо, главный вход в БЦ.",
+        "address": {
+            "locationId": 65,
+            "latitude": 55.05007584695045,
+            "longitude": 82.91367427417043,
+            "postalCode": "630049",
+            "region": "Новосибирская обл",
+            "subRegion": null,
+            "locality": "Новосибирск",
+            "street": "Красный",
+            "house": "79",
+            "housing": "",
+            "building": "",
+            "addressString": "630049, Новосибирская обл, Новосибирск, Красный, д. 79",
+            "shortAddressString": "Красный, д. 79"
+        },
+        "phones": [
+            {
+                "type": "PRIMARY",
+                "number": "+8 800 222-80-00",
+                "internalNumber": null
+            }
+        ],
+        "schedule": [
+            {
+                "day": 1,
+                "from": "10:00",
+                "to": "20:00"
+            },
+            {
+                "day": 2,
+                "from": "10:00",
+                "to": "20:00"
+            },
+            {
+                "day": 3,
+                "from": "10:00",
+                "to": "20:00"
+            },
+            {
+                "day": 4,
+                "from": "10:00",
+                "to": "20:00"
+            },
+            {
+                "day": 5,
+                "from": "10:00",
+                "to": "20:00"
+            },
+            {
+                "day": 6,
+                "from": "10:00",
+                "to": "17:00"
+            }
+        ],
+        "contact": null,
+        "supportedFeatures": {
+            "cash": true,
+            "prepay": true,
+            "card": true,
+            "orderReturn": true
+        }
+    }
+]

@@ -26,48 +26,31 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Integration;
+namespace YDeliverySDK\Requests\Types;
 
-use YDeliverySDK\Requests\WithdrawIntervalsRequest;
-
-/** @psalm-suppress TypeDoesNotContainType */
-if (false) {
-    include 'examples/060_WithdrawIntervals.php';
-}
+use CommonSDK\Concerns\PropertyWrite;
+use CommonSDK\Contracts\ReadableRequestProperty;
+use JMS\Serializer\Annotation as JMS;
 
 /**
- * @covers \YDeliverySDK\Requests\WithdrawIntervalsRequest
- *
- * @group integration
+ * @property-write float $from Нижняя граница.
+ * @property-write float $to Верхняя граница.
  */
-final class WithdrawIntervalsRequestTest extends TestCase
+final class GeographicCoordinateRange implements ReadableRequestProperty
 {
-    public function test_successful_request()
-    {
-        $client = $this->getClient();
+    use PropertyWrite;
 
-        $partner = null;
+    /**
+     * @JMS\Type("float")
+     *
+     * @var float
+     */
+    private $from;
 
-        // Получим ID первого попавшегося сервиса доставки.
-        foreach ($client->getDeliveryServices($this->getCabinetId()) as $partner) {
-            break;
-        }
-
-        $this->assertNotNull($partner);
-
-        // Для него получим расписание доставки.
-        $request = new WithdrawIntervalsRequest();
-        $request->date = new \DateTime('next Monday');
-        $request->partnerId = $partner->id;
-
-        $response = $client->sendWithdrawIntervalsRequest($request);
-
-        $this->assertGreaterThan(0, \count($response));
-
-        foreach ($response as $value) {
-            $this->assertNotEmpty($value->id);
-            $this->assertNotEmpty($value->from);
-            $this->assertNotEmpty($value->to);
-        }
-    }
+    /**
+     * @JMS\Type("float")
+     *
+     * @var float
+     */
+    private $to;
 }

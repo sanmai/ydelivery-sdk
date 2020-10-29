@@ -27,7 +27,6 @@
 declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests;
 
 include_once 'vendor/autoload.php';
 
@@ -37,10 +36,7 @@ $builder->setLogger(new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$request = new Requests\PostalCodeRequest();
-$request->address = 'Москва, ул. Льва Толстого, 16';
-
-$response = $client->sendPostalCodeRequest($request);
+$response = $client->makePostalCodeRequest('Москва, ул. Льва Толстого, 16');
 
 \var_dump(\count($response));
 

@@ -29,18 +29,13 @@ declare(strict_types=1);
 namespace YDeliverySDK\Requests;
 
 use CommonSDK\Concerns\ParamRequest as ParamRequestTrait;
-use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Concerns\RequestCore;
 use CommonSDK\Contracts\ParamRequest;
 use YDeliverySDK\Responses\LocationResponse;
 
-/**
- * @property-write string $term
- */
 final class LocationRequest implements ParamRequest
 {
     use RequestCore;
-    use PropertyWrite;
     use ParamRequestTrait;
 
     private const METHOD = 'GET';
@@ -53,5 +48,10 @@ final class LocationRequest implements ParamRequest
      *
      * @var string
      */
-    protected $term;
+    private $term;
+
+    public function __construct(string $term)
+    {
+        $this->term = $term;
+    }
 }

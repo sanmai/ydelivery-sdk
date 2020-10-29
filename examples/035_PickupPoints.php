@@ -26,48 +26,43 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Integration;
+use Tests\YDeliverySDK\Integration\DebuggingLogger;
+use YDeliverySDK\Requests\PickupPointsRequest;
+use YDeliverySDK\Responses\Types\PickupPoint;
 
-use YDeliverySDK\Requests\WithdrawIntervalsRequest;
+include_once 'vendor/autoload.php';
 
-/** @psalm-suppress TypeDoesNotContainType */
-if (false) {
-    include 'examples/060_WithdrawIntervals.php';
-}
+$builder = new \YDeliverySDK\ClientBuilder();
+$builder->setToken($_SERVER['YANDEX_DELIVERY_TOKEN'] ?? '');
+$builder->setLogger($logger = new DebuggingLogger());
+/** @var \YDeliverySDK\Client $client */
+$client = $builder->build();
 
-/**
- * @covers \YDeliverySDK\Requests\WithdrawIntervalsRequest
- *
- * @group integration
- */
-final class WithdrawIntervalsRequestTest extends TestCase
-{
-    public function test_successful_request()
-    {
-        $client = $this->getClient();
+$request = new PickupPointsRequest();
+$request->type = $request::TYPE_TERMINAL;
+$request->locationId = 65;
+$request->latitude->from = 55.013;
+$request->latitude->to = 55.051;
+$request->longitude->from = 82.951;
+$request->longitude->to = 83.081;
 
-        $partner = null;
+$logger->addFile('pickup-points-request.json');
+$logger->addFile('pickup-points-response.json');
 
-        // Получим ID первого попавшегося сервиса доставки.
-        foreach ($client->getDeliveryServices($this->getCabinetId()) as $partner) {
-            break;
-        }
+$response = $client->sendPickupPointsRequest($request);
 
-        $this->assertNotNull($partner);
+\var_dump(\count($response));
 
-        // Для него получим расписание доставки.
-        $request = new WithdrawIntervalsRequest();
-        $request->date = new \DateTime('next Monday');
-        $request->partnerId = $partner->id;
-
-        $response = $client->sendWithdrawIntervalsRequest($request);
-
-        $this->assertGreaterThan(0, \count($response));
-
-        foreach ($response as $value) {
-            $this->assertNotEmpty($value->id);
-            $this->assertNotEmpty($value->from);
-            $this->assertNotEmpty($value->to);
-        }
-    }
+foreach ($response as $item) {
+    /** @var $item PickupPoint */
+    echo \join("\t", [
+        $item->id,
+        $item->partnerId,
+        $item->type,
+        $item->address->postalCode,
+        $item->address->locationId,
+        $item->address->latitude,
+        $item->address->longitude,
+        $item->phones[0]->number,
+    ]), "\n";
 }

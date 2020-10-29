@@ -26,48 +26,46 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Integration;
+namespace YDeliverySDK\Responses\Types\PickupPoint;
 
-use YDeliverySDK\Requests\WithdrawIntervalsRequest;
-
-/** @psalm-suppress TypeDoesNotContainType */
-if (false) {
-    include 'examples/060_WithdrawIntervals.php';
-}
+use CommonSDK\Concerns\PropertyRead;
+use JMS\Serializer\Annotation as JMS;
 
 /**
- * @covers \YDeliverySDK\Requests\WithdrawIntervalsRequest
- *
- * @group integration
+ * @property-read bool $cash Возможность оплаты наличными.
+ * @property-read bool $prepay Возможность предоплаченных заказов.
+ * @property-read bool $card Возможность оплаты картой.
+ * @property-read bool $orderReturn Возможность возврата.
  */
-final class WithdrawIntervalsRequestTest extends TestCase
+final class SupportedFeatures
 {
-    public function test_successful_request()
-    {
-        $client = $this->getClient();
+    use PropertyRead;
 
-        $partner = null;
+    /**
+     * @JMS\Type("boolean")
+     *
+     * @var bool
+     */
+    protected $cash;
 
-        // Получим ID первого попавшегося сервиса доставки.
-        foreach ($client->getDeliveryServices($this->getCabinetId()) as $partner) {
-            break;
-        }
+    /**
+     * @JMS\Type("boolean")
+     *
+     * @var bool
+     */
+    protected $prepay;
 
-        $this->assertNotNull($partner);
+    /**
+     * @JMS\Type("boolean")
+     *
+     * @var bool
+     */
+    protected $card;
 
-        // Для него получим расписание доставки.
-        $request = new WithdrawIntervalsRequest();
-        $request->date = new \DateTime('next Monday');
-        $request->partnerId = $partner->id;
-
-        $response = $client->sendWithdrawIntervalsRequest($request);
-
-        $this->assertGreaterThan(0, \count($response));
-
-        foreach ($response as $value) {
-            $this->assertNotEmpty($value->id);
-            $this->assertNotEmpty($value->from);
-            $this->assertNotEmpty($value->to);
-        }
-    }
+    /**
+     * @JMS\Type("boolean")
+     *
+     * @var bool
+     */
+    protected $orderReturn;
 }

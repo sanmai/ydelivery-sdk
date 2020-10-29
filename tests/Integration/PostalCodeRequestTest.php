@@ -28,8 +28,6 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Integration;
 
-use YDeliverySDK\Requests\PostalCodeRequest;
-
 /** @psalm-suppress TypeDoesNotContainType */
 if (false) {
     include 'examples/040_PostalCode.php';
@@ -44,10 +42,7 @@ final class PostalCodeRequestTest extends TestCase
 {
     public function test_successful_request()
     {
-        $request = new PostalCodeRequest();
-        $request->address = 'Москва, ул. Льва Толстого, 16';
-
-        $response = $this->getClient()->sendPostalCodeRequest($request);
+        $response = $this->getClient()->makePostalCodeRequest('Москва, ул. Льва Толстого, 16');
 
         $this->assertCount(1, $response);
 

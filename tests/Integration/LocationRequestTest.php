@@ -28,8 +28,6 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Integration;
 
-use YDeliverySDK\Requests\LocationRequest;
-
 /** @psalm-suppress TypeDoesNotContainType */
 if (false) {
     include 'examples/050_Location.php';
@@ -44,10 +42,7 @@ final class LocationRequestTest extends TestCase
 {
     public function test_successful_request()
     {
-        $request = new LocationRequest();
-        $request->term = 'Владимир';
-
-        $response = $this->getClient()->sendLocationRequest($request);
+        $response = $this->getClient()->makeLocationRequest('Владимир');
 
         $this->assertGreaterThan(0, \count($response));
 

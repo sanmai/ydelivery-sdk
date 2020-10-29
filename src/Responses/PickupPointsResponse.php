@@ -26,48 +26,19 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Integration;
+namespace YDeliverySDK\Responses;
 
-use YDeliverySDK\Requests\WithdrawIntervalsRequest;
-
-/** @psalm-suppress TypeDoesNotContainType */
-if (false) {
-    include 'examples/060_WithdrawIntervals.php';
-}
+use CommonSDK\Concerns\ListContainer;
+use CommonSDK\Contracts\ItemList;
+use CommonSDK\Contracts\Response;
+use YDeliverySDK\Responses\Types\PickupPoint;
 
 /**
- * @covers \YDeliverySDK\Requests\WithdrawIntervalsRequest
- *
- * @group integration
+ * @template-implements \IteratorAggregate<Location>
  */
-final class WithdrawIntervalsRequestTest extends TestCase
+final class PickupPointsResponse implements Response, ItemList, \IteratorAggregate
 {
-    public function test_successful_request()
-    {
-        $client = $this->getClient();
+    use ListContainer;
 
-        $partner = null;
-
-        // Получим ID первого попавшегося сервиса доставки.
-        foreach ($client->getDeliveryServices($this->getCabinetId()) as $partner) {
-            break;
-        }
-
-        $this->assertNotNull($partner);
-
-        // Для него получим расписание доставки.
-        $request = new WithdrawIntervalsRequest();
-        $request->date = new \DateTime('next Monday');
-        $request->partnerId = $partner->id;
-
-        $response = $client->sendWithdrawIntervalsRequest($request);
-
-        $this->assertGreaterThan(0, \count($response));
-
-        foreach ($response as $value) {
-            $this->assertNotEmpty($value->id);
-            $this->assertNotEmpty($value->from);
-            $this->assertNotEmpty($value->to);
-        }
-    }
+    private const LIST_TYPE = PickupPoint::class;
 }

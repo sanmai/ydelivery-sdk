@@ -28,7 +28,6 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Integration;
 
-use YDeliverySDK\Requests\DeliveryServicesRequest;
 use YDeliverySDK\Requests\ImportIntervalsRequest;
 
 /** @psalm-suppress TypeDoesNotContainType */
@@ -47,13 +46,10 @@ final class ImportIntervalsRequestTest extends TestCase
     {
         $client = $this->getClient();
 
-        $request = new DeliveryServicesRequest();
-        $request->cabinetId = $this->getCabinetId();
-
         $partner = null;
 
         // Получим ID первого попавшегося сервиса доставки.
-        foreach ($client->sendDeliveryServicesRequest($request) as $partner) {
+        foreach ($client->getDeliveryServices($this->getCabinetId()) as $partner) {
             break;
         }
 

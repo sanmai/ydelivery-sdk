@@ -27,7 +27,6 @@
 declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\DeliveryServicesRequest;
 
 include_once 'vendor/autoload.php';
 
@@ -37,9 +36,7 @@ $builder->setLogger(new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$response = $client->sendDeliveryServicesRequest(
-    DeliveryServicesRequest::withCabinetId((int) $_SERVER['YANDEX_CABINET_ID'])
-);
+$response = $client->getDeliveryServices((int) $_SERVER['YANDEX_CABINET_ID']);
 
 \var_dump(\count($response));
 

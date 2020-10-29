@@ -36,6 +36,7 @@ use YDeliverySDK\Responses\OrdersSearchResponseIterator;
 
 /**
  * @method Responses\DeliveryServicesResponse|Responses\Types\DeliveryService[] sendDeliveryServicesRequest(DeliveryServicesRequest $request)
+ * @method Contracts\Response                                                   sendPickupPointsRequest(PickupPointsRequest $request)
  * @method Responses\PostalCodeResponse|Responses\Types\PostalCode[]            sendPostalCodeRequest(PostalCodeRequest $request)
  * @method Responses\LocationResponse|Responses\Types\Location[]                sendLocationRequest(LocationRequest $request)
  * @method Responses\IntervalsResponse|Responses\Types\Interval[]               sendWithdrawIntervalsRequest(WithdrawIntervalsRequest $request)
@@ -55,14 +56,25 @@ use YDeliverySDK\Responses\OrdersSearchResponseIterator;
 trait Shortcuts
 {
     /**
+     * @param int $cabinetId идентификатор личного кабинета
+     *
+     * @return Responses\DeliveryServicesResponse|Responses\Types\DeliveryService[]
+     */
+    public function getDeliveryServices(int $cabinetId)
+    {
+        return $this->sendDeliveryServicesRequest(
+            new DeliveryServicesRequest((int) $_SERVER['YANDEX_CABINET_ID'])
+        );
+    }
+
+    /**
      * @return Responses\LocationResponse|Responses\Types\Location[]
      */
     public function makeLocationRequest(string $term)
     {
-        $request = new LocationRequest();
-        $request->term = $term;
-
-        return $this->sendLocationRequest($request);
+        return $this->sendLocationRequest(
+            new LocationRequest($term)
+        );
     }
 
     /**
@@ -70,10 +82,9 @@ trait Shortcuts
      */
     public function makePostalCodeRequest(string $address)
     {
-        $request = new PostalCodeRequest();
-        $request->address = $address;
-
-        return $this->sendPostalCodeRequest($request);
+        return $this->sendPostalCodeRequest(
+            new PostalCodeRequest($address)
+        );
     }
 
     /**
@@ -81,9 +92,9 @@ trait Shortcuts
      */
     public function makeDeleteOrderRequest(int $orderId)
     {
-        $request = new DeleteOrderRequest($orderId);
-
-        return $this->sendDeleteOrderRequest($request);
+        return $this->sendDeleteOrderRequest(
+            new DeleteOrderRequest($orderId)
+        );
     }
 
     /**
@@ -101,9 +112,9 @@ trait Shortcuts
      */
     public function getOrder(int $orderId)
     {
-        $request = new GetOrderRequest($orderId);
-
-        return $this->sendGetOrderRequest($request);
+        return $this->sendGetOrderRequest(
+            new GetOrderRequest($orderId)
+        );
     }
 
     /**
@@ -111,8 +122,8 @@ trait Shortcuts
      */
     public function getLabel(int $orderId)
     {
-        $request = new OrderLabelRequest($orderId);
-
-        return $this->sendOrderLabelRequest($request);
+        return $this->sendOrderLabelRequest(
+            new OrderLabelRequest($orderId)
+        );
     }
 }

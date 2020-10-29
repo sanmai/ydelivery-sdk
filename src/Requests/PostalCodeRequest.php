@@ -29,18 +29,13 @@ declare(strict_types=1);
 namespace YDeliverySDK\Requests;
 
 use CommonSDK\Concerns\ParamRequest as ParamRequestTrait;
-use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Concerns\RequestCore;
 use CommonSDK\Contracts\ParamRequest;
 use YDeliverySDK\Responses\PostalCodeResponse;
 
-/**
- * @property-write string $address
- */
 final class PostalCodeRequest implements ParamRequest
 {
     use RequestCore;
-    use PropertyWrite;
     use ParamRequestTrait;
 
     private const METHOD = 'GET';
@@ -49,9 +44,15 @@ final class PostalCodeRequest implements ParamRequest
     private const RESPONSE = PostalCodeResponse::class;
 
     /**
-     * Почтовый адрес.
-     *
      * @var string
      */
-    protected $address;
+    private $address;
+
+    /**
+     * @param string $address почтовый адрес
+     */
+    public function __construct(string $address)
+    {
+        $this->address = $address;
+    }
 }

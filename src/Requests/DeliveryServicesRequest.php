@@ -29,18 +29,13 @@ declare(strict_types=1);
 namespace YDeliverySDK\Requests;
 
 use CommonSDK\Concerns\ParamRequest as ParamRequestTrait;
-use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Concerns\RequestCore;
 use CommonSDK\Contracts\ParamRequest;
 use YDeliverySDK\Responses\DeliveryServicesResponse;
 
-/**
- * @property-write int $cabinetId
- */
 final class DeliveryServicesRequest implements ParamRequest
 {
     use RequestCore;
-    use PropertyWrite;
     use ParamRequestTrait;
 
     private const METHOD = 'GET';
@@ -53,13 +48,10 @@ final class DeliveryServicesRequest implements ParamRequest
      *
      * @var int
      */
-    protected $cabinetId;
+    private $cabinetId;
 
-    public static function withCabinetId(int $cabinetId): DeliveryServicesRequest
+    public function __construct(int $cabinetId)
     {
-        $request = new self();
-        $request->cabinetId = $cabinetId;
-
-        return $request;
+        $this->cabinetId = $cabinetId;
     }
 }

@@ -28,46 +28,41 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Integration;
 
-use YDeliverySDK\Requests\WithdrawIntervalsRequest;
+use YDeliverySDK\Requests\PickupPointsRequest;
 
 /** @psalm-suppress TypeDoesNotContainType */
 if (false) {
-    include 'examples/060_WithdrawIntervals.php';
+    include 'examples/035_PickupPoints.php';
 }
 
 /**
- * @covers \YDeliverySDK\Requests\WithdrawIntervalsRequest
+ * @covers \YDeliverySDK\Requests\PickupPointsRequest
  *
  * @group integration
  */
-final class WithdrawIntervalsRequestTest extends TestCase
+final class PickupPointsRequestTest extends TestCase
 {
     public function test_successful_request()
     {
-        $client = $this->getClient();
+        $request = new PickupPointsRequest();
+        $request->type = $request::TYPE_TERMINAL;
+        $request->locationId = 65;
+        $request->latitude->from = 55.013;
+        $request->latitude->to = 55.051;
+        $request->longitude->from = 82.951;
+        $request->longitude->to = 83.081;
 
-        $partner = null;
-
-        // Получим ID первого попавшегося сервиса доставки.
-        foreach ($client->getDeliveryServices($this->getCabinetId()) as $partner) {
-            break;
-        }
-
-        $this->assertNotNull($partner);
-
-        // Для него получим расписание доставки.
-        $request = new WithdrawIntervalsRequest();
-        $request->date = new \DateTime('next Monday');
-        $request->partnerId = $partner->id;
-
-        $response = $client->sendWithdrawIntervalsRequest($request);
+        $response = $this->getClient()->sendPickupPointsRequest($request);
 
         $this->assertGreaterThan(0, \count($response));
-
-        foreach ($response as $value) {
-            $this->assertNotEmpty($value->id);
-            $this->assertNotEmpty($value->from);
-            $this->assertNotEmpty($value->to);
+        foreach ($response as $item) {
+            $this->assertGreaterThan(0, $item->id);
+            $this->assertGreaterThan(0, $item->partnerId);
+            $this->assertNotNull($item->type);
+            $this->assertSame(6, \strlen($item->address->postalCode));
+            $this->assertGreaterThan(0, $item->address->locationId);
+            $this->assertGreaterThan(0, $item->address->latitude);
+            $this->assertGreaterThan(0, $item->address->longitude);
         }
     }
 }
