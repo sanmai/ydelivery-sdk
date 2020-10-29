@@ -33,8 +33,8 @@ use YDeliverySDK\Requests\SubmitOrderRequest;
 
 /** @psalm-suppress TypeDoesNotContainType */
 if (false) {
-    include 'examples/090_CreateOrderRequest.php';
-    include 'examples/100_SubmitOrderRequest.php';
+    include 'examples/090_CreateOrder.php';
+    include 'examples/100_SubmitOrder.php';
 }
 
 /**

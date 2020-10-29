@@ -113,4 +113,15 @@ final class DeliveryOption
      * @var string[]
      */
     private $tags = [];
+
+    public function isTagged(string $withTag): bool
+    {
+        foreach ($this->tags as $tag) {
+            if ($tag === $withTag) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

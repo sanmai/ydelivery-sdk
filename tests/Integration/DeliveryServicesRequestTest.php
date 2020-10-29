@@ -32,7 +32,7 @@ use YDeliverySDK\Requests\DeliveryServicesRequest;
 
 /** @psalm-suppress TypeDoesNotContainType */
 if (false) {
-    include 'examples/030_DeliveryServicesRequest.php';
+    include 'examples/030_DeliveryServices.php';
 }
 
 /**

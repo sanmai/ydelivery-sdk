@@ -31,22 +31,38 @@ namespace YDeliverySDK\Responses;
 use CommonSDK\Concerns\PropertyRead;
 use CommonSDK\Concerns\SuccessfulResponse;
 use CommonSDK\Contracts\Response;
-use JMS\Serializer\Annotation as JMS;
+use JSONSerializer\Contracts\ScalarValue;
 
 /**
  * OrderResponse.
  *
  * @property-read int $id
  */
-final class OrderResponse implements Response
+final class OrderResponse implements Response, ScalarValue
 {
     use PropertyRead;
     use SuccessfulResponse;
 
     /**
-     * @JMS\Type("int")
-     *
      * @var int
      */
     private $id;
+
+    /**
+     * @phan-suppress PhanAccessReadOnlyMagicProperty
+     *
+     * @param mixed $value
+     */
+    public static function withValue($value)
+    {
+        $response = new self();
+        $response->id = $value;
+
+        return $response;
+    }
+
+    public static function getType(): string
+    {
+        return 'int';
+    }
 }

@@ -26,7 +26,7 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Requests\CreateOrderRequest;
+namespace YDeliverySDK\Requests\Builders;
 
 use YDeliverySDK\Requests\CreateOrderRequest;
 use YDeliverySDK\Requests\Templates\OrderRequest;
@@ -36,13 +36,18 @@ use YDeliverySDK\Responses\Types\Location;
 use YDeliverySDK\Responses\Types\PostalCode;
 
 /**
- * CreateOrderRequest builder.
+ * OrderRequestRequest builder.
+ *
+ * @psalm-template T of OrderRequest
  *
  * @see https://yandex.ru/dev/delivery-3/doc/dg/reference/post-orders.html
  */
-final class Builder
+final class OrderRequestBuilder
 {
-    /** @var CreateOrderRequest */
+    /**
+     * @var OrderRequest
+     * @psalm-var T
+     */
     private $request;
 
     /** @var DeliveryOption */
@@ -60,9 +65,12 @@ final class Builder
     /** @var PostalCode|null */
     private $postalCode;
 
-    public function __construct(DeliveryOption $deliveryOption, Location $location, CreateOrderRequest $request = null)
+    /**
+     * @psalm-param T $request
+     */
+    public function __construct(DeliveryOption $deliveryOption, Location $location, OrderRequest $request)
     {
-        $this->request = $request ?? new CreateOrderRequest(new OrderRequest\DeliveryOption($deliveryOption->services));
+        $this->request = $request;
         $this->deliveryOption = $deliveryOption;
         $this->location = $location;
     }
@@ -74,7 +82,12 @@ final class Builder
         return $this;
     }
 
-    public function build(): CreateOrderRequest
+    /**
+     * @psalm-return T
+     *
+     * @return OrderRequest
+     */
+    public function build()
     {
         $this->request->deliveryType = $this->deliveryOption->delivery->type;
         $this->request->shipment->date = $this->deliveryOption->shipments[$this->shipment]->date;

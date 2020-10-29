@@ -41,6 +41,7 @@ use YDeliverySDK\Responses\OrdersSearchResponseIterator;
  * @method Responses\IntervalsResponse|Responses\Types\Interval[]               sendImportIntervalsRequest(ImportIntervalsRequest $request)
  * @method Responses\DeliveryOptionsResponse|Responses\Types\DeliveryOption[]   sendDeliveryOptionsRequest(DeliveryOptionsRequest $request)
  * @method Responses\OrderResponse                                              sendCreateOrderRequest(CreateOrderRequest $request)
+ * @method Responses\OrderResponse                                              sendUpdateOrderRequest(UpdateOrderRequest $request)
  * @method Responses\SubmitOrderResponse|Responses\Types\SubmittedOrder[]       sendSubmitOrderRequest(SubmitOrderRequest $request)
  * @method Responses\OrdersSearchResponse|Responses\Types\Order[]               sendOrdersSearchRequest(OrdersSearchRequest $request)
  * @method Contracts\Response                                                   sendDeleteOrderRequest(DeleteOrderRequest $request)

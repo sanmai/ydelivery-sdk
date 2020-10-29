@@ -29,7 +29,7 @@ declare(strict_types=1);
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
 use YDeliverySDK\Requests\CreateOrderRequest;
 use YDeliverySDK\Requests\DeliveryOptionsRequest;
-use YDeliverySDK\Requests\SubmitOrderRequest;
+use YDeliverySDK\Requests\UpdateOrderRequest;
 
 include_once 'vendor/autoload.php';
 
@@ -88,7 +88,7 @@ $dimensions = $request->dimensions;
 
 $request->deliveryType = $request::DELIVERY_TYPE_COURIER;
 
-$request->shipment->date = new DateTime('next Monday');
+// $request->shipment->date = new DateTime('next Monday');
 $request->shipment->type = $request->shipment::TYPE_WITHDRAW;
 
 $request->cost->assessedValue = 1000;
@@ -106,34 +106,11 @@ if (!\count($deliveryMethods)) {
     return;
 }
 
-/** @var \YDeliverySDK\Responses\Types\DeliveryOption $deliveryMethod */
-foreach ($deliveryMethods as $deliveryMethod) {
-    echo \join("\t", [
-        $deliveryMethod->delivery->type,
-        $deliveryMethod->tariffId,
-        $deliveryMethod->tariffName ?? 'Без названия',
-        $deliveryMethod->cost->deliveryForSender,
-        $deliveryMethod->delivery->calculatedDeliveryDateMin->format('Y-m-d'),
-        $deliveryMethod->delivery->calculatedDeliveryDateMax->format('Y-m-d'),
-    ]), "\n";
-}
-
 $deliveryMethod = $deliveryMethods->getFirstTagged($deliveryMethods::TAG_CHEAPEST);
 
 if (!$deliveryMethod) {
     return;
 }
-
-echo "\nCheapest delivery method:\n";
-
-echo \join("\t", [
-    $deliveryMethod->delivery->type,
-    $deliveryMethod->tariffId,
-    $deliveryMethod->tariffName ?? 'Без названия',
-    $deliveryMethod->cost->deliveryForSender,
-    $deliveryMethod->delivery->calculatedDeliveryDateMin->format('Y-m-d'),
-    $deliveryMethod->delivery->calculatedDeliveryDateMax->format('Y-m-d'),
-]), "\n";
 
 /**
  * Отправим заказ.
@@ -194,26 +171,50 @@ if ($response->hasErrors()) {
     return;
 }
 
-$request = new SubmitOrderRequest();
-$request->orderIds = [$response->id];
+$requestBuilder = UpdateOrderRequest::builder($response->id, $deliveryMethod, $location);
+$requestBuilder->setPostalCode($postalCode);
+$request = $requestBuilder->build();
 
-$logger->addFile('submit-order-request.json');
-$logger->addFile('submit-order-response.json');
+$request->shipment->warehouseFrom = (int) $_SERVER['YANDEX_WAREHOUSE_ID'];
+$request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
+$request->comment = 'Доставки не будет - тестовый заказ';
+// $request->externalId = '426';
 
-$response = $client->sendSubmitOrderRequest($request);
+$request->recipient->firstName = 'Василий';
+$request->recipient->lastName = 'Юрочкин';
+$request->recipient->phone = '+79266056128';
 
-if ($response->hasErrors()) {
-    // Обрабатываем ошибки
-    foreach ($response->getMessages() as $message) {
-        if ($message->getErrorCode() !== '') {
-            // Это ошибка
-            echo "{$message->getErrorCode()}: {$message->getMessage()}\n";
-        }
-    }
+$request->recipient->address->apartment = '43';
+$request->recipient->address->house = '5';
+$request->recipient->address->housing = '';
+$request->recipient->address->street = 'ул. Державина';
+//$request->recipient->pickupPointId = 10000018299;
 
-    return;
-}
+$place = $request->addPlace($dimensions);
+// $place->externalId = '427';
+$item = $place->addItem();
+$item->externalId = '428';
+$item->name = 'HELP';
+$item->count = 2;
+$item->price = 500;
+$item->assessedValue = 500;
+// $item->tax = $item::TAX_NO_VAT;
 
-foreach ($response as $order) {
-    \var_dump($order->orderId);
-}
+$request->cost->assessedValue = 1000;
+$request->cost->fullyPrepaid = true;
+$request->cost->paymentMethod = $request->cost::PAYMENT_METHOD_PREPAID;
+
+$contact = $request->addContact();
+
+$contact->phone = '+79266056128';
+$contact->firstName = 'Василий';
+$contact->lastName = 'Юрочкин';
+
+$request->comment = 'Доставки не будет - тестовый заказ (обновлено)';
+
+$logger->addFile('update-order-request.json');
+$logger->addFile('update-order-response.json');
+
+$response = $client->sendUpdateOrderRequest($request);
+
+echo "\n\nUpdated: {$response->id}\n\n";

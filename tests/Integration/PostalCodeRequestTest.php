@@ -32,7 +32,7 @@ use YDeliverySDK\Requests\PostalCodeRequest;
 
 /** @psalm-suppress TypeDoesNotContainType */
 if (false) {
-    include 'examples/040_PostalCodeRequest.php';
+    include 'examples/040_PostalCode.php';
 }
 
 /**

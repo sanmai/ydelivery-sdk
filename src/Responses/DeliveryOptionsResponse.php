@@ -41,4 +41,20 @@ final class DeliveryOptionsResponse implements Response, ItemList, \IteratorAggr
     use ListContainer;
 
     private const LIST_TYPE = DeliveryOption::class;
+
+    public const TAG_FASTEST = 'FASTEST';
+
+    public const TAG_CHEAPEST = 'CHEAPEST';
+
+    public function getFirstTagged(string $tag): ?DeliveryOption
+    {
+        foreach ($this as $option) {
+            /** @var DeliveryOption $option */
+            if ($option->isTagged($tag)) {
+                return $option;
+            }
+        }
+
+        return null;
+    }
 }

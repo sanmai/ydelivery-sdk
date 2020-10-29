@@ -33,7 +33,7 @@ use YDeliverySDK\Requests\WithdrawIntervalsRequest;
 
 /** @psalm-suppress TypeDoesNotContainType */
 if (false) {
-    include 'examples/060_WithdrawIntervalsRequest.php';
+    include 'examples/060_WithdrawIntervals.php';
 }
 
 /**

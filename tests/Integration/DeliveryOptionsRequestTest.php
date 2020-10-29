@@ -35,7 +35,7 @@ use YDeliverySDK\Responses\DeliveryOptionsResponse;
 
 /** @psalm-suppress TypeDoesNotContainType */
 if (false) {
-    include 'examples/080_DeliveryOptionsRequest.php';
+    include 'examples/080_DeliveryOptions.php';
 }
 
 /**

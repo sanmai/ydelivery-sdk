@@ -33,7 +33,7 @@ use YDeliverySDK\Requests\ImportIntervalsRequest;
 
 /** @psalm-suppress TypeDoesNotContainType */
 if (false) {
-    include 'examples/070_ImportIntervalsRequest.php';
+    include 'examples/070_ImportIntervals.php';
 }
 
 /**

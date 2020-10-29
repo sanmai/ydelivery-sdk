@@ -32,7 +32,7 @@ use YDeliverySDK\Requests\LocationRequest;
 
 /** @psalm-suppress TypeDoesNotContainType */
 if (false) {
-    include 'examples/050_LocationRequest.php';
+    include 'examples/050_Location.php';
 }
 
 /**
