@@ -1,0 +1,17 @@
+{
+    "message": "Validation error",
+    "errors": [
+        {
+            "objectName": "ordersStatusFilter",
+            "field": "orders",
+            "message": "size must be between 1 and 100",
+            "conditionCode": "Size",
+            "arguments": {
+                "min": 1,
+                "max": 100
+            },
+            "errorCode": "FIELD_NOT_VALID"
+        }
+    ],
+    "type": "VALIDATION_ERROR"
+}

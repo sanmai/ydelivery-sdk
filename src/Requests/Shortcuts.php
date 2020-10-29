@@ -50,6 +50,7 @@ use YDeliverySDK\Responses\OrdersSearchResponseIterator;
  * @method Responses\Types\Order                                                sendGetOrderRequest(GetOrderRequest $request)
  * @method FileResponse                                                         sendOrderLabelRequest(OrderLabelRequest $request)
  * @method Responses\OrderStatusesResponse|Responses\Types\Status[]             sendOrderStatusesRequest(OrderStatusesRequest $request)
+ * @method Responses\OrdersStatusResponse|Responses\Types\OrderStatus[]         sendOrdersStatusRequest(OrdersStatusRequest $request)
  *
  * @phan-file-suppress PhanTypeMismatchArgument
  */

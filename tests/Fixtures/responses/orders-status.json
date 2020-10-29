@@ -1,0 +1,20 @@
+[
+    {
+        "id": 3000000,
+        "externalId": null,
+        "status": {
+            "code": "DELIVERY_LOADED",
+            "description": "Заказ подтвержден службой доставки.",
+            "datetime": "2020-10-10T00:00:00.000000Z"
+        }
+    },
+    {
+        "id": null,
+        "externalId": "100",
+        "status": {
+            "code": "NOT_FOUND",
+            "description": "Заказ не найден.",
+            "datetime": null
+        }
+    }
+]

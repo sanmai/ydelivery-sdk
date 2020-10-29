@@ -29,46 +29,35 @@ declare(strict_types=1);
 namespace YDeliverySDK\Responses\Types;
 
 use CommonSDK\Concerns\PropertyRead;
-use DateTimeImmutable;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * @property-read string $code Код статуса заказа.
- * @property-read string $description Описание статуса.
- * @property-read DateTimeImmutable|null $datetime Дата и время установки статуса.
- * @property-read DateTimeImmutable $timestamp Дата и время установки статуса, или текущее время если статус неизвестен.
+ * @property-read int|null $id
+ * @property-read string|null $externalId
+ * @property-read Status $status
  */
-final class Status
+final class OrderStatus
 {
     use PropertyRead;
 
     /**
-     * @JMS\Type("string")
+     * @JMS\Type("int")
      *
-     * @var string
+     * @var int
      */
-    private $code;
+    private $id;
 
     /**
      * @JMS\Type("string")
      *
      * @var string
      */
-    private $description;
+    private $externalId;
 
     /**
-     * @JMS\Type("DateTimeImmutable<'Y-m-d\TH:i:s.uO'>")
+     * @JMS\Type("YDeliverySDK\Responses\Types\Status")
      *
-     * @var DateTimeImmutable|null
+     * @var Status
      */
-    private $datetime;
-
-    private function getTimestamp(): DateTimeImmutable
-    {
-        if ($this->datetime === null) {
-            return new DateTimeImmutable();
-        }
-
-        return $this->datetime;
-    }
+    private $status;
 }

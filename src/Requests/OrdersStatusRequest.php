@@ -26,49 +26,62 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Responses\Types;
+namespace YDeliverySDK\Requests;
 
-use CommonSDK\Concerns\PropertyRead;
-use DateTimeImmutable;
+use CommonSDK\Concerns\PropertyWrite;
+use CommonSDK\Concerns\RequestCore;
+use CommonSDK\Contracts\JsonRequest;
 use JMS\Serializer\Annotation as JMS;
+use YDeliverySDK\Responses\OrdersStatusResponse;
 
 /**
- * @property-read string $code Код статуса заказа.
- * @property-read string $description Описание статуса.
- * @property-read DateTimeImmutable|null $datetime Дата и время установки статуса.
- * @property-read DateTimeImmutable $timestamp Дата и время установки статуса, или текущее время если статус неизвестен.
+ * @property-write int $senderId Идентификатор магазина.
+ * @property-write int $fromOrderId Идентификатор заказа. Результаты будут выведены для заказов, идентификаторы которых строго больше указанного.
+ *
+ * @phan-file-suppress PhanAccessWriteOnlyMagicProperty
  */
-final class Status
+final class OrdersStatusRequest implements JsonRequest
 {
-    use PropertyRead;
+    use RequestCore;
+    use PropertyWrite;
 
     /**
-     * @JMS\Type("string")
+     * @JMS\Type("int")
      *
-     * @var string
+     * @var int
      */
-    private $code;
+    private $senderId;
 
     /**
-     * @JMS\Type("string")
+     * @JMS\Type("int")
      *
-     * @var string
+     * @var int
      */
-    private $description;
+    private $fromOrderId;
 
     /**
-     * @JMS\Type("DateTimeImmutable<'Y-m-d\TH:i:s.uO'>")
+     * @JMS\Type("array<YDeliverySDK\Requests\Types\OrderId>")
      *
-     * @var DateTimeImmutable|null
+     * @var Types\OrderId[]
      */
-    private $datetime;
+    private $orders = [];
 
-    private function getTimestamp(): DateTimeImmutable
+    private const METHOD = 'PUT';
+    private const ADDRESS = '/orders/status';
+
+    private const RESPONSE = OrdersStatusResponse::class;
+
+    public function __construct(int $senderId)
     {
-        if ($this->datetime === null) {
-            return new DateTimeImmutable();
-        }
+        $this->senderId = $senderId;
+    }
 
-        return $this->datetime;
+    public function addOrder(): Types\OrderId
+    {
+        $order = new Types\OrderId();
+
+        $this->orders[] = $order;
+
+        return $order;
     }
 }

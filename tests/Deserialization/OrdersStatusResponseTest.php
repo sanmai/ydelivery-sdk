@@ -26,49 +26,42 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Responses\Types;
+namespace Tests\YDeliverySDK\Deserialization;
 
-use CommonSDK\Concerns\PropertyRead;
-use DateTimeImmutable;
-use JMS\Serializer\Annotation as JMS;
+use YDeliverySDK\Responses\OrdersStatusResponse;
+use YDeliverySDK\Responses\Types\OrderStatus;
 
 /**
- * @property-read string $code Код статуса заказа.
- * @property-read string $description Описание статуса.
- * @property-read DateTimeImmutable|null $datetime Дата и время установки статуса.
- * @property-read DateTimeImmutable $timestamp Дата и время установки статуса, или текущее время если статус неизвестен.
+ * @covers \YDeliverySDK\Responses\OrdersStatusResponse
+ * @covers \YDeliverySDK\Responses\Types\OrdersStatus
  */
-final class Status
+class OrdersStatusResponseTest extends TestCase
 {
-    use PropertyRead;
-
-    /**
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    private $code;
-
-    /**
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    private $description;
-
-    /**
-     * @JMS\Type("DateTimeImmutable<'Y-m-d\TH:i:s.uO'>")
-     *
-     * @var DateTimeImmutable|null
-     */
-    private $datetime;
-
-    private function getTimestamp(): DateTimeImmutable
+    public function test_successful_request()
     {
-        if ($this->datetime === null) {
-            return new DateTimeImmutable();
-        }
+        $response = $this->loadFixture('orders-status.json');
 
-        return $this->datetime;
+        $this->assertFalse($response->hasErrors());
+
+        $this->assertCount(2, $response);
+
+        foreach ($response as $item) {
+            /** @var $item OrderStatus */
+            $this->assertInstanceOf(OrderStatus::class, $item);
+
+            $this->assertNotNull($item->id ?? $item->externalId);
+            $this->assertIsString($item->status->code);
+            $this->assertIsString($item->status->description);
+            $this->assertInstanceOf(\DateTimeInterface::class, $item->status->timestamp);
+
+            if ($item->id !== null) {
+                $this->assertInstanceOf(\DateTimeInterface::class, $item->status->datetime);
+            }
+        }
+    }
+
+    private function loadFixture(string $filename): OrdersStatusResponse
+    {
+        return $this->loadFixtureWithType($filename, OrdersStatusResponse::class);
     }
 }

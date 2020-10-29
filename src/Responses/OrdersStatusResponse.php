@@ -26,49 +26,19 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Responses\Types;
+namespace YDeliverySDK\Responses;
 
-use CommonSDK\Concerns\PropertyRead;
-use DateTimeImmutable;
-use JMS\Serializer\Annotation as JMS;
+use CommonSDK\Concerns\ListContainer;
+use CommonSDK\Contracts\ItemList;
+use CommonSDK\Contracts\Response;
+use YDeliverySDK\Responses\Types\OrderStatus;
 
 /**
- * @property-read string $code Код статуса заказа.
- * @property-read string $description Описание статуса.
- * @property-read DateTimeImmutable|null $datetime Дата и время установки статуса.
- * @property-read DateTimeImmutable $timestamp Дата и время установки статуса, или текущее время если статус неизвестен.
+ * @template-implements \IteratorAggregate<OrderStatus>
  */
-final class Status
+final class OrdersStatusResponse implements Response, ItemList, \IteratorAggregate
 {
-    use PropertyRead;
+    use ListContainer;
 
-    /**
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    private $code;
-
-    /**
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    private $description;
-
-    /**
-     * @JMS\Type("DateTimeImmutable<'Y-m-d\TH:i:s.uO'>")
-     *
-     * @var DateTimeImmutable|null
-     */
-    private $datetime;
-
-    private function getTimestamp(): DateTimeImmutable
-    {
-        if ($this->datetime === null) {
-            return new DateTimeImmutable();
-        }
-
-        return $this->datetime;
-    }
+    private const LIST_TYPE = OrderStatus::class;
 }

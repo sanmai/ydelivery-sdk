@@ -26,49 +26,47 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Responses\Types;
+use Tests\YDeliverySDK\Integration\DebuggingLogger;
+use YDeliverySDK\Requests\OrdersStatusRequest;
 
-use CommonSDK\Concerns\PropertyRead;
-use DateTimeImmutable;
-use JMS\Serializer\Annotation as JMS;
+include_once 'vendor/autoload.php';
 
-/**
- * @property-read string $code Код статуса заказа.
- * @property-read string $description Описание статуса.
- * @property-read DateTimeImmutable|null $datetime Дата и время установки статуса.
- * @property-read DateTimeImmutable $timestamp Дата и время установки статуса, или текущее время если статус неизвестен.
- */
-final class Status
-{
-    use PropertyRead;
+$logger = new DebuggingLogger();
 
-    /**
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    private $code;
+$builder = new \YDeliverySDK\ClientBuilder();
+$builder->setToken($_SERVER['YANDEX_DELIVERY_TOKEN'] ?? '');
+$builder->setLogger($logger);
+/** @var \YDeliverySDK\Client $client */
+$client = $builder->build();
 
-    /**
-     * @JMS\Type("string")
-     *
-     * @var string
-     */
-    private $description;
+$request = new OrdersStatusRequest((int) $_SERVER['YANDEX_SHOP_ID']);
+$request->fromOrderId = (int) $argv[1] - 1;
 
-    /**
-     * @JMS\Type("DateTimeImmutable<'Y-m-d\TH:i:s.uO'>")
-     *
-     * @var DateTimeImmutable|null
-     */
-    private $datetime;
+$order = $request->addOrder();
+$order->id = (int) $argv[1];
 
-    private function getTimestamp(): DateTimeImmutable
-    {
-        if ($this->datetime === null) {
-            return new DateTimeImmutable();
+$order = $request->addOrder();
+$order->externalId = '100';
+
+$response = $client->sendOrdersStatusRequest($request);
+
+if ($response->hasErrors()) {
+    // Обрабатываем ошибки
+    foreach ($response->getMessages() as $message) {
+        if ($message->getErrorCode() !== '') {
+            // Это ошибка
+            echo "{$message->getErrorCode()}: {$message->getMessage()}\n";
         }
-
-        return $this->datetime;
     }
+
+    return;
+}
+
+foreach ($response as $order) {
+    echo \join("\t", [
+        $order->id ?? $order->externalId,
+        $order->status->code,
+        $order->status->description,
+        $order->status->timestamp->format('r'),
+    ]), "\n";
 }
