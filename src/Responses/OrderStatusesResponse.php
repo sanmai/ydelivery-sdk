@@ -43,7 +43,7 @@ use YDeliverySDK\Responses\Types\Status;
  * @property-read string $externalId
  * @property-read Status[] $statuses
  *
- * @implements \IteratorAggregate<Status>
+ * @template-implements \IteratorAggregate<Status>
  */
 final class OrderStatusesResponse implements Response, IteratorAggregate, Countable
 {

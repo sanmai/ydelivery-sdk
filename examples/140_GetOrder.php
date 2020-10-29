@@ -27,7 +27,6 @@
 declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\OrderStatusesRequest;
 
 include_once 'vendor/autoload.php';
 
@@ -41,8 +40,9 @@ $client = $builder->build();
 
 $order = $client->getOrder((int) $argv[1]);
 
-$request = new OrderStatusesRequest($order->id);
-$statuses = $client->sendOrderStatusesRequest($request);
+$statuses = $client->getOrderStatuses($order->id);
+
+echo "Order ID: {$statuses->id}\n";
 
 foreach ($statuses as $status) {
     echo \join("\t", [

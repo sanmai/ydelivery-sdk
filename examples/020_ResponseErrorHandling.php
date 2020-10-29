@@ -28,8 +28,7 @@ declare(strict_types=1);
 include_once 'vendor/autoload.php';
 
 /** @var \CommonSDK\Contracts\Response $response */
-$request = new \YDeliverySDK\Requests\DeliveryServicesRequest();
-$request->cabinetId = 1;
+$request = new \YDeliverySDK\Requests\DeliveryServicesRequest(1);
 
 /*
  * Случай ошибки авторизации с ошибочным токеном.

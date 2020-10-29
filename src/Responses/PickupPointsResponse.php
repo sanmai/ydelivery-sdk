@@ -34,7 +34,7 @@ use CommonSDK\Contracts\Response;
 use YDeliverySDK\Responses\Types\PickupPoint;
 
 /**
- * @template-implements \IteratorAggregate<Location>
+ * @template-implements \IteratorAggregate<PickupPoint>
  */
 final class PickupPointsResponse implements Response, ItemList, \IteratorAggregate
 {

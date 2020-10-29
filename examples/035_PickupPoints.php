@@ -54,7 +54,7 @@ $response = $client->sendPickupPointsRequest($request);
 \var_dump(\count($response));
 
 foreach ($response as $item) {
-    /** @var $item PickupPoint */
+    /** @var PickupPoint $item */
     echo \join("\t", [
         $item->id,
         $item->partnerId,

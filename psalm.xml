@@ -2,7 +2,7 @@
 <psalm
     cacheDirectory="build/"
     allowPhpStormGenerics="true"
-    errorLevel="2"
+    errorLevel="4"
     resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
@@ -47,6 +47,12 @@
             </errorLevel>
         </RedundantCondition>
 
+        <RedundantConditionGivenDocblockType>
+            <errorLevel type="suppress">
+                <directory name="tests" />
+            </errorLevel>
+        </RedundantConditionGivenDocblockType>
+
         <MoreSpecificReturnType>
             <errorLevel type="suppress">
                 <directory name="tests/Integration" />
@@ -65,5 +71,12 @@
                 <directory name="tests/Integration" />
             </errorLevel>
         </PossiblyInvalidMethodCall>
+
+        <InvalidCast>
+            <errorLevel type="suppress">
+                <directory name="examples" />
+                <directory name="tests/Integration" />
+            </errorLevel>
+        </InvalidCast>
     </issueHandlers>
 </psalm>

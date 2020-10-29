@@ -36,7 +36,7 @@ use YDeliverySDK\Responses\OrdersSearchResponseIterator;
 
 /**
  * @method Responses\DeliveryServicesResponse|Responses\Types\DeliveryService[] sendDeliveryServicesRequest(DeliveryServicesRequest $request)
- * @method Contracts\Response                                                   sendPickupPointsRequest(PickupPointsRequest $request)
+ * @method Responses\PickupPointsResponse|Responses\Types\PickupPoint[]         sendPickupPointsRequest(PickupPointsRequest $request)
  * @method Responses\PostalCodeResponse|Responses\Types\PostalCode[]            sendPostalCodeRequest(PostalCodeRequest $request)
  * @method Responses\LocationResponse|Responses\Types\Location[]                sendLocationRequest(LocationRequest $request)
  * @method Responses\IntervalsResponse|Responses\Types\Interval[]               sendWithdrawIntervalsRequest(WithdrawIntervalsRequest $request)
@@ -114,6 +114,16 @@ trait Shortcuts
     {
         return $this->sendGetOrderRequest(
             new GetOrderRequest($orderId)
+        );
+    }
+
+    /**
+     * @return Responses\OrderStatusesResponse|Responses\Types\Status[]
+     */
+    public function getOrderStatuses(int $orderId)
+    {
+        return $this->sendOrderStatusesRequest(
+            new OrderStatusesRequest($orderId)
         );
     }
 

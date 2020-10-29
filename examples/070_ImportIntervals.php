@@ -38,8 +38,7 @@ $builder->setLogger(new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$request = new DeliveryServicesRequest();
-$request->cabinetId = (int) $_SERVER['YANDEX_CABINET_ID'];
+$request = new DeliveryServicesRequest((int) $_SERVER['YANDEX_CABINET_ID']);
 
 // Получим ID первого попавшегося сервиса доставки.
 foreach ($client->sendDeliveryServicesRequest($request) as $partner) {

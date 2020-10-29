@@ -105,6 +105,7 @@ final class PickupPointsRequest implements JsonRequest
     private const RESPONSE = PickupPointsResponse::class;
 
     /**
+     * @phan-suppress PhanAccessReadOnlyMagicProperty
      * @phan-suppress PhanTypeMismatchPropertyProbablyReal
      *
      * @param int[] $pickupPointIds

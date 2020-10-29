@@ -32,8 +32,8 @@ use YDeliverySDK\Responses\PickupPointsResponse;
 use YDeliverySDK\Responses\Types\PickupPoint;
 
 /**
- * @covers \YDeliverySDK\Responses\PostalCodeResponse
- * @covers \YDeliverySDK\Responses\Types\PostalCode
+ * @covers \YDeliverySDK\Responses\PickupPointsResponse
+ * @covers \YDeliverySDK\Responses\Types\PickupPoint
  */
 class PickupPointsResponseTest extends TestCase
 {

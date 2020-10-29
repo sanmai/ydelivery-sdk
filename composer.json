@@ -46,7 +46,7 @@
         "php-coveralls/php-coveralls": "^2.4.1",
         "phpstan/phpstan": ">=0.10",
         "phpunit/phpunit": "^9.4.1",
-        "vimeo/psalm": ">=3.0.16"
+        "vimeo/psalm": "^3.18.2"
     },
     "suggest": {
         "doctrine/cache": "For metadata caching",

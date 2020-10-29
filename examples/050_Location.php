@@ -37,8 +37,7 @@ $builder->setLogger(new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$request = new LocationRequest();
-$request->term = 'Новосибирская область, Новосибирск';
+$request = new LocationRequest('Новосибирская область, Новосибирск');
 
 $response = $client->sendLocationRequest($request);
 
