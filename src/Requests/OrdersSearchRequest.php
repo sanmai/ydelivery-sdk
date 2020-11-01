@@ -35,6 +35,7 @@ use CommonSDK\Contracts\JsonRequest;
 use CommonSDK\Contracts\ParamRequest;
 use CommonSDK\Types\ArrayProperty;
 use JMS\Serializer\Annotation as JMS;
+use YDeliverySDK\Requests\Templates\PagingRequest;
 use YDeliverySDK\Responses\OrdersSearchResponse;
 
 /**
@@ -48,7 +49,7 @@ use YDeliverySDK\Responses\OrdersSearchResponse;
  *
  * @phan-file-suppress PhanAccessWriteOnlyMagicProperty
  */
-final class OrdersSearchRequest implements JsonRequest, ParamRequest
+final class OrdersSearchRequest implements JsonRequest, ParamRequest, PagingRequest
 {
     use RequestCore;
     use ObjectPropertyRead;

@@ -28,34 +28,36 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Deserialization;
 
-use YDeliverySDK\Responses\OrderStatusesResponse;
-use YDeliverySDK\Responses\Types\Status;
+use YDeliverySDK\Responses\OrdersSearchResponse;
 
 /**
- * @covers \YDeliverySDK\Responses\OrderStatusesResponse
- * @covers \YDeliverySDK\Responses\Types\Order
+ * @covers \YDeliverySDK\Responses\OrdersSearchResponse
  */
-class OrderStatusesResponseTest extends TestCase
+class OrdersSearchResponseTest extends TestCase
 {
-    public function test_empty_order()
+    public function test_it_can_decode_order_id()
     {
-        $response = $this->loadFixture('statuses.json');
+        $response = $this->loadFixture('orders-search-response.json');
 
-        $this->assertFalse($response->hasErrors());
+        $this->assertCount(1, $response);
 
-        $this->assertSame(3500000, $response->id);
-        $this->assertCount(7, $response);
-
-        foreach ($response as $status) {
-            /** @var $status Status */
-            $this->assertNotEmpty($status->code);
-            $this->assertNotEmpty($status->description);
-            $this->assertGreaterThan(0, $status->datetime->getTimestamp());
+        foreach ($response as $order) {
+            $this->assertSame(3140000, $order->id);
         }
+
+        $this->assertSame(1000, $response->totalElements);
+        $this->assertSame(100, $response->totalPages);
+        $this->assertSame(10, $response->size);
+        $this->assertSame(0, $response->pageNumber);
+        $this->assertSame(99, $response->lastPageNumber);
+
+        $this->assertSame(1000, $response->getTotalElements());
+        $this->assertSame(0, $response->getPageNumber());
+        $this->assertSame(99, $response->getLastPageNumber());
     }
 
-    private function loadFixture(string $filename): OrderStatusesResponse
+    private function loadFixture(string $filename): OrdersSearchResponse
     {
-        return $this->loadFixtureWithType($filename, OrderStatusesResponse::class);
+        return $this->loadFixtureWithType($filename, OrdersSearchResponse::class);
     }
 }

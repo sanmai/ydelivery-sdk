@@ -1,0 +1,111 @@
+{
+    "data": [
+        {
+            "externalId": null,
+            "comment": "Доставки не будет - тестовый заказ",
+            "cost": {
+                "paymentMethod": null,
+                "assessedValue": null,
+                "fullyPrepaid": null,
+                "manualDeliveryForCustomer": null
+            },
+            "places": [
+                {
+                    "externalId": "generated-1",
+                    "dimensions": {
+                        "length": 10,
+                        "width": 20,
+                        "height": 30,
+                        "weight": 1.25
+                    },
+                    "items": [
+                        {
+                            "externalId": "428",
+                            "name": "2 товар",
+                            "count": 1,
+                            "price": 500,
+                            "assessedValue": 500,
+                            "tax": null,
+                            "dimensions": {
+                                "length": 10,
+                                "width": 20,
+                                "height": 30,
+                                "weight": 1.25
+                            }
+                        }
+                    ]
+                }
+            ],
+            "contacts": [
+                {
+                    "type": "RECIPIENT",
+                    "phone": "+79266056128",
+                    "additional": null,
+                    "firstName": "Василий",
+                    "middleName": null,
+                    "lastName": "Юрочкин"
+                }
+            ],
+            "deliveryType": "COURIER",
+            "id": 3140000,
+            "deliveryServiceExternalId": null,
+            "sender": {
+                "id": 500000000,
+                "name": "FooBar"
+            },
+            "recipient": {
+                "firstName": "Василий",
+                "middleName": null,
+                "lastName": "Юрочкин",
+                "email": null,
+                "address": {
+                    "geoId": null,
+                    "country": "Россия",
+                    "region": null,
+                    "locality": "Новосибирск",
+                    "street": "ул. Державина",
+                    "house": "5",
+                    "housing": null,
+                    "building": null,
+                    "apartment": "43",
+                    "postCode": null,
+                    "postalCode": null,
+                    "comment": null
+                },
+                "pickupPoint": null
+            },
+            "created": "2020-10-00T00:00:00.000000Z",
+            "status": "CANCELLED",
+            "shipment": {
+                "type": "WITHDRAW",
+                "date": "2020-10-10",
+                "warehouseFrom": {
+                    "id": 1000000000,
+                    "name": "Московский склад"
+                },
+                "warehouseTo": null,
+                "partnerTo": null
+            },
+            "deliveryOption": {
+                "tariffId": 100041,
+                "delivery": 324,
+                "deliveryForCustomer": null,
+                "deliveryForSender": 0,
+                "services": [],
+                "calculatedDeliveryDateMin": null,
+                "calculatedDeliveryDateMax": null,
+                "partner": null,
+                "deliveryTimeInterval": null
+            },
+            "hasLabel": false,
+            "availableActions": {
+                "untieFromShipment": true,
+                "generateLabel": false
+            }
+        }
+    ],
+    "totalPages": 100,
+    "pageNumber": 0,
+    "totalElements": 1000,
+    "size": 10
+}

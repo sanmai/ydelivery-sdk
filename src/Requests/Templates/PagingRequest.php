@@ -26,36 +26,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Deserialization;
+namespace YDeliverySDK\Requests\Templates;
 
-use YDeliverySDK\Responses\OrderStatusesResponse;
-use YDeliverySDK\Responses\Types\Status;
+use CommonSDK\Contracts;
 
-/**
- * @covers \YDeliverySDK\Responses\OrderStatusesResponse
- * @covers \YDeliverySDK\Responses\Types\Order
- */
-class OrderStatusesResponseTest extends TestCase
+interface PagingRequest extends Contracts\Request
 {
-    public function test_empty_order()
-    {
-        $response = $this->loadFixture('statuses.json');
-
-        $this->assertFalse($response->hasErrors());
-
-        $this->assertSame(3500000, $response->id);
-        $this->assertCount(7, $response);
-
-        foreach ($response as $status) {
-            /** @var $status Status */
-            $this->assertNotEmpty($status->code);
-            $this->assertNotEmpty($status->description);
-            $this->assertGreaterThan(0, $status->datetime->getTimestamp());
-        }
-    }
-
-    private function loadFixture(string $filename): OrderStatusesResponse
-    {
-        return $this->loadFixtureWithType($filename, OrderStatusesResponse::class);
-    }
+    public function addPage(): void;
 }

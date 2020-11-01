@@ -26,90 +26,18 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Responses;
-
-use ArrayIterator;
-use CommonSDK\Concerns\PropertyRead;
-use CommonSDK\Concerns\SuccessfulResponse;
-use CommonSDK\Contracts\Response;
-use Countable;
-use IteratorAggregate;
-use JMS\Serializer\Annotation as JMS;
-use YDeliverySDK\Responses\Types\Order;
-use YDeliverySDK\Responses\Types\SearchResponse;
+namespace YDeliverySDK\Responses\Types;
 
 /**
- * @property-read Order[] $data
  * @property-read int $totalElements Количество объектов в ответе.
- * @property-read int $totalPages Количество страниц в ответе.
- * @property-read int $size	Количество объектов на странице.
  * @property-read int $pageNumber Номер текущей страницы (начиная с 0).
  * @property-read int $lastPageNumber Номер последней страницы.
- *
- * @template-implements \IteratorAggregate<Order>
  */
-final class OrdersSearchResponse implements Response, Countable, IteratorAggregate, SearchResponse
+interface SearchResponse
 {
-    use PropertyRead;
-    use SuccessfulResponse;
+    public function getTotalElements(): int;
 
-    /**
-     * @JMS\Type("array<YDeliverySDK\Responses\Types\Order>")
-     *
-     * @var Order[]
-     */
-    private $data;
+    public function getPageNumber(): int;
 
-    /**
-     * @JMS\Type("int")
-     *
-     * @var int
-     */
-    private $totalElements;
-
-    /**
-     * @JMS\Type("int")
-     *
-     * @var int
-     */
-    private $totalPages;
-
-    /**
-     * @JMS\Type("int")
-     *
-     * @var int
-     */
-    private $size;
-
-    /**
-     * @JMS\Type("int")
-     *
-     * @var int
-     */
-    private $pageNumber;
-
-    public function count()
-    {
-        return \count($this->data);
-    }
-
-    public function getIterator()
-    {
-        return new ArrayIterator($this->data);
-    }
-
-    public function getLastPageNumber(): int
-    {
-        return $this->totalPages - 1;
-    }
-
-    public function getTotalElements(): int
-    {
-        return $this->totalElements;
-    }
-
-    public function getPageNumber(): int
-    {
-        return $this->pageNumber;
-    }
+    public function getLastPageNumber(): int;
 }

@@ -46,6 +46,8 @@ final class DeliveryOptionsResponse implements Response, ItemList, \IteratorAggr
 
     public const TAG_CHEAPEST = 'CHEAPEST';
 
+    public const TAG_OPTIMAL = 'OPTIMAL';
+
     public function getFirstTagged(string $tag): ?DeliveryOption
     {
         foreach ($this as $option) {

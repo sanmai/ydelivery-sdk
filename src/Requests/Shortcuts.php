@@ -32,7 +32,7 @@ use CommonSDK\Contracts;
 use CommonSDK\Types\FileResponse;
 use YDeliverySDK\Client;
 use YDeliverySDK\Responses;
-use YDeliverySDK\Responses\OrdersSearchResponseIterator;
+use YDeliverySDK\Responses\SearchResponseIterator;
 
 /**
  * @method Responses\DeliveryServicesResponse|Responses\Types\DeliveryService[] sendDeliveryServicesRequest(DeliveryServicesRequest $request)
@@ -99,13 +99,13 @@ trait Shortcuts
     }
 
     /**
-     * @return Responses\OrdersSearchResponseIterator|Responses\Types\Order[]
-     * @psalm-return Responses\OrdersSearchResponseIterator
+     * @return Responses\SearchResponseIterator|Responses\Types\Order[]
+     * @psalm-return Responses\SearchResponseIterator<Responses\Types\Order>
      */
     public function searchOrders(OrdersSearchRequest $request)
     {
         /** @var Client $this */
-        return new OrdersSearchResponseIterator($this, $request);
+        return new SearchResponseIterator($this, $request);
     }
 
     /**

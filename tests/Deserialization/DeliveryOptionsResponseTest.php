@@ -67,6 +67,26 @@ class DeliveryOptionsResponseTest extends TestCase
         }
     }
 
+    public function test_it_finds_optimal_option()
+    {
+        $response = $this->loadFixture('delivery-options.json');
+
+        $option = $response->getFirstTagged($response::TAG_OPTIMAL);
+
+        $this->assertNotNull($option);
+
+        $this->assertSame(100005, $option->tariffId);
+    }
+
+    public function test_it_does_not_find_tagged_option()
+    {
+        $response = $this->loadFixture('delivery-options.json');
+
+        $option = $response->getFirstTagged($response::TAG_FASTEST);
+
+        $this->assertNull($option);
+    }
+
     private function loadFixture(string $filename): DeliveryOptionsResponse
     {
         return $this->loadFixtureWithType($filename, DeliveryOptionsResponse::class);

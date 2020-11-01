@@ -28,34 +28,20 @@ declare(strict_types=1);
 
 namespace Tests\YDeliverySDK\Deserialization;
 
-use YDeliverySDK\Responses\OrderStatusesResponse;
-use YDeliverySDK\Responses\Types\Status;
+use YDeliverySDK\Responses\OrderResponse;
 
 /**
- * @covers \YDeliverySDK\Responses\OrderStatusesResponse
- * @covers \YDeliverySDK\Responses\Types\Order
+ * @covers \YDeliverySDK\Responses\OrderResponse
  */
-class OrderStatusesResponseTest extends TestCase
+class OrderResponseTest extends TestCase
 {
-    public function test_empty_order()
+    public function test_it_can_decode_order_id()
     {
-        $response = $this->loadFixture('statuses.json');
+        /** @var OrderResponse $response */
+        $response = $this->getSerializer()->deserialize('12345', OrderResponse::class);
 
-        $this->assertFalse($response->hasErrors());
+        $this->assertInstanceOf(OrderResponse::class, $response);
 
-        $this->assertSame(3500000, $response->id);
-        $this->assertCount(7, $response);
-
-        foreach ($response as $status) {
-            /** @var $status Status */
-            $this->assertNotEmpty($status->code);
-            $this->assertNotEmpty($status->description);
-            $this->assertGreaterThan(0, $status->datetime->getTimestamp());
-        }
-    }
-
-    private function loadFixture(string $filename): OrderStatusesResponse
-    {
-        return $this->loadFixtureWithType($filename, OrderStatusesResponse::class);
+        $this->assertSame(12345, $response->id);
     }
 }

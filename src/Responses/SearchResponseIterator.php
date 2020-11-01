@@ -29,13 +29,13 @@ declare(strict_types=1);
 namespace YDeliverySDK\Responses;
 
 use CommonSDK\Contracts;
-use CommonSDK\Contracts\Response;
 use Countable;
 use IteratorAggregate;
 use function Pipeline\map;
 use YDeliverySDK\Client;
 use YDeliverySDK\Requests;
-use YDeliverySDK\Responses\Types\Order;
+use YDeliverySDK\Requests\Templates\PagingRequest;
+use YDeliverySDK\Responses\Types\SearchResponse;
 
 /**
  * @property-read int $totalElements Количество объектов в ответе.
@@ -43,9 +43,10 @@ use YDeliverySDK\Responses\Types\Order;
  * @property-read int $size	Количество объектов на странице.
  * @property-read int $pageNumber Номер текущей страницы (начиная с 0).
  *
- * @template-implements \IteratorAggregate<Order>
+ * @template T
+ * @template-implements \IteratorAggregate<T>
  */
-final class OrdersSearchResponseIterator implements Response, Countable, IteratorAggregate
+final class SearchResponseIterator implements Contracts\Response, Countable, IteratorAggregate
 {
     /**
      * @var Client
@@ -53,20 +54,21 @@ final class OrdersSearchResponseIterator implements Response, Countable, Iterato
     private $client;
 
     /**
-     * @var Requests\OrdersSearchRequest
+     * @var PagingRequest
      */
     private $request;
 
-    /** @var Response|null */
+    /** @var Contracts\Response|null */
     private $response;
 
     /**
-     * @param Client|Contracts\Client                        $client
-     * @param Requests\OrdersSearchRequest|Contracts\Request $request
+     * @param Client|Contracts\Client                    $client
+     * @param Requests\OrdersSearchRequest|PagingRequest $request
      *
-     * @psalm-suppress PropertyTypeCoercion
+     * @xpsalm-suppress PropertyTypeCoercion
+     * @phan-suppress PhanGenericConstructorTypes
      */
-    public function __construct(Contracts\Client $client, Contracts\Request $request)
+    public function __construct(Contracts\Client $client, PagingRequest $request)
     {
         $this->client = $client;
         $this->request = $request;
@@ -77,7 +79,8 @@ final class OrdersSearchResponseIterator implements Response, Countable, Iterato
      */
     private function makeRequest(): void
     {
-        $this->response = $this->client->sendOrdersSearchRequest($this->request);
+        $this->response = $this->client->sendRequest($this->request);
+
         $this->request->addPage();
     }
 
@@ -85,7 +88,7 @@ final class OrdersSearchResponseIterator implements Response, Countable, Iterato
      * @psalm-suppress MoreSpecificReturnType
      * @psalm-suppress LessSpecificReturnStatement
      *
-     * @return OrdersSearchResponse
+     * @return OrdersSearchResponse|Contracts\Response
      */
     private function getLastResponse()
     {
@@ -98,10 +101,9 @@ final class OrdersSearchResponseIterator implements Response, Countable, Iterato
 
     private function haveMoreResults(): bool
     {
-        /** @var OrdersSearchResponse|Response $lastResponse */
         $lastResponse = $this->getLastResponse();
 
-        return $lastResponse instanceof OrdersSearchResponse && $lastResponse->pageNumber < $lastResponse->lastPageNumber;
+        return $lastResponse instanceof SearchResponse && $lastResponse->getPageNumber() < $lastResponse->getLastPageNumber();
     }
 
     public function getIterator()
@@ -128,7 +130,9 @@ final class OrdersSearchResponseIterator implements Response, Countable, Iterato
 
     public function count()
     {
-        return $this->getLastResponse()->totalElements;
+        $lastResponse = $this->getLastResponse();
+
+        return $lastResponse instanceof SearchResponse ? $lastResponse->getTotalElements() : 0;
     }
 
     public function __get(string $property)
