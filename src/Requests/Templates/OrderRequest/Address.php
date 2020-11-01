@@ -45,6 +45,10 @@ use YDeliverySDK\Common;
  * @property-write string $apartment
  * @property-write string $postalCode
  * @property-write string $postCode
+ * @property-write string $COUNTRY
+ * @property-write string $PROVINCE
+ * @property-write string $AREA
+ * @property-write string $LOCALITY
  */
 final class Address extends Common\Address implements ReadableRequestProperty
 {

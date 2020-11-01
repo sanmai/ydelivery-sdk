@@ -33,7 +33,7 @@ use YDeliverySDK\Responses\Types\OrderStatus;
 
 /**
  * @covers \YDeliverySDK\Responses\OrdersStatusResponse
- * @covers \YDeliverySDK\Responses\Types\OrdersStatus
+ * @covers \YDeliverySDK\Responses\Types\OrderStatus
  */
 class OrdersStatusResponseTest extends TestCase
 {

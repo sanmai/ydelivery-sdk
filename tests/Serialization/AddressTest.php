@@ -26,38 +26,30 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Serialization;
+namespace Tests\YDeliverySDK\Serialization;
 
-use DateTimeImmutable;
-use JMS\Serializer\EventDispatcher\EventDispatcher;
-use JMS\Serializer\EventDispatcher\Events;
-use JMS\Serializer\EventDispatcher\PreDeserializeEvent;
-use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
-use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
-use JMS\Serializer\SerializerBuilder;
+use CommonSDK\Contracts\ReadableRequestProperty;
+use YDeliverySDK\Requests\Templates\OrderRequest\Address;
 
-final class Builder
+/**
+ * @covers \YDeliverySDK\Common\Address
+ */
+final class AddressTest extends TestCase
 {
-    public static function create(): SerializerBuilder
+    public function test_it_has_extra_all_caps_properties()
     {
-        $builder = SerializerBuilder::create();
-        $builder->setPropertyNamingStrategy(
-            new SerializedNameAnnotationStrategy(
-                new IdenticalPropertyNamingStrategy()
-            )
-        );
+        $address = new Address();
+        $this->assertInstanceOf(ReadableRequestProperty::class, $address);
 
-        $builder->configureListeners(function (EventDispatcher $dispatcher) {
-            /** @psalm-suppress MixedAssignment */
-            $dispatcher->addListener(Events::PRE_DESERIALIZE, function (PreDeserializeEvent $event) {
-                $match = [];
+        foreach ([
+            'COUNTRY'  => '1',
+            'PROVINCE' => '3',
+            'AREA'     => '4',
+            'LOCALITY' => '5',
+        ] as $property => $value) {
+            $address->{$property} = $value;
+        }
 
-                if (\preg_match('/(^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(Z)/', (string) $event->getData(), $match)) {
-                    $event->setData("{$match[1]}.000000{$match[2]}");
-                }
-            }, DateTimeImmutable::class, 'json');
-        });
-
-        return $builder;
+        $this->assertSameAsJSON('{"country":"1","region":"3","locality":"5"}', $address);
     }
 }

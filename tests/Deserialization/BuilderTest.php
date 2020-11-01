@@ -26,38 +26,30 @@
 
 declare(strict_types=1);
 
-namespace YDeliverySDK\Serialization;
+namespace Tests\YDeliverySDK\Deserialization;
 
-use DateTimeImmutable;
-use JMS\Serializer\EventDispatcher\EventDispatcher;
-use JMS\Serializer\EventDispatcher\Events;
-use JMS\Serializer\EventDispatcher\PreDeserializeEvent;
-use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
-use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
-use JMS\Serializer\SerializerBuilder;
+use YDeliverySDK\Responses\Types\Status;
+use YDeliverySDK\Serialization\Builder;
 
-final class Builder
+/**
+ * @covers \YDeliverySDK\Serialization\Builder
+ */
+class BuilderTest extends TestCase
 {
-    public static function create(): SerializerBuilder
+    public function test_it_can_deserialize_broken_dates()
     {
-        $builder = SerializerBuilder::create();
-        $builder->setPropertyNamingStrategy(
-            new SerializedNameAnnotationStrategy(
-                new IdenticalPropertyNamingStrategy()
-            )
-        );
+        $serializer = Builder::create()->build();
 
-        $builder->configureListeners(function (EventDispatcher $dispatcher) {
-            /** @psalm-suppress MixedAssignment */
-            $dispatcher->addListener(Events::PRE_DESERIALIZE, function (PreDeserializeEvent $event) {
-                $match = [];
+        $status = $serializer->deserialize('{"datetime": "2020-10-10T00:00:28.697971Z"}', Status::class, 'json');
 
-                if (\preg_match('/(^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(Z)/', (string) $event->getData(), $match)) {
-                    $event->setData("{$match[1]}.000000{$match[2]}");
-                }
-            }, DateTimeImmutable::class, 'json');
-        });
+        $this->assertSame('2020-10-10 00:00:28 697971', $status->datetime->format('Y-m-d H:i:s u'));
 
-        return $builder;
+        $status = $serializer->deserialize('{"datetime": "2020-10-10T00:00:30Z"}', Status::class, 'json');
+
+        $this->assertSame('2020-10-10 00:00:30 000000', $status->datetime->format('Y-m-d H:i:s u'));
+
+        $status = $serializer->deserialize('{"datetime": null}', Status::class, 'json');
+
+        $this->assertNull($status->datetime);
     }
 }
