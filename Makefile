@@ -60,7 +60,7 @@ ci-analyze: SILENT=
 ci-analyze: prerequisites ci-phpunit ci-infection ci-phan ci-phpstan ci-psalm
 
 ci-phpunit: ci-cs
-	$(SILENT) $(PHP) $(PHPUNIT) $(PHPUNIT_ARGS)
+	$(SILENT) $(PHPDBG) $(PHPUNIT) $(PHPUNIT_ARGS)
 
 ci-infection: ci-phpunit
 	$(SILENT) $(PHP) $(INFECTION) $(INFECTION_ARGS)
