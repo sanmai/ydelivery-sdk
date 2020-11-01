@@ -1,0 +1,8 @@
+{
+ "objectName": "senderOrderDraft",
+ "field": "deliveryType",
+ "message": "must not be null",
+ "conditionCode": "NotNull",
+ "arguments": {},
+ "errorCode": "FIELD_NOT_VALID"
+}

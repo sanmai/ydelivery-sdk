@@ -37,6 +37,7 @@ use YDeliverySDK\Responses\Types\SubmittedOrder;
 /**
  * @covers \YDeliverySDK\Responses\SubmitOrderResponse
  * @covers \YDeliverySDK\Responses\Types\SubmittedOrder
+ * @covers \YDeliverySDK\Responses\Types\SubmittedOrder\Error
  */
 class SubmitOrderResponseTest extends TestCase
 {
@@ -91,6 +92,14 @@ class SubmitOrderResponseTest extends TestCase
             ],
             $this->toErrorsArray($response)
         );
+    }
+
+    public function test_empty()
+    {
+        $response = $this->loadFixture('empty.json');
+
+        $this->assertCount(0, $response);
+        $this->assertFalse($response->hasErrors());
     }
 
     private function toErrorsArray(Response $response): array

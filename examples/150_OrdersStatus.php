@@ -48,6 +48,9 @@ $order->id = (int) $argv[1];
 $order = $request->addOrder();
 $order->externalId = '100';
 
+$logger->addFile('orders-status-request.json');
+$logger->addFile('orders-status-response.json');
+
 $response = $client->sendOrdersStatusRequest($request);
 
 if ($response->hasErrors()) {

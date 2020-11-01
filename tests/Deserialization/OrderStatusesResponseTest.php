@@ -33,11 +33,11 @@ use YDeliverySDK\Responses\Types\Status;
 
 /**
  * @covers \YDeliverySDK\Responses\OrderStatusesResponse
- * @covers \YDeliverySDK\Responses\Types\Order
+ * @covers \YDeliverySDK\Responses\Types\Status
  */
 class OrderStatusesResponseTest extends TestCase
 {
-    public function test_empty_order()
+    public function test_regular_order()
     {
         $response = $this->loadFixture('statuses.json');
 
