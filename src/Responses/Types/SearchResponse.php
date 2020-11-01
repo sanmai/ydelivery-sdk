@@ -35,6 +35,9 @@ namespace YDeliverySDK\Responses\Types;
  */
 interface SearchResponse
 {
+    /**
+     * Общее число элеметов во всех результатах, в отличии от числа элементов на одной странице.
+     */
     public function getTotalElements(): int;
 
     public function getPageNumber(): int;
