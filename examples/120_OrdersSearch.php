@@ -43,7 +43,7 @@ $request = new OrdersSearchRequest([
     (int) $_SERVER['YANDEX_SHOP_ID'],
 ]);
 $request->term = '+79266056128';
-$request->size = 2;
+$request->size = 10;
 
 $logger->addFile('orders-search-request.json');
 $logger->addFile('orders-search-response.json');
@@ -63,7 +63,7 @@ if ($orders->hasErrors()) {
 }
 
 foreach ($orders as $order) {
-    echo "{$orders->pageNumber}\t{$order->id}\t{$order->status}\t{$order->comment}\n";
+    echo "Page {$orders->pageNumber}\t{$order->id}\t{$order->status}\t{$order->comment}\n";
 
     if (\strpos($order->comment, 'тестовый заказ') === false) {
         continue;
