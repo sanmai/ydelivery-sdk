@@ -26,6 +26,7 @@
 
 declare(strict_types=1);
 
+use CommonSDK\Types\HTTPErrorResponse;
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
 use YDeliverySDK\Requests\OrdersSearchRequest;
 
@@ -65,6 +66,10 @@ if ($orders->hasErrors()) {
 foreach ($orders as $order) {
     echo "Page {$orders->pageNumber}\t{$order->id}\t{$order->status}\t{$order->comment}\n";
 
+    if (!\is_string($order->comment)) {
+        continue;
+    }
+
     if (\strpos($order->comment, 'тестовый заказ') === false) {
         continue;
     }
@@ -76,6 +81,10 @@ foreach ($orders as $order) {
     $response = $client->makeDeleteOrderRequest($order->id);
 
     if ($response->hasErrors()) {
+        if ($response instanceof HTTPErrorResponse) {
+            echo $response->getBody();
+        }
+
         // Обрабатываем ошибки
         foreach ($response->getMessages() as $message) {
             if ($message->getErrorCode() !== '') {

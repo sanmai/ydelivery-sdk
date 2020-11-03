@@ -216,7 +216,7 @@ if ($response->hasErrors()) {
 }
 
 foreach ($response as $order) {
-    \var_dump($order->orderId);
+    echo "Confirmed order: {$order->orderId}\n";
 }
 
 $response = $client->sendOrderLabelRequest(new OrderLabelRequest($order->orderId));
