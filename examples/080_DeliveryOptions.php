@@ -27,7 +27,7 @@
 declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\DeliveryOptionsRequest;
+use YDeliverySDK\Requests;
 use YDeliverySDK\Requests\Types\Shipment;
 
 include_once 'vendor/autoload.php';
@@ -38,14 +38,14 @@ $builder->setLogger(new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$request = new DeliveryOptionsRequest();
+$request = new Requests\DeliveryOptionsRequest();
 $request->senderId = $_SERVER['YANDEX_SHOP_ID'];
 
 $request->from->location = 'Москва, Красная пл., 1';
 $request->from->geoId = 890567;
 
 $request->to->location = 'Новосибирск, Красный пр., 36';
-//$request->to->geoId = 4444444;
+//$request->to->geoId = 4444;
 //$request->to->pickupPointIds = [11111, 222222];
 
 $request->dimensions->length = 10;
@@ -56,9 +56,9 @@ $request->dimensions->weight = 5.25;
 $request->deliveryType = $request::DELIVERY_TYPE_POST;
 
 $request->shipment->date = new DateTime('next Monday');
-$request->shipment->type = Shipment::TYPE_IMPORT;
-//$request->shipment->partnerId = 1111111111;
-//$request->shipment->warehouseId = 2222222222;
+$request->shipment->type = $request->shipment::TYPE_IMPORT;
+//$request->shipment->partnerId = 1111;
+//$request->shipment->warehouseId = 2222;
 //$request->shipment->includeNonDefault = true;
 
 $request->cost->assessedValue = 500;
@@ -66,7 +66,7 @@ $request->cost->itemsSum = 1000;
 $request->cost->manualDeliveryForCustomer = 750;
 $request->cost->fullyPrepaid = true;
 
-// $request->tariffId = 333333333;
+// $request->tariffId = 3333;
 
 $response = $client->sendDeliveryOptionsRequest($request);
 

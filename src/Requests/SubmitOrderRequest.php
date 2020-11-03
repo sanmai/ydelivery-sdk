@@ -28,9 +28,11 @@ declare(strict_types=1);
 
 namespace YDeliverySDK\Requests;
 
+use CommonSDK\Concerns\ObjectPropertyRead;
 use CommonSDK\Concerns\PropertyWrite;
 use CommonSDK\Concerns\RequestCore;
 use CommonSDK\Contracts\JsonRequest;
+use CommonSDK\Types\ArrayProperty;
 use JMS\Serializer\Annotation as JMS;
 use YDeliverySDK\Responses\SubmitOrderResponse;
 
@@ -44,14 +46,15 @@ use YDeliverySDK\Responses\SubmitOrderResponse;
 final class SubmitOrderRequest implements JsonRequest
 {
     use RequestCore;
+    use ObjectPropertyRead;
     use PropertyWrite;
 
     /**
-     * @JMS\Type("array<int>")
+     * @JMS\Type("ArrayCollection<int>")
      *
-     * @var int[]
+     * @var ArrayProperty<int>
      */
-    private $orderIds = [];
+    private $orderIds;
 
     private const METHOD = 'POST';
     private const ADDRESS = '/orders/submit';
@@ -59,7 +62,29 @@ final class SubmitOrderRequest implements JsonRequest
     private const RESPONSE = SubmitOrderResponse::class;
 
     /**
+     * @phan-suppress PhanTypeMismatchPropertyProbablyReal
+     *
+     * @param int[] $orderIds
+     */
+    public function __construct(array $orderIds = [])
+    {
+        $this->orderIds = new ArrayProperty($orderIds);
+    }
+
+    /**
+     * @phan-suppress PhanTypeMismatchPropertyProbablyReal
+     *
+     * @param int[] $orderIds
+     */
+    protected function setOrderIds(array $orderIds): void
+    {
+        $this->orderIds = new ArrayProperty($orderIds);
+    }
+
+    /**
      * @phan-suppress PhanAccessWriteOnlyMagicProperty
+     *
+     * @deprecated
      */
     public function addOrder(int $orderId): self
     {

@@ -27,9 +27,7 @@
 declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\CreateOrderRequest;
-use YDeliverySDK\Requests\DeliveryOptionsRequest;
-use YDeliverySDK\Requests\UpdateOrderRequest;
+use YDeliverySDK\Requests;
 
 include_once 'vendor/autoload.php';
 
@@ -73,7 +71,7 @@ foreach ($response as $postalCode) {
 /**
  * Получим тарифы.
  */
-$request = new DeliveryOptionsRequest();
+$request = new Requests\DeliveryOptionsRequest();
 
 $request->senderId = $_SERVER['YANDEX_SHOP_ID'];
 
@@ -115,7 +113,7 @@ if (!$deliveryMethod) {
 /**
  * Создадим заказ без данных.
  */
-$request = new CreateOrderRequest();
+$request = new Requests\CreateOrderRequest();
 $request->deliveryType = $request::DELIVERY_TYPE_COURIER;
 $request->comment = 'Пустой тестовый заказ.';
 $request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
@@ -142,7 +140,7 @@ echo "\n\nLoaded: {$order->id} ({$order->comment})\n\n";
 /**
  * Наполним заказ данными.
  */
-$requestBuilder = UpdateOrderRequest::builder($order->id, $deliveryMethod, $location);
+$requestBuilder = Requests\UpdateOrderRequest::builder($order->id, $deliveryMethod, $location);
 $requestBuilder->setPostalCode($postalCode);
 $request = $requestBuilder->build();
 

@@ -27,7 +27,7 @@
 declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\CreateOrderRequest;
+use YDeliverySDK\Requests;
 
 include_once 'vendor/autoload.php';
 
@@ -37,7 +37,7 @@ $builder->setLogger(new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$request = new CreateOrderRequest();
+$request = new Requests\CreateOrderRequest();
 $request->deliveryType = $request::DELIVERY_TYPE_COURIER;
 $request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
 
@@ -76,7 +76,7 @@ $item->name = '2 товар';
 $item->count = 1;
 $item->price = 1467;
 $item->assessedValue = 1467;
-$item->tax = 'NO_VAT';
+$item->tax = $item::TAX_NO_VAT;
 
 $item->dimensions->length = 10;
 $item->dimensions->width = 20;
@@ -84,7 +84,7 @@ $item->dimensions->height = 30;
 $item->dimensions->weight = 0.3;
 
 $request->externalId = '426';
-$request->deliveryType = 'PICKUP';
+$request->deliveryType = $request::DELIVERY_TYPE_PICKUP;
 $request->comment = 'Доставки не будет - тестовый заказ';
 
 $request->deliveryOption->tariffId = 100040;
@@ -92,7 +92,7 @@ $request->deliveryOption->tariffId = 100040;
 $request->deliveryOption->tariffId = 100040;
 $request->deliveryOption->delivery = 198.00;
 $request->deliveryOption->deliveryForCustomer = 369.802;
-$request->deliveryOption->type = 'PICKUP';
+$request->deliveryOption->type = $request::DELIVERY_TYPE_PICKUP;
 $request->deliveryOption->partnerId = 107;
 $request->deliveryOption->calculatedDeliveryDateMin = '2020-02-13';
 $request->deliveryOption->calculatedDeliveryDateMax = '2020-02-13';
@@ -135,11 +135,11 @@ $service->enabledByDefault = true;
 $request->cost->assessedValue = 1467;
 $request->cost->fullyPrepaid = false;
 $request->cost->manualDeliveryForCustomer = 500;
-$request->cost->paymentMethod = 'CASH';
+$request->cost->paymentMethod = $request->cost::PAYMENT_METHOD_CASH;
 
 $contact = $request->addContact();
 
-$contact->type = 'RECIPIENT';
+$contact->type = $contact::TYPE_RECIPIENT;
 $contact->phone = '+79266056128';
 $contact->firstName = 'Василий';
 $contact->lastName = 'Юрочкин';

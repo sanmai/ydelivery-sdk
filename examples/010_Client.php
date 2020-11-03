@@ -29,10 +29,12 @@ require_once 'vendor/autoload.php';
 
 $token = 'token';
 $timeout = 120;
+$cacheDir = 'ydostavka';
 
 $builder = new \YDeliverySDK\ClientBuilder();
 $builder->setToken($token);
 $builder->setTimeout($timeout);
+$builder->setCacheDir($cacheDir);
 
 $client = $builder->build();
 

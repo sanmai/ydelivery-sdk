@@ -27,8 +27,7 @@
 declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\CreateOrderRequest;
-use YDeliverySDK\Requests\SubmitOrderRequest;
+use YDeliverySDK\Requests;
 
 include_once 'vendor/autoload.php';
 
@@ -38,7 +37,7 @@ $builder->setLogger(new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$request = new CreateOrderRequest();
+$request = new Requests\CreateOrderRequest();
 $request->deliveryType = $request::DELIVERY_TYPE_COURIER;
 $request->senderId = (int) $_SERVER['YANDEX_SHOP_ID'];
 $response = $client->sendCreateOrderRequest($request);
@@ -55,8 +54,9 @@ if ($response->hasErrors()) {
     return;
 }
 
-$request = new SubmitOrderRequest();
-$request->orderIds = [$response->id];
+$request = new Requests\SubmitOrderRequest([
+    $response->id,
+]);
 
 $response = $client->sendSubmitOrderRequest($request);
 
@@ -72,6 +72,6 @@ if ($response->hasErrors()) {
     return;
 }
 
-foreach ($response as $order) {
-    \var_dump($order->orderId);
+foreach ($response as $submittedOrder) {
+    \var_dump($submittedOrder->orderId);
 }

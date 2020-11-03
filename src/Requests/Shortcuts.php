@@ -64,14 +64,24 @@ trait Shortcuts
     public function getDeliveryServices(int $cabinetId)
     {
         return $this->sendDeliveryServicesRequest(
-            new DeliveryServicesRequest((int) $_SERVER['YANDEX_CABINET_ID'])
+            new DeliveryServicesRequest($cabinetId)
         );
     }
 
     /**
      * @return Responses\LocationResponse|Responses\Types\Location[]
+     *
+     * @deprecated
      */
     public function makeLocationRequest(string $term)
+    {
+        return $this->getLocations($term);
+    }
+
+    /**
+     * @return Responses\LocationResponse|Responses\Types\Location[]
+     */
+    public function getLocations(string $term)
     {
         return $this->sendLocationRequest(
             new LocationRequest($term)
@@ -80,8 +90,18 @@ trait Shortcuts
 
     /**
      * @return Responses\PostalCodeResponse|Responses\Types\PostalCode[]
+     *
+     * @deprecated
      */
     public function makePostalCodeRequest(string $address)
+    {
+        return $this->getPostalCodes($address);
+    }
+
+    /**
+     * @return Responses\PostalCodeResponse|Responses\Types\PostalCode[]
+     */
+    public function getPostalCodes(string $address)
     {
         return $this->sendPostalCodeRequest(
             new PostalCodeRequest($address)
@@ -90,8 +110,18 @@ trait Shortcuts
 
     /**
      * @return Contracts\Response
+     *
+     * @deprecated
      */
     public function makeDeleteOrderRequest(int $orderId)
+    {
+        return $this->deleteOrder($orderId);
+    }
+
+    /**
+     * @return Contracts\Response
+     */
+    public function deleteOrder(int $orderId)
     {
         return $this->sendDeleteOrderRequest(
             new DeleteOrderRequest($orderId)

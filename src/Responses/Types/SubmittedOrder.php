@@ -75,7 +75,8 @@ final class SubmittedOrder
     private $violations = [];
 
     /**
-     * @return iterable<Message>
+     * @return Message[]
+     * @psalm-return iterable<Message>
      */
     public function getMessages()
     {

@@ -36,13 +36,14 @@ use CommonSDK\Contracts\ParamRequest;
 use CommonSDK\Types\ArrayProperty;
 use JMS\Serializer\Annotation as JMS;
 use YDeliverySDK\Requests\Templates\PagingRequest;
+use YDeliverySDK\Requests\Types\StatusList;
 use YDeliverySDK\Responses\OrdersSearchResponse;
 
 /**
  * @property-write int[] $senderIds Идентификаторы магазинов. Обязательный параметр.
  * @property-write int[] $orderIds Список идентификаторов заказов.
  * @property-write int[] $partnerIds Идентификаторы служб доставки.
- * @property-write string[] $statuses Коды статусов заказа.
+ * @property StatusList|string[] $statuses Коды статусов заказа.
  * @property-write string $term Поисковый запрос. Разбивается по пробелам на слова, каждое из которых ищется по вхождению без учета регистра в полях заказа.
  * @property-write int $page Номер текущей страницы (начиная с 0).
  * @property-write int $size Количество объектов на странице.
@@ -83,7 +84,7 @@ final class OrdersSearchRequest implements JsonRequest, ParamRequest, PagingRequ
      * @JMS\Type("ArrayCollection<string>")
      * @JMS\SkipWhenEmpty
      *
-     * @var ArrayProperty<string>
+     * @var StatusList
      */
     private $statuses;
 
@@ -126,7 +127,7 @@ final class OrdersSearchRequest implements JsonRequest, ParamRequest, PagingRequ
         $this->senderIds = new ArrayProperty($senderIds);
         $this->orderIds = new ArrayProperty($orderIds);
         $this->partnerIds = new ArrayProperty($partnerIds);
-        $this->statuses = new ArrayProperty($statuses);
+        $this->statuses = new StatusList($statuses);
     }
 
     public function addPage(): void

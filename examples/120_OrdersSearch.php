@@ -28,7 +28,7 @@ declare(strict_types=1);
 
 use CommonSDK\Types\HTTPErrorResponse;
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\OrdersSearchRequest;
+use YDeliverySDK\Requests;
 
 include_once 'vendor/autoload.php';
 
@@ -40,11 +40,12 @@ $builder->setLogger($logger);
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$request = new OrdersSearchRequest([
+$request = new Requests\OrdersSearchRequest([
     (int) $_SERVER['YANDEX_SHOP_ID'],
 ]);
-$request->term = '+79266056128';
-$request->size = 10;
+
+$request->term = 'Новосибирск';
+$request->statuses[] = $request->statuses::CANCELLED;
 
 $logger->addFile('orders-search-request.json');
 $logger->addFile('orders-search-response.json');
@@ -78,7 +79,7 @@ foreach ($orders as $order) {
         continue;
     }
 
-    $response = $client->makeDeleteOrderRequest($order->id);
+    $response = $client->deleteOrder($order->id);
 
     if ($response->hasErrors()) {
         if ($response instanceof HTTPErrorResponse) {
