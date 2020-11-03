@@ -21,6 +21,7 @@ jobs:
         include:
           - { php-version: '7.3', dependencies: '--prefer-lowest' }
           - { php-version: '8.0', dependencies: '--ignore-platform-req=php' }
+          - { php-version: '8.1', dependencies: '--ignore-platform-req=php' }
           - { php-version: '7.3', make-args: 'PHPUNIT_GROUP=integration' }
 
     continue-on-error: ${{ matrix.php-version == '8.0' }}
