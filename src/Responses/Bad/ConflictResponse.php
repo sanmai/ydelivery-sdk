@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This code is licensed under the MIT License.
  *
@@ -27,49 +26,58 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK;
+namespace YDeliverySDK\Responses\Bad;
 
-use CommonSDK\Tests\Common\ClientTestCase;
-use GuzzleHttp\ClientInterface;
-use Tests\YDeliverySDK\Fixtures\FixtureLoader;
-use YDeliverySDK\Client;
-use YDeliverySDK\ClientBuilder;
+use CommonSDK\Concerns\PropertyRead;
+use CommonSDK\Contracts\HasErrorCode;
+use CommonSDK\Contracts\Response;
+use CommonSDK\Types\Message;
+use JMS\Serializer\Annotation as JMS;
 
 /**
- * @covers \YDeliverySDK\Client
+ * Class ConflictResponse.
+ *
+ * HTTP/1.1 409: Conflict
+ * Content-Type: text/plain;charset=utf-8
+ * {"message":"Active cancellation request restriction. Order id NNNNNN."}
+ *
+ * @property-read string $message
  */
-class ClientTest extends ClientTestCase
+final class ConflictResponse implements Response, HasErrorCode, \Countable
 {
-    /** @return Client */
-    public function newClient(ClientInterface $http = null)
-    {
-        $builder = new ClientBuilder();
-        $builder->setGuzzleClient($http ?? $this->getHttpClient());
+    private const ERROR_CODE = 'HTTP_409';
 
-        return $builder->build();
+    use PropertyRead;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    private $message;
+
+    public function hasErrors(): bool
+    {
+        return true;
     }
 
-    public function errorResponsesProvider(): iterable
+    public function getMessages()
     {
-        yield '400_Bad_Request.json' => ['400_Bad_Request.json', 400, [
-            ['UNKNOWN', "Required Long parameter 'partnerId' is not present"],
-        ]];
-
-        yield '401_Unauthorized.json' => ['401_Unauthorized.json', 401, [
-            ['401', 'Unauthorized'],
-        ]];
-
-        yield '404_Not_Found.json' => ['404_Not_Found.json', 404, [
-            ['RESOURCE_NOT_FOUND', 'Failed to find [SHOP] with ids [1]'],
-        ]];
-
-        yield '409_cancellation_restriction.json' => ['409_cancellation_restriction.json', 409, [
-            ['HTTP_409', 'Active cancellation request restriction. Order id 1231231.'],
-        ], 'text/plain'];
+        return Message::from([$this]);
     }
 
-    public function loadFixture($filename): string
+    public function getMessage(): string
     {
-        return FixtureLoader::loadResponse($filename);
+        return $this->message;
+    }
+
+    public function getErrorCode(): string
+    {
+        return self::ERROR_CODE;
+    }
+
+    public function count()
+    {
+        return 0;
     }
 }

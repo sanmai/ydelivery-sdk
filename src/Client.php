@@ -28,16 +28,17 @@ declare(strict_types=1);
 
 namespace YDeliverySDK;
 
-use CommonSDK\Types\Client as CommonClient;
+use CommonSDK\Types as CommonSDK;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use YDeliverySDK\Responses\Bad\BadRequestResponse;
+use YDeliverySDK\Responses\Bad\ConflictResponse;
 use YDeliverySDK\Responses\Bad\NotFoundResponse;
 use YDeliverySDK\Responses\Bad\UnauthorizedResponse;
 
 /**
  * Class Client.
  */
-final class Client extends CommonClient
+final class Client extends CommonSDK\Client
 {
     use Requests\Shortcuts;
 
@@ -45,5 +46,13 @@ final class Client extends CommonClient
         HttpResponse::HTTP_UNAUTHORIZED   => UnauthorizedResponse::class,
         HttpResponse::HTTP_NOT_FOUND      => NotFoundResponse::class,
         HttpResponse::HTTP_BAD_REQUEST    => BadRequestResponse::class,
+        HttpResponse::HTTP_CONFLICT       => ConflictResponse::class,
     ];
+
+    protected function isTextResponse(string $header): bool
+    {
+        return parent::isTextResponse($header) || 0 === \strpos($header, self::TEXT_CONTENT_TYPE);
+    }
+
+    private const TEXT_CONTENT_TYPE = 'text/plain';
 }
