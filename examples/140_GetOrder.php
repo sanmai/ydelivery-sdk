@@ -40,6 +40,9 @@ $client = $builder->build();
 
 $order = $client->getOrder((int) $argv[1]);
 
+$logger->addFile('order-status-request.json');
+$logger->addFile('order-status-response.json');
+
 $statuses = $client->getOrderStatuses($order->id);
 
 echo "Order ID: {$statuses->id}\n";

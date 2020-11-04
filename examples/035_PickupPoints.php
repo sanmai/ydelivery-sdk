@@ -27,7 +27,7 @@
 declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\PickupPointsRequest;
+use YDeliverySDK\Requests;
 use YDeliverySDK\Responses\Types\PickupPoint;
 
 include_once 'vendor/autoload.php';
@@ -38,7 +38,7 @@ $builder->setLogger($logger = new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$request = new PickupPointsRequest();
+$request = new Requests\PickupPointsRequest();
 $request->type = $request::TYPE_TERMINAL;
 $request->locationId = 65;
 $request->latitude->from = 55.013;

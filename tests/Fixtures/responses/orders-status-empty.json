@@ -1,0 +1,20 @@
+[
+    {
+        "id": 111,
+        "externalId": null,
+        "status": {
+            "code": "NOT_FOUND",
+            "description": "Заказ не найден.",
+            "datetime": null
+        }
+    },
+    {
+        "id": null,
+        "externalId": "100",
+        "status": {
+            "code": "NOT_FOUND",
+            "description": "Заказ не найден.",
+            "datetime": null
+        }
+    }
+]

@@ -27,8 +27,7 @@
 declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\DeliveryServicesRequest;
-use YDeliverySDK\Requests\ImportIntervalsRequest;
+use YDeliverySDK\Requests;
 
 include_once 'vendor/autoload.php';
 
@@ -38,7 +37,7 @@ $builder->setLogger(new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$request = new DeliveryServicesRequest((int) $_SERVER['YANDEX_CABINET_ID']);
+$request = new Requests\DeliveryServicesRequest((int) $_SERVER['YANDEX_CABINET_ID']);
 
 // Получим ID первого попавшегося сервиса доставки.
 foreach ($client->sendDeliveryServicesRequest($request) as $partner) {
@@ -47,7 +46,7 @@ foreach ($client->sendDeliveryServicesRequest($request) as $partner) {
 /** @var \YDeliverySDK\Responses\Types\DeliveryService $partner */
 
 // Для него получим расписание доставки.
-$request = new ImportIntervalsRequest();
+$request = new Requests\ImportIntervalsRequest();
 $request->date = new DateTime('next Monday');
 
 // Используя первый попавшийся склад.

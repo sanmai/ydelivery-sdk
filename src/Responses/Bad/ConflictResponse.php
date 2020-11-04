@@ -26,36 +26,58 @@
 
 declare(strict_types=1);
 
-namespace Tests\YDeliverySDK\Deserialization;
+namespace YDeliverySDK\Responses\Bad;
 
-use YDeliverySDK\Responses\OrderStatusesResponse;
-use YDeliverySDK\Responses\Types\Status;
+use CommonSDK\Concerns\PropertyRead;
+use CommonSDK\Contracts\HasErrorCode;
+use CommonSDK\Contracts\Response;
+use CommonSDK\Types\Message;
+use JMS\Serializer\Annotation as JMS;
 
 /**
- * @covers \YDeliverySDK\Responses\OrderStatusesResponse
- * @covers \YDeliverySDK\Responses\Types\Status
+ * Class ConflictResponse.
+ *
+ * HTTP/1.1 409: Conflict
+ * Content-Type: text/plain;charset=utf-8
+ * {"message":"Active cancellation request restriction. Order id NNNNNN."}
+ *
+ * @property-read string $message
  */
-class OrderStatusesResponseTest extends TestCase
+final class ConflictResponse implements Response, HasErrorCode, \Countable
 {
-    public function test_regular_order()
+    private const ERROR_CODE = 'HTTP_409';
+
+    use PropertyRead;
+
+    /**
+     * @JMS\Type("string")
+     *
+     * @var string
+     */
+    private $message;
+
+    public function hasErrors(): bool
     {
-        $response = $this->loadFixture('statuses.json');
-
-        $this->assertFalse($response->hasErrors());
-
-        $this->assertSame(3500000, $response->id);
-        $this->assertCount(7, $response);
-
-        foreach ($response as $status) {
-            /** @var $status Status */
-            $this->assertNotEmpty($status->code);
-            $this->assertNotEmpty($status->description);
-            $this->assertGreaterThan(0, $status->datetime->getTimestamp());
-        }
+        return true;
     }
 
-    private function loadFixture(string $filename): OrderStatusesResponse
+    public function getMessages()
     {
-        return $this->loadFixtureWithType($filename, OrderStatusesResponse::class);
+        return Message::from([$this]);
+    }
+
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    public function getErrorCode(): string
+    {
+        return self::ERROR_CODE;
+    }
+
+    public function count()
+    {
+        return 0;
     }
 }

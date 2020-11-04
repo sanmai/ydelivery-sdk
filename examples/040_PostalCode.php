@@ -36,7 +36,7 @@ $builder->setLogger(new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$response = $client->makePostalCodeRequest('Москва, ул. Льва Толстого, 16');
+$response = $client->getPostalCodes('Москва, ул. Льва Толстого, 16');
 
 \var_dump(\count($response));
 

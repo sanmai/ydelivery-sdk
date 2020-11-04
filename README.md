@@ -38,13 +38,12 @@
 
 Работа с большинством методов API возможна [только при наличии договора с Яндекс.Доставкой](https://yandex.ru/dev/delivery-3/doc/dg/concepts/access-docpage/).
 
-
 ## Установка
 
 ```bash
 composer require sanmai/ydelivery-sdk
 ```
-Для работы SDK нужен PHP 7.3 или выше. Работа протестирована под PHP 7.3, 7.4.
+Для работы SDK нужен PHP 7.3 или выше. Работа протестирована под PHP 7.3, 7.4, 8.0, 8.1.
 
 [Полная документация по всем методам.](https://ydelivery-sdk.readthedocs.io/)
 

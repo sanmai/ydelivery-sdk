@@ -31,27 +31,47 @@ namespace Tests\YDeliverySDK\Deserialization;
 use YDeliverySDK\Responses\Bad\BadRequestResponse\ValidationError;
 
 /**
- * @covers \YDeliverySDK\Responses\PostalCodeResponse
- * @covers \YDeliverySDK\Responses\Types\PostalCode
+ * @covers \YDeliverySDK\Responses\Bad\BadRequestResponse\ValidationError
  */
 class ValidationErrorTest extends TestCase
 {
-    private const EXAMPLE_ERROR = '{
-            "objectName": "senderOrderDraft",
-            "field": "deliveryType",
-            "message": "must not be null",
-            "conditionCode": "NotNull",
-            "arguments": {},
-            "errorCode": "FIELD_NOT_VALID"
-        }';
-
-    public function test_it_deserializes()
+    public function test_it_deserializes_simple_type()
     {
-        /** @var ValidationError $error */
-        $error = $this->getSerializer()->deserialize(self::EXAMPLE_ERROR, ValidationError::class);
+        $error = $this->loadFixture('validation-error-simple.json');
+
+        $this->assertSame('BOO_ERROR', $error->getErrorCode());
+        $this->assertSame('Boo', $error->getMessage());
+    }
+
+    public function test_it_deserializes_standard_type()
+    {
+        $error = $this->loadFixture('validation-error.json');
 
         $this->assertSame('FIELD_NOT_VALID', $error->getErrorCode());
         $this->assertSame('senderOrderDraft->deliveryType must not be null', $error->getMessage());
         $this->assertSame('NotNull', $error->conditionCode);
+    }
+
+    public function test_it_deserializes_rare_type()
+    {
+        $error = $this->loadFixture('validation-error2.json');
+
+        $this->assertSame('OPTION_CALCULATED_DATE_MIN_MISMATCH', $error->getErrorCode());
+        $this->assertSame('2020-10-31', $error->getMessage());
+        $this->assertNull($error->currentValue);
+    }
+
+    public function test_it_deserializes_even_rare_type()
+    {
+        $error = $this->loadFixture('validation-error-code.json');
+
+        $this->assertSame('FATAL_ERROR', $error->getErrorCode());
+        $this->assertSame('FATAL_ERROR', $error->getMessage());
+        $this->assertSame('FATAL_ERROR', $error->message);
+    }
+
+    private function loadFixture(string $filename): ValidationError
+    {
+        return $this->loadFixtureWithType($filename, ValidationError::class);
     }
 }

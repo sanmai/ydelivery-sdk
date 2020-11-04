@@ -27,7 +27,7 @@
 declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\OrdersStatusRequest;
+use YDeliverySDK\Requests;
 
 include_once 'vendor/autoload.php';
 
@@ -39,7 +39,7 @@ $builder->setLogger($logger);
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$request = new OrdersStatusRequest((int) $_SERVER['YANDEX_SHOP_ID']);
+$request = new Requests\OrdersStatusRequest((int) $_SERVER['YANDEX_SHOP_ID']);
 $request->fromOrderId = (int) $argv[1] - 1;
 
 $order = $request->addOrder();
@@ -47,6 +47,9 @@ $order->id = (int) $argv[1];
 
 $order = $request->addOrder();
 $order->externalId = '100';
+
+$logger->addFile('orders-status-request.json');
+$logger->addFile('orders-status-response.json');
 
 $response = $client->sendOrdersStatusRequest($request);
 

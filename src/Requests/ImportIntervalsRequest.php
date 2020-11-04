@@ -32,7 +32,7 @@ use CommonSDK\Concerns\PropertyWrite;
 use YDeliverySDK\Requests\Templates\IntervalsRequest;
 
 /**
- * Получить интервалы заборов.
+ * Получить интервалы самопривозов.
  *
  * @property-write int $warehouseId
  */

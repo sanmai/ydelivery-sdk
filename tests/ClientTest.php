@@ -62,6 +62,10 @@ class ClientTest extends ClientTestCase
         yield '404_Not_Found.json' => ['404_Not_Found.json', 404, [
             ['RESOURCE_NOT_FOUND', 'Failed to find [SHOP] with ids [1]'],
         ]];
+
+        yield '409_cancellation_restriction.json' => ['409_cancellation_restriction.json', 409, [
+            ['HTTP_409', 'Active cancellation request restriction. Order id 1231231.'],
+        ], 'text/plain'];
     }
 
     public function loadFixture($filename): string

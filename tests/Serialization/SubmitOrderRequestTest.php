@@ -50,4 +50,13 @@ final class SubmitOrderRequestTest extends TestCase
 
         $this->assertSameAsJSON('{"orderIds":[111,222]}', $request);
     }
+
+    public function test_it_can_add_order_ids()
+    {
+        $request = new SubmitOrderRequest([123]);
+        /** @phpstan-ignore-next-line */
+        $request->orderIds[] = 456;
+
+        $this->assertSameAsJSON('{"orderIds":[123,456]}', $request);
+    }
 }

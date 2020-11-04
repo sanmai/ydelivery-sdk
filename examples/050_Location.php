@@ -27,7 +27,6 @@
 declare(strict_types=1);
 
 use Tests\YDeliverySDK\Integration\DebuggingLogger;
-use YDeliverySDK\Requests\LocationRequest;
 
 include_once 'vendor/autoload.php';
 
@@ -37,9 +36,7 @@ $builder->setLogger(new DebuggingLogger());
 /** @var \YDeliverySDK\Client $client */
 $client = $builder->build();
 
-$request = new LocationRequest('Новосибирская область, Новосибирск');
-
-$response = $client->sendLocationRequest($request);
+$response = $client->getLocations($argv[1]);
 
 \var_dump(\count($response));
 

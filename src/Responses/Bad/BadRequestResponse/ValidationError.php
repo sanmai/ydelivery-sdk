@@ -151,6 +151,10 @@ final class ValidationError implements HasErrorCode
             return \sprintf('%s->%s %s', $this->objectName, $this->field, $this->message);
         }
 
+        if ($this->message !== null) {
+            return $this->message;
+        }
+
         foreach (\get_object_vars($this) as $key => $value) {
             if (!\is_string($value)) {
                 continue;

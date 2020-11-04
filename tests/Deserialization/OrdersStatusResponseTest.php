@@ -34,6 +34,7 @@ use YDeliverySDK\Responses\Types\OrderStatus;
 /**
  * @covers \YDeliverySDK\Responses\OrdersStatusResponse
  * @covers \YDeliverySDK\Responses\Types\OrderStatus
+ * @covers \YDeliverySDK\Responses\Types\Status
  */
 class OrdersStatusResponseTest extends TestCase
 {
@@ -57,6 +58,21 @@ class OrdersStatusResponseTest extends TestCase
             if ($item->id !== null) {
                 $this->assertInstanceOf(\DateTimeInterface::class, $item->status->datetime);
             }
+        }
+    }
+
+    public function test_invalid_order()
+    {
+        $response = $this->loadFixture('orders-status-empty.json');
+
+        $this->assertFalse($response->hasErrors());
+
+        $this->assertCount(2, $response);
+
+        foreach ($response as $item) {
+            /** @var $item OrderStatus */
+            $this->assertNull($item->status->datetime);
+            $this->assertGreaterThan(0, $item->status->timestamp->getTimestamp());
         }
     }
 
