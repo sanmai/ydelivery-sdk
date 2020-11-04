@@ -11,29 +11,29 @@
 Возможности:
 
 - [x] Варианты доставки
-   - [x] Поиск вариантов доставки
-   - [x] Поиск пунктов выдачи заказов
+   - [x] [Поиск вариантов доставки](https://ydelivery-sdk.readthedocs.io/ru/latest/#DeliveryOptionsRequest)
+   - [x] [Поиск пунктов выдачи заказов](https://ydelivery-sdk.readthedocs.io/ru/latest/#PickupPointsRequest)
 - [x] Операции с заказами
-   - [x] Создать черновик заказа
-   - [x] Обновить черновик заказа
-   - [x] Оформить заказ
-   - [x] Получить данные о заказе
-   - [x] Удалить заказ
-   - [x] Получить ярлык заказа
-   - [x] Поиск заказов
-   - [x] Получить историю статусов заказа
-   - [x] Получить статус заказов
+   - [x] [Создать черновик заказа](https://ydelivery-sdk.readthedocs.io/ru/latest/#CreateOrderRequest)
+   - [x] [Обновить черновик заказа](https://ydelivery-sdk.readthedocs.io/ru/latest/#UpdateOrderRequest)
+   - [x] [Оформить заказ](https://ydelivery-sdk.readthedocs.io/ru/latest/#)
+   - [x] [Получить данные о заказе](https://ydelivery-sdk.readthedocs.io/ru/latest/#GetOrderRequest)
+   - [x] [Удалить заказ](https://ydelivery-sdk.readthedocs.io/ru/latest/#DeleteOrderRequest)
+   - [x] [Получить ярлык заказа](https://ydelivery-sdk.readthedocs.io/ru/latest/#OrderLabelRequest)
+   - [x] [Поиск заказов](https://ydelivery-sdk.readthedocs.io/ru/latest/#OrdersSearchRequest)
+   - [x] [Получить историю статусов заказа](https://ydelivery-sdk.readthedocs.io/ru/latest/#OrderStatusesRequest)
+   - [x] [Получить статус заказов](https://ydelivery-sdk.readthedocs.io/ru/latest/#OrdersStatusRequest)
 - [ ] Операции с отгрузками
   - [ ] Создать заявку на отгрузку
   - [ ] Подтвердить отгрузку
   - [ ] Получить список отгрузок
-  - [x] Получить интервалы самопривозов
-  - [x] Получить интервалы заборов
+  - [x] [Получить интервалы самопривозов](https://ydelivery-sdk.readthedocs.io/ru/latest/#ImportIntervalsRequest)
+  - [x] [Получить интервалы заборов](https://ydelivery-sdk.readthedocs.io/ru/latest/#WithdrawIntervalsRequest)
   - [ ] Получить акт передачи заказов
 - [x] Справочные данные
-  - [x] Получить полный адрес
-  - [x] Получить индекс по адресу
-  - [x] Получить список служб доставки
+  - [x] [Получить полный адрес](https://ydelivery-sdk.readthedocs.io/ru/latest/#LocationRequest)
+  - [x] [Получить индекс по адресу](https://ydelivery-sdk.readthedocs.io/ru/latest/#PostalCodeRequest)
+  - [x] [Получить список служб доставки](https://ydelivery-sdk.readthedocs.io/ru/latest/#DeliveryServicesRequest)
 - Чего-то нет в списке? [Напишите, сообщите.](https://github.com/sanmai/delivery-sdk/issues/new/choose)
 
 Работа с большинством методов API возможна [только при наличии договора с Яндекс.Доставкой](https://yandex.ru/dev/delivery-3/doc/dg/concepts/access-docpage/).
