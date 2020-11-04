@@ -77,7 +77,7 @@ $client = $builder->build();
 | [Получить индекс по адресу](#PostalCodeRequest) | `getPostalCodes` | `string $address` |
 | [Получить список служб доставки](#DeliveryServicesRequest) | `getDeliveryServices` | `int $cabinetId` |
 
-Для всех методов есть по крайней один пример использования в каталоге `examples`.
+Для всех методов есть по крайней один пример использования [в каталоге `examples`](https://github.com/sanmai/ydelivery-sdk/tree/main/examples).
 
 ### Обработка ошибок {: #hasErrors }
 
