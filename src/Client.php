@@ -28,7 +28,9 @@ declare(strict_types=1);
 
 namespace YDeliverySDK;
 
+use CommonSDK\Contracts;
 use CommonSDK\Types as CommonSDK;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use YDeliverySDK\Responses\Bad\BadRequestResponse;
 use YDeliverySDK\Responses\Bad\ConflictResponse;
@@ -52,6 +54,10 @@ final class Client extends CommonSDK\Client
     protected function isTextResponse(string $header): bool
     {
         return parent::isTextResponse($header) || 0 === \strpos($header, self::TEXT_CONTENT_TYPE);
+    }
+
+    protected function postDeserialize(ResponseInterface $httpResponse, Contracts\Response $response): void
+    {
     }
 
     private const TEXT_CONTENT_TYPE = 'text/plain';
