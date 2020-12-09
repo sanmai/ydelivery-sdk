@@ -42,8 +42,8 @@ use YDeliverySDK\Responses\OrdersStatusResponse;
  */
 final class OrdersStatusRequest implements JsonRequest
 {
-    use RequestCore;
     use PropertyWrite;
+    use RequestCore;
 
     /**
      * @JMS\Type("int")

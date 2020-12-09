@@ -35,8 +35,8 @@ use YDeliverySDK\Responses\PostalCodeResponse;
 
 final class PostalCodeRequest implements ParamRequest
 {
-    use RequestCore;
     use ParamRequestTrait;
+    use RequestCore;
 
     private const METHOD = 'GET';
     private const ADDRESS = '/location/postal-code';

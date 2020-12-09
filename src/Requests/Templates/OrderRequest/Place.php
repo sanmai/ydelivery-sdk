@@ -40,8 +40,8 @@ use YDeliverySDK\Requests\Types\Dimensions;
  */
 final class Place extends Common\Place implements ReadableRequestProperty
 {
-    use PropertyWrite;
     use ObjectPropertyRead;
+    use PropertyWrite;
 
     /**
      * @phan-suppress PhanAccessReadOnlyMagicProperty

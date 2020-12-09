@@ -52,8 +52,8 @@ use YDeliverySDK\Responses\OrderResponse;
  */
 abstract class OrderRequest implements JsonRequest
 {
-    use PropertyWrite;
     use ObjectPropertyRead;
+    use PropertyWrite;
 
     /**
      * Тип доставки — курьером

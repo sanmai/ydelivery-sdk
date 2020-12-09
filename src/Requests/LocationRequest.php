@@ -35,8 +35,8 @@ use YDeliverySDK\Responses\LocationResponse;
 
 final class LocationRequest implements ParamRequest
 {
-    use RequestCore;
     use ParamRequestTrait;
+    use RequestCore;
 
     private const METHOD = 'GET';
     private const ADDRESS = '/location';

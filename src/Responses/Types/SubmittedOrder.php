@@ -43,8 +43,8 @@ use YDeliverySDK\Responses\Types\SubmittedOrder\Violation;
  */
 final class SubmittedOrder
 {
-    use PropertyRead;
     use HasErrors;
+    use PropertyRead;
 
     /**
      * @JMS\Type("int")

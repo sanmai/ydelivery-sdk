@@ -48,8 +48,8 @@ use YDeliverySDK\Common;
  */
 final class Recipient extends Common\Recipient implements ReadableRequestProperty
 {
-    use PropertyWrite;
     use ObjectPropertyRead;
+    use PropertyWrite;
 
     /**
      * @phan-suppress PhanAccessReadOnlyMagicProperty

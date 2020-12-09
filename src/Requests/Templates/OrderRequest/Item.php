@@ -44,8 +44,8 @@ use YDeliverySDK\Requests\Types\Dimensions;
  */
 final class Item extends Common\Item
 {
-    use PropertyWrite;
     use ObjectPropertyRead;
+    use PropertyWrite;
 
     /**
      * @phan-suppress PhanAccessReadOnlyMagicProperty

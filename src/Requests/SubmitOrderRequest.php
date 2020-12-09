@@ -45,9 +45,9 @@ use YDeliverySDK\Responses\SubmitOrderResponse;
  */
 final class SubmitOrderRequest implements JsonRequest
 {
-    use RequestCore;
     use ObjectPropertyRead;
     use PropertyWrite;
+    use RequestCore;
 
     /**
      * @JMS\Type("ArrayCollection<int>")

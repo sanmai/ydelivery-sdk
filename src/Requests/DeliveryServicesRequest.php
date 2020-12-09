@@ -35,8 +35,8 @@ use YDeliverySDK\Responses\DeliveryServicesResponse;
 
 final class DeliveryServicesRequest implements ParamRequest
 {
-    use RequestCore;
     use ParamRequestTrait;
+    use RequestCore;
 
     private const METHOD = 'GET';
     private const ADDRESS = '/delivery-services';

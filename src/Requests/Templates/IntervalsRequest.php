@@ -44,9 +44,9 @@ abstract class IntervalsRequest implements ParamRequest
 {
     public const DATE_FORMAT = 'Y-m-d';
 
-    use RequestCore;
-    use PropertyWrite;
     use ParamRequestTrait;
+    use PropertyWrite;
+    use RequestCore;
 
     protected const METHOD = 'GET';
 

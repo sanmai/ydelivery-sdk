@@ -55,9 +55,9 @@ use YDeliverySDK\Responses\DeliveryOptionsResponse;
  */
 final class DeliveryOptionsRequest implements JsonRequest
 {
-    use RequestCore;
-    use PropertyWrite;
     use ObjectPropertyRead;
+    use PropertyWrite;
+    use RequestCore;
 
     private const METHOD = 'PUT';
     private const ADDRESS = '/delivery-options';

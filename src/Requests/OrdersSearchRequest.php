@@ -52,9 +52,9 @@ use YDeliverySDK\Responses\OrdersSearchResponse;
  */
 final class OrdersSearchRequest implements JsonRequest, ParamRequest, PagingRequest
 {
-    use RequestCore;
     use ObjectPropertyRead;
     use PropertyWrite;
+    use RequestCore;
 
     /**
      * @JMS\Type("ArrayCollection<int>")

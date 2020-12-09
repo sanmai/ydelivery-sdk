@@ -49,8 +49,8 @@ use JMS\Serializer\Annotation as JMS;
  */
 final class Order implements Response
 {
-    use SuccessfulResponse;
     use PropertyRead;
+    use SuccessfulResponse;
 
     /**
      * @JMS\Type("int")

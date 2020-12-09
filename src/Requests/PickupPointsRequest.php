@@ -48,9 +48,9 @@ use YDeliverySDK\Responses\PickupPointsResponse;
  */
 final class PickupPointsRequest implements JsonRequest
 {
-    use RequestCore;
     use ObjectPropertyRead;
     use PropertyWrite;
+    use RequestCore;
 
     /** пункт выдачи */
     public const TYPE_PICKUP_POINT = 'PICKUP_POINT';
