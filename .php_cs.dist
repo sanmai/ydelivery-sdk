@@ -30,6 +30,7 @@ return PhpCsFixer\Config::create()
         'strict_comparison' => true,
         'native_function_invocation' => true,
         'phpdoc_no_alias_tag' => false,
+        'php_unit_method_casing' => ['case' => 'snake_case'],
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()

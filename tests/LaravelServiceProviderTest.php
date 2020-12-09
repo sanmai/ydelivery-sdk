@@ -97,7 +97,7 @@ class LaravelServiceProviderTest extends TestCase
         return \Closure::bind($callback, $client, CommonClient::class)();
     }
 
-    public function testRegister()
+    public function test_register()
     {
         $savedCallback = null;
 
@@ -115,9 +115,9 @@ class LaravelServiceProviderTest extends TestCase
     }
 
     /**
-     * @depends testRegister
+     * @depends test_register
      */
-    public function testWithMinimalConfig(callable $savedCallback)
+    public function test_with_minimal_config(callable $savedCallback)
     {
         $client = $savedCallback($this->applicationWithConfig([
             'services.ydelivery' => [
@@ -133,9 +133,9 @@ class LaravelServiceProviderTest extends TestCase
     }
 
     /**
-     * @depends testRegister
+     * @depends test_register
      */
-    public function testWithCustomTimeout(callable $savedCallback)
+    public function test_with_custom_timeout(callable $savedCallback)
     {
         $client = $savedCallback($this->applicationWithConfig([
             'services.ydelivery' => [
@@ -156,7 +156,7 @@ class LaravelServiceProviderTest extends TestCase
         }));
     }
 
-    public function testProvides()
+    public function test_provides()
     {
         $this->assertSame([Client::class], $this->provider->provides());
     }
