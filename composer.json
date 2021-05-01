@@ -35,7 +35,7 @@
         "doctrine/lexer": "<1.2.0"
     },
     "require-dev": {
-        "doctrine/cache": "^1.10.2",
+        "doctrine/cache": "^1.10.2 || ^2.0.0",
         "ergebnis/composer-normalize": "^2.8.2",
         "friendsofphp/php-cs-fixer": "^2.16.4",
         "gamez/psr-testlogger": "^3.0",
